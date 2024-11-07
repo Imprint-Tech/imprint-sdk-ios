@@ -1,0 +1,16 @@
+PODS:
+  - Imprint (0.1.0)
+
+DEPENDENCIES:
+  - Imprint
+
+SPEC REPOS:
+  trunk:
+    - Imprint
+
+SPEC CHECKSUMS:
+  Imprint: 79c9f07e48d52f9acaa51b33d5ffa4b41ef259a8
+
+PODFILE CHECKSUM: 840bc1ae169e623bfe490ac93fe6bfb2261769e7
+
+COCOAPODS: 1.15.2
