@@ -1,0 +1,11 @@
+framework module Imprint {
+  umbrella header "Imprint.h"
+  export *
+
+  module * { export * }
+}
+
+module Imprint.Swift {
+  header "Imprint-Swift.h"
+  requires objc
+}

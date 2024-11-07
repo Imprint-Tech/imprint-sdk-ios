@@ -1,0 +1,1564 @@
+{
+  "ABIRoot": {
+    "kind": "Root",
+    "name": "TopLevel",
+    "printedName": "TopLevel",
+    "children": [
+      {
+        "kind": "Import",
+        "name": "SwiftUI",
+        "printedName": "SwiftUI",
+        "declKind": "Import",
+        "moduleName": "Imprint",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "SwiftUI",
+        "printedName": "SwiftUI",
+        "declKind": "Import",
+        "moduleName": "Imprint",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "SwiftUI",
+        "printedName": "SwiftUI",
+        "declKind": "Import",
+        "moduleName": "Imprint",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "ImprintApp",
+        "printedName": "ImprintApp",
+        "children": [
+          {
+            "kind": "Function",
+            "name": "startApplication",
+            "printedName": "startApplication(from:configuration:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "UIViewController",
+                "printedName": "UIKit.UIViewController",
+                "usr": "c:objc(cs)UIViewController"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "ImprintConfiguration",
+                "printedName": "Imprint.ImprintConfiguration",
+                "usr": "s:7Imprint0A13ConfigurationC"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:7Imprint0A3AppO16startApplication4from13configurationySo16UIViewControllerC_AA0A13ConfigurationCtFZ",
+            "mangledName": "$s7Imprint0A3AppO16startApplication4from13configurationySo16UIViewControllerC_AA0A13ConfigurationCtFZ",
+            "moduleName": "Imprint",
+            "static": true,
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Enum",
+        "usr": "s:7Imprint0A3AppO",
+        "mangledName": "$s7Imprint0A3AppO",
+        "moduleName": "Imprint",
+        "declAttributes": [
+          "AccessControl",
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "ImprintConfiguration",
+        "printedName": "ImprintConfiguration",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "externalReferenceId",
+            "printedName": "externalReferenceId",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:7Imprint0A13ConfigurationC19externalReferenceIdSSSgvp",
+            "mangledName": "$s7Imprint0A13ConfigurationC19externalReferenceIdSSSgvp",
+            "moduleName": "Imprint",
+            "declAttributes": [
+              "HasInitialValue",
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Swift.String?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:7Imprint0A13ConfigurationC19externalReferenceIdSSSgvg",
+                "mangledName": "$s7Imprint0A13ConfigurationC19externalReferenceIdSSSgvg",
+                "moduleName": "Imprint",
+                "implicit": true,
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Swift.String?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:7Imprint0A13ConfigurationC19externalReferenceIdSSSgvs",
+                "mangledName": "$s7Imprint0A13ConfigurationC19externalReferenceIdSSSgvs",
+                "moduleName": "Imprint",
+                "implicit": true,
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:7Imprint0A13ConfigurationC19externalReferenceIdSSSgvM",
+                "mangledName": "$s7Imprint0A13ConfigurationC19externalReferenceIdSSSgvM",
+                "moduleName": "Imprint",
+                "implicit": true,
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "applicationId",
+            "printedName": "applicationId",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:7Imprint0A13ConfigurationC13applicationIdSSSgvp",
+            "mangledName": "$s7Imprint0A13ConfigurationC13applicationIdSSSgvp",
+            "moduleName": "Imprint",
+            "declAttributes": [
+              "HasInitialValue",
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Swift.String?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:7Imprint0A13ConfigurationC13applicationIdSSSgvg",
+                "mangledName": "$s7Imprint0A13ConfigurationC13applicationIdSSSgvg",
+                "moduleName": "Imprint",
+                "implicit": true,
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Swift.String?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:7Imprint0A13ConfigurationC13applicationIdSSSgvs",
+                "mangledName": "$s7Imprint0A13ConfigurationC13applicationIdSSSgvs",
+                "moduleName": "Imprint",
+                "implicit": true,
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:7Imprint0A13ConfigurationC13applicationIdSSSgvM",
+                "mangledName": "$s7Imprint0A13ConfigurationC13applicationIdSSSgvM",
+                "moduleName": "Imprint",
+                "implicit": true,
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "additionalData",
+            "printedName": "additionalData",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "[Swift.String : Swift.String]?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Dictionary",
+                    "printedName": "[Swift.String : Swift.String]",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "usr": "s:SD"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:7Imprint0A13ConfigurationC14additionalDataSDyS2SGSgvp",
+            "mangledName": "$s7Imprint0A13ConfigurationC14additionalDataSDyS2SGSgvp",
+            "moduleName": "Imprint",
+            "declAttributes": [
+              "HasInitialValue",
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "[Swift.String : Swift.String]?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Dictionary",
+                        "printedName": "[Swift.String : Swift.String]",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "String",
+                            "printedName": "Swift.String",
+                            "usr": "s:SS"
+                          },
+                          {
+                            "kind": "TypeNominal",
+                            "name": "String",
+                            "printedName": "Swift.String",
+                            "usr": "s:SS"
+                          }
+                        ],
+                        "usr": "s:SD"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:7Imprint0A13ConfigurationC14additionalDataSDyS2SGSgvg",
+                "mangledName": "$s7Imprint0A13ConfigurationC14additionalDataSDyS2SGSgvg",
+                "moduleName": "Imprint",
+                "implicit": true,
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "[Swift.String : Swift.String]?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Dictionary",
+                        "printedName": "[Swift.String : Swift.String]",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "String",
+                            "printedName": "Swift.String",
+                            "usr": "s:SS"
+                          },
+                          {
+                            "kind": "TypeNominal",
+                            "name": "String",
+                            "printedName": "Swift.String",
+                            "usr": "s:SS"
+                          }
+                        ],
+                        "usr": "s:SD"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:7Imprint0A13ConfigurationC14additionalDataSDyS2SGSgvs",
+                "mangledName": "$s7Imprint0A13ConfigurationC14additionalDataSDyS2SGSgvs",
+                "moduleName": "Imprint",
+                "implicit": true,
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:7Imprint0A13ConfigurationC14additionalDataSDyS2SGSgvM",
+                "mangledName": "$s7Imprint0A13ConfigurationC14additionalDataSDyS2SGSgvM",
+                "moduleName": "Imprint",
+                "implicit": true,
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "onCompletion",
+            "printedName": "onCompletion",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "((Imprint.ImprintConfiguration.CompletionState, [Swift.String : Any]?) -> ())?",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(Imprint.ImprintConfiguration.CompletionState, [Swift.String : Any]?) -> ()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Void",
+                        "printedName": "()"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Tuple",
+                        "printedName": "(Imprint.ImprintConfiguration.CompletionState, [Swift.String : Any]?)",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "CompletionState",
+                            "printedName": "Imprint.ImprintConfiguration.CompletionState",
+                            "usr": "s:7Imprint0A13ConfigurationC15CompletionStateO"
+                          },
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Optional",
+                            "printedName": "[Swift.String : Any]?",
+                            "children": [
+                              {
+                                "kind": "TypeNominal",
+                                "name": "Dictionary",
+                                "printedName": "[Swift.String : Any]",
+                                "children": [
+                                  {
+                                    "kind": "TypeNominal",
+                                    "name": "String",
+                                    "printedName": "Swift.String",
+                                    "usr": "s:SS"
+                                  },
+                                  {
+                                    "kind": "TypeNominal",
+                                    "name": "ProtocolComposition",
+                                    "printedName": "Any"
+                                  }
+                                ],
+                                "usr": "s:SD"
+                              }
+                            ],
+                            "usr": "s:Sq"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:7Imprint0A13ConfigurationC12onCompletionyAC0D5StateO_SDySSypGSgtcSgvp",
+            "mangledName": "$s7Imprint0A13ConfigurationC12onCompletionyAC0D5StateO_SDySSypGSgtcSgvp",
+            "moduleName": "Imprint",
+            "declAttributes": [
+              "HasInitialValue",
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "((Imprint.ImprintConfiguration.CompletionState, [Swift.String : Any]?) -> ())?",
+                    "children": [
+                      {
+                        "kind": "TypeFunc",
+                        "name": "Function",
+                        "printedName": "(Imprint.ImprintConfiguration.CompletionState, [Swift.String : Any]?) -> ()",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Void",
+                            "printedName": "()"
+                          },
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Tuple",
+                            "printedName": "(Imprint.ImprintConfiguration.CompletionState, [Swift.String : Any]?)",
+                            "children": [
+                              {
+                                "kind": "TypeNominal",
+                                "name": "CompletionState",
+                                "printedName": "Imprint.ImprintConfiguration.CompletionState",
+                                "usr": "s:7Imprint0A13ConfigurationC15CompletionStateO"
+                              },
+                              {
+                                "kind": "TypeNominal",
+                                "name": "Optional",
+                                "printedName": "[Swift.String : Any]?",
+                                "children": [
+                                  {
+                                    "kind": "TypeNominal",
+                                    "name": "Dictionary",
+                                    "printedName": "[Swift.String : Any]",
+                                    "children": [
+                                      {
+                                        "kind": "TypeNominal",
+                                        "name": "String",
+                                        "printedName": "Swift.String",
+                                        "usr": "s:SS"
+                                      },
+                                      {
+                                        "kind": "TypeNominal",
+                                        "name": "ProtocolComposition",
+                                        "printedName": "Any"
+                                      }
+                                    ],
+                                    "usr": "s:SD"
+                                  }
+                                ],
+                                "usr": "s:Sq"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:7Imprint0A13ConfigurationC12onCompletionyAC0D5StateO_SDySSypGSgtcSgvg",
+                "mangledName": "$s7Imprint0A13ConfigurationC12onCompletionyAC0D5StateO_SDySSypGSgtcSgvg",
+                "moduleName": "Imprint",
+                "implicit": true,
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "((Imprint.ImprintConfiguration.CompletionState, [Swift.String : Any]?) -> ())?",
+                    "children": [
+                      {
+                        "kind": "TypeFunc",
+                        "name": "Function",
+                        "printedName": "(Imprint.ImprintConfiguration.CompletionState, [Swift.String : Any]?) -> ()",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Void",
+                            "printedName": "()"
+                          },
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Tuple",
+                            "printedName": "(Imprint.ImprintConfiguration.CompletionState, [Swift.String : Any]?)",
+                            "children": [
+                              {
+                                "kind": "TypeNominal",
+                                "name": "CompletionState",
+                                "printedName": "Imprint.ImprintConfiguration.CompletionState",
+                                "usr": "s:7Imprint0A13ConfigurationC15CompletionStateO"
+                              },
+                              {
+                                "kind": "TypeNominal",
+                                "name": "Optional",
+                                "printedName": "[Swift.String : Any]?",
+                                "children": [
+                                  {
+                                    "kind": "TypeNominal",
+                                    "name": "Dictionary",
+                                    "printedName": "[Swift.String : Any]",
+                                    "children": [
+                                      {
+                                        "kind": "TypeNominal",
+                                        "name": "String",
+                                        "printedName": "Swift.String",
+                                        "usr": "s:SS"
+                                      },
+                                      {
+                                        "kind": "TypeNominal",
+                                        "name": "ProtocolComposition",
+                                        "printedName": "Any"
+                                      }
+                                    ],
+                                    "usr": "s:SD"
+                                  }
+                                ],
+                                "usr": "s:Sq"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:7Imprint0A13ConfigurationC12onCompletionyAC0D5StateO_SDySSypGSgtcSgvs",
+                "mangledName": "$s7Imprint0A13ConfigurationC12onCompletionyAC0D5StateO_SDySSypGSgtcSgvs",
+                "moduleName": "Imprint",
+                "implicit": true,
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:7Imprint0A13ConfigurationC12onCompletionyAC0D5StateO_SDySSypGSgtcSgvM",
+                "mangledName": "$s7Imprint0A13ConfigurationC12onCompletionyAC0D5StateO_SDySSypGSgtcSgvM",
+                "moduleName": "Imprint",
+                "implicit": true,
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(sessionToken:environment:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "ImprintConfiguration",
+                "printedName": "Imprint.ImprintConfiguration",
+                "usr": "s:7Imprint0A13ConfigurationC"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Environment",
+                "printedName": "Imprint.ImprintConfiguration.Environment",
+                "hasDefaultArg": true,
+                "usr": "s:7Imprint0A13ConfigurationC11EnvironmentO"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "s:7Imprint0A13ConfigurationC12sessionToken11environmentACSS_AC11EnvironmentOtcfc",
+            "mangledName": "$s7Imprint0A13ConfigurationC12sessionToken11environmentACSS_AC11EnvironmentOtcfc",
+            "moduleName": "Imprint",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "TypeDecl",
+            "name": "Environment",
+            "printedName": "Environment",
+            "children": [
+              {
+                "kind": "Var",
+                "name": "staging",
+                "printedName": "staging",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(Imprint.ImprintConfiguration.Environment.Type) -> Imprint.ImprintConfiguration.Environment",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Environment",
+                        "printedName": "Imprint.ImprintConfiguration.Environment",
+                        "usr": "s:7Imprint0A13ConfigurationC11EnvironmentO"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Metatype",
+                        "printedName": "Imprint.ImprintConfiguration.Environment.Type",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Environment",
+                            "printedName": "Imprint.ImprintConfiguration.Environment",
+                            "usr": "s:7Imprint0A13ConfigurationC11EnvironmentO"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "EnumElement",
+                "usr": "s:7Imprint0A13ConfigurationC11EnvironmentO7stagingyA2EmF",
+                "mangledName": "$s7Imprint0A13ConfigurationC11EnvironmentO7stagingyA2EmF",
+                "moduleName": "Imprint"
+              },
+              {
+                "kind": "Var",
+                "name": "sandbox",
+                "printedName": "sandbox",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(Imprint.ImprintConfiguration.Environment.Type) -> Imprint.ImprintConfiguration.Environment",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Environment",
+                        "printedName": "Imprint.ImprintConfiguration.Environment",
+                        "usr": "s:7Imprint0A13ConfigurationC11EnvironmentO"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Metatype",
+                        "printedName": "Imprint.ImprintConfiguration.Environment.Type",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Environment",
+                            "printedName": "Imprint.ImprintConfiguration.Environment",
+                            "usr": "s:7Imprint0A13ConfigurationC11EnvironmentO"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "EnumElement",
+                "usr": "s:7Imprint0A13ConfigurationC11EnvironmentO7sandboxyA2EmF",
+                "mangledName": "$s7Imprint0A13ConfigurationC11EnvironmentO7sandboxyA2EmF",
+                "moduleName": "Imprint"
+              },
+              {
+                "kind": "Var",
+                "name": "production",
+                "printedName": "production",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(Imprint.ImprintConfiguration.Environment.Type) -> Imprint.ImprintConfiguration.Environment",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Environment",
+                        "printedName": "Imprint.ImprintConfiguration.Environment",
+                        "usr": "s:7Imprint0A13ConfigurationC11EnvironmentO"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Metatype",
+                        "printedName": "Imprint.ImprintConfiguration.Environment.Type",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Environment",
+                            "printedName": "Imprint.ImprintConfiguration.Environment",
+                            "usr": "s:7Imprint0A13ConfigurationC11EnvironmentO"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "EnumElement",
+                "usr": "s:7Imprint0A13ConfigurationC11EnvironmentO10productionyA2EmF",
+                "mangledName": "$s7Imprint0A13ConfigurationC11EnvironmentO10productionyA2EmF",
+                "moduleName": "Imprint"
+              },
+              {
+                "kind": "Constructor",
+                "name": "init",
+                "printedName": "init(rawValue:)",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Imprint.ImprintConfiguration.Environment?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Environment",
+                        "printedName": "Imprint.ImprintConfiguration.Environment",
+                        "usr": "s:7Imprint0A13ConfigurationC11EnvironmentO"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Int",
+                    "printedName": "Swift.Int",
+                    "usr": "s:Si"
+                  }
+                ],
+                "declKind": "Constructor",
+                "usr": "s:7Imprint0A13ConfigurationC11EnvironmentO8rawValueAESgSi_tcfc",
+                "mangledName": "$s7Imprint0A13ConfigurationC11EnvironmentO8rawValueAESgSi_tcfc",
+                "moduleName": "Imprint",
+                "implicit": true,
+                "init_kind": "Designated"
+              },
+              {
+                "kind": "Var",
+                "name": "rawValue",
+                "printedName": "rawValue",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Int",
+                    "printedName": "Swift.Int",
+                    "usr": "s:Si"
+                  }
+                ],
+                "declKind": "Var",
+                "usr": "s:7Imprint0A13ConfigurationC11EnvironmentO8rawValueSivp",
+                "mangledName": "$s7Imprint0A13ConfigurationC11EnvironmentO8rawValueSivp",
+                "moduleName": "Imprint",
+                "implicit": true,
+                "accessors": [
+                  {
+                    "kind": "Accessor",
+                    "name": "Get",
+                    "printedName": "Get()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Int",
+                        "printedName": "Swift.Int",
+                        "usr": "s:Si"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:7Imprint0A13ConfigurationC11EnvironmentO8rawValueSivg",
+                    "mangledName": "$s7Imprint0A13ConfigurationC11EnvironmentO8rawValueSivg",
+                    "moduleName": "Imprint",
+                    "implicit": true,
+                    "accessorKind": "get"
+                  }
+                ]
+              }
+            ],
+            "declKind": "Enum",
+            "usr": "s:7Imprint0A13ConfigurationC11EnvironmentO",
+            "mangledName": "$s7Imprint0A13ConfigurationC11EnvironmentO",
+            "moduleName": "Imprint",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "enumRawTypeName": "Int",
+            "conformances": [
+              {
+                "kind": "Conformance",
+                "name": "Equatable",
+                "printedName": "Equatable",
+                "usr": "s:SQ",
+                "mangledName": "$sSQ"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Hashable",
+                "printedName": "Hashable",
+                "usr": "s:SH",
+                "mangledName": "$sSH"
+              },
+              {
+                "kind": "Conformance",
+                "name": "RawRepresentable",
+                "printedName": "RawRepresentable",
+                "children": [
+                  {
+                    "kind": "TypeWitness",
+                    "name": "RawValue",
+                    "printedName": "RawValue",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Int",
+                        "printedName": "Swift.Int",
+                        "usr": "s:Si"
+                      }
+                    ]
+                  }
+                ],
+                "usr": "s:SY",
+                "mangledName": "$sSY"
+              }
+            ]
+          },
+          {
+            "kind": "TypeDecl",
+            "name": "CompletionState",
+            "printedName": "CompletionState",
+            "children": [
+              {
+                "kind": "Var",
+                "name": "offerAccepted",
+                "printedName": "offerAccepted",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(Imprint.ImprintConfiguration.CompletionState.Type) -> Imprint.ImprintConfiguration.CompletionState",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "CompletionState",
+                        "printedName": "Imprint.ImprintConfiguration.CompletionState",
+                        "usr": "s:7Imprint0A13ConfigurationC15CompletionStateO"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Metatype",
+                        "printedName": "Imprint.ImprintConfiguration.CompletionState.Type",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "CompletionState",
+                            "printedName": "Imprint.ImprintConfiguration.CompletionState",
+                            "usr": "s:7Imprint0A13ConfigurationC15CompletionStateO"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "EnumElement",
+                "usr": "s:7Imprint0A13ConfigurationC15CompletionStateO13offerAcceptedyA2EmF",
+                "mangledName": "$s7Imprint0A13ConfigurationC15CompletionStateO13offerAcceptedyA2EmF",
+                "moduleName": "Imprint"
+              },
+              {
+                "kind": "Var",
+                "name": "rejected",
+                "printedName": "rejected",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(Imprint.ImprintConfiguration.CompletionState.Type) -> Imprint.ImprintConfiguration.CompletionState",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "CompletionState",
+                        "printedName": "Imprint.ImprintConfiguration.CompletionState",
+                        "usr": "s:7Imprint0A13ConfigurationC15CompletionStateO"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Metatype",
+                        "printedName": "Imprint.ImprintConfiguration.CompletionState.Type",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "CompletionState",
+                            "printedName": "Imprint.ImprintConfiguration.CompletionState",
+                            "usr": "s:7Imprint0A13ConfigurationC15CompletionStateO"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "EnumElement",
+                "usr": "s:7Imprint0A13ConfigurationC15CompletionStateO8rejectedyA2EmF",
+                "mangledName": "$s7Imprint0A13ConfigurationC15CompletionStateO8rejectedyA2EmF",
+                "moduleName": "Imprint"
+              },
+              {
+                "kind": "Var",
+                "name": "abandoned",
+                "printedName": "abandoned",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(Imprint.ImprintConfiguration.CompletionState.Type) -> Imprint.ImprintConfiguration.CompletionState",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "CompletionState",
+                        "printedName": "Imprint.ImprintConfiguration.CompletionState",
+                        "usr": "s:7Imprint0A13ConfigurationC15CompletionStateO"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Metatype",
+                        "printedName": "Imprint.ImprintConfiguration.CompletionState.Type",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "CompletionState",
+                            "printedName": "Imprint.ImprintConfiguration.CompletionState",
+                            "usr": "s:7Imprint0A13ConfigurationC15CompletionStateO"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "EnumElement",
+                "usr": "s:7Imprint0A13ConfigurationC15CompletionStateO9abandonedyA2EmF",
+                "mangledName": "$s7Imprint0A13ConfigurationC15CompletionStateO9abandonedyA2EmF",
+                "moduleName": "Imprint"
+              },
+              {
+                "kind": "Constructor",
+                "name": "init",
+                "printedName": "init(rawValue:)",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Imprint.ImprintConfiguration.CompletionState?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "CompletionState",
+                        "printedName": "Imprint.ImprintConfiguration.CompletionState",
+                        "usr": "s:7Imprint0A13ConfigurationC15CompletionStateO"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Int",
+                    "printedName": "Swift.Int",
+                    "usr": "s:Si"
+                  }
+                ],
+                "declKind": "Constructor",
+                "usr": "s:7Imprint0A13ConfigurationC15CompletionStateO8rawValueAESgSi_tcfc",
+                "mangledName": "$s7Imprint0A13ConfigurationC15CompletionStateO8rawValueAESgSi_tcfc",
+                "moduleName": "Imprint",
+                "implicit": true,
+                "init_kind": "Designated"
+              },
+              {
+                "kind": "Var",
+                "name": "rawValue",
+                "printedName": "rawValue",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Int",
+                    "printedName": "Swift.Int",
+                    "usr": "s:Si"
+                  }
+                ],
+                "declKind": "Var",
+                "usr": "s:7Imprint0A13ConfigurationC15CompletionStateO8rawValueSivp",
+                "mangledName": "$s7Imprint0A13ConfigurationC15CompletionStateO8rawValueSivp",
+                "moduleName": "Imprint",
+                "implicit": true,
+                "accessors": [
+                  {
+                    "kind": "Accessor",
+                    "name": "Get",
+                    "printedName": "Get()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Int",
+                        "printedName": "Swift.Int",
+                        "usr": "s:Si"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:7Imprint0A13ConfigurationC15CompletionStateO8rawValueSivg",
+                    "mangledName": "$s7Imprint0A13ConfigurationC15CompletionStateO8rawValueSivg",
+                    "moduleName": "Imprint",
+                    "implicit": true,
+                    "accessorKind": "get"
+                  }
+                ]
+              }
+            ],
+            "declKind": "Enum",
+            "usr": "s:7Imprint0A13ConfigurationC15CompletionStateO",
+            "mangledName": "$s7Imprint0A13ConfigurationC15CompletionStateO",
+            "moduleName": "Imprint",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "enumRawTypeName": "Int",
+            "conformances": [
+              {
+                "kind": "Conformance",
+                "name": "Equatable",
+                "printedName": "Equatable",
+                "usr": "s:SQ",
+                "mangledName": "$sSQ"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Hashable",
+                "printedName": "Hashable",
+                "usr": "s:SH",
+                "mangledName": "$sSH"
+              },
+              {
+                "kind": "Conformance",
+                "name": "RawRepresentable",
+                "printedName": "RawRepresentable",
+                "children": [
+                  {
+                    "kind": "TypeWitness",
+                    "name": "RawValue",
+                    "printedName": "RawValue",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Int",
+                        "printedName": "Swift.Int",
+                        "usr": "s:Si"
+                      }
+                    ]
+                  }
+                ],
+                "usr": "s:SY",
+                "mangledName": "$sSY"
+              }
+            ]
+          }
+        ],
+        "declKind": "Class",
+        "usr": "s:7Imprint0A13ConfigurationC",
+        "mangledName": "$s7Imprint0A13ConfigurationC",
+        "moduleName": "Imprint",
+        "declAttributes": [
+          "AccessControl",
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "SwiftUI",
+        "printedName": "SwiftUI",
+        "declKind": "Import",
+        "moduleName": "Imprint",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "WebKit",
+        "printedName": "WebKit",
+        "declKind": "Import",
+        "moduleName": "Imprint"
+      }
+    ],
+    "json_format_version": 8
+  },
+  "ConstValues": [
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationView.swift",
+      "kind": "IntegerLiteral",
+      "offset": 283,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationView.swift",
+      "kind": "IntegerLiteral",
+      "offset": 582,
+      "length": 2,
+      "value": "16"
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationView.swift",
+      "kind": "StringLiteral",
+      "offset": 770,
+      "length": 7,
+      "value": "\"xmark\""
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationView.swift",
+      "kind": "IntegerLiteral",
+      "offset": 805,
+      "length": 2,
+      "value": "48"
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationView.swift",
+      "kind": "IntegerLiteral",
+      "offset": 817,
+      "length": 2,
+      "value": "48"
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationView.swift",
+      "kind": "FloatLiteral",
+      "offset": 861,
+      "length": 5,
+      "value": "0.137"
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationView.swift",
+      "kind": "FloatLiteral",
+      "offset": 875,
+      "length": 5,
+      "value": "0.137"
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationView.swift",
+      "kind": "FloatLiteral",
+      "offset": 888,
+      "length": 5,
+      "value": "0.137"
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationView.swift",
+      "kind": "IntegerLiteral",
+      "offset": 928,
+      "length": 2,
+      "value": "16"
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationView.swift",
+      "kind": "IntegerLiteral",
+      "offset": 990,
+      "length": 1,
+      "value": "4"
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationView.swift",
+      "kind": "IntegerLiteral",
+      "offset": 1022,
+      "length": 2,
+      "value": "56"
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationView.swift",
+      "kind": "StringLiteral",
+      "offset": 1217,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "@__swiftmacro_7Imprint33_A166141EEC723622360CF2C66B5AD77ALl7PreviewfMf_.swift",
+      "kind": "StringLiteral",
+      "offset": 236,
+      "length": 31,
+      "value": "\"Imprint\/ApplicationView.swift\""
+    },
+    {
+      "filePath": "@__swiftmacro_7Imprint33_A166141EEC723622360CF2C66B5AD77ALl7PreviewfMf_.swift",
+      "kind": "IntegerLiteral",
+      "offset": 295,
+      "length": 2,
+      "value": "49"
+    },
+    {
+      "filePath": "@__swiftmacro_7Imprint33_A166141EEC723622360CF2C66B5AD77ALl7PreviewfMf_.swift",
+      "kind": "IntegerLiteral",
+      "offset": 327,
+      "length": 1,
+      "value": "1"
+    },
+    {
+      "filePath": "@__swiftmacro_7Imprint33_A166141EEC723622360CF2C66B5AD77ALl7PreviewfMf_.swift",
+      "kind": "StringLiteral",
+      "offset": 520,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationViewModel.swift",
+      "kind": "StringLiteral",
+      "offset": 469,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationViewModel.swift",
+      "kind": "StringLiteral",
+      "offset": 543,
+      "length": 33,
+      "value": "\"https:\/\/apply.stg.imprintapi.co\""
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationViewModel.swift",
+      "kind": "StringLiteral",
+      "offset": 609,
+      "length": 41,
+      "value": "\"https:\/\/apply-sandbox.stg.imprintapi.co\""
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationViewModel.swift",
+      "kind": "StringLiteral",
+      "offset": 686,
+      "length": 26,
+      "value": "\"https:\/\/apply.imprint.co\""
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationViewModel.swift",
+      "kind": "StringLiteral",
+      "offset": 748,
+      "length": 59,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationViewModel.swift",
+      "kind": "StringLiteral",
+      "offset": 756,
+      "length": 1,
+      "value": "\"\/start?session-token=\""
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationViewModel.swift",
+      "kind": "StringLiteral",
+      "offset": 806,
+      "length": 3,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
+      "kind": "BooleanLiteral",
+      "offset": 813,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
+      "kind": "BooleanLiteral",
+      "offset": 874,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
+      "kind": "IntegerLiteral",
+      "offset": 3367,
+      "length": 7,
+      "value": "1"
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
+      "kind": "IntegerLiteral",
+      "offset": 3384,
+      "length": 10,
+      "value": "2"
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
+      "kind": "IntegerLiteral",
+      "offset": 3367,
+      "length": 7,
+      "value": "1"
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
+      "kind": "IntegerLiteral",
+      "offset": 3384,
+      "length": 10,
+      "value": "2"
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
+      "kind": "IntegerLiteral",
+      "offset": 3367,
+      "length": 7,
+      "value": "1"
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
+      "kind": "IntegerLiteral",
+      "offset": 3384,
+      "length": 10,
+      "value": "2"
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
+      "kind": "IntegerLiteral",
+      "offset": 4009,
+      "length": 8,
+      "value": "1"
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
+      "kind": "IntegerLiteral",
+      "offset": 4027,
+      "length": 9,
+      "value": "2"
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
+      "kind": "IntegerLiteral",
+      "offset": 4009,
+      "length": 8,
+      "value": "1"
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
+      "kind": "IntegerLiteral",
+      "offset": 4027,
+      "length": 9,
+      "value": "2"
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
+      "kind": "IntegerLiteral",
+      "offset": 4009,
+      "length": 8,
+      "value": "1"
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
+      "kind": "IntegerLiteral",
+      "offset": 4027,
+      "length": 9,
+      "value": "2"
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/WebViewWrapper.swift",
+      "kind": "StringLiteral",
+      "offset": 209,
+      "length": 20,
+      "value": "\"imprintWebCallback\""
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/WebViewWrapper.swift",
+      "kind": "StringLiteral",
+      "offset": 255,
+      "length": 9,
+      "value": "\"logoUrl\""
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/WebViewWrapper.swift",
+      "kind": "StringLiteral",
+      "offset": 292,
+      "length": 11,
+      "value": "\"eventName\""
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/WebViewWrapper.swift",
+      "kind": "StringLiteral",
+      "offset": 330,
+      "length": 10,
+      "value": "\"metadata\""
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/WebViewWrapper.swift",
+      "kind": "StringLiteral",
+      "offset": 1822,
+      "length": 16,
+      "value": "\"OFFER_ACCEPTED\""
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/WebViewWrapper.swift",
+      "kind": "StringLiteral",
+      "offset": 1935,
+      "length": 10,
+      "value": "\"REJECTED\""
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/WebViewWrapper.swift",
+      "kind": "StringLiteral",
+      "offset": 923,
+      "length": 11,
+      "value": "\"Imprint.Coordinator\""
+    }
+  ]
+}

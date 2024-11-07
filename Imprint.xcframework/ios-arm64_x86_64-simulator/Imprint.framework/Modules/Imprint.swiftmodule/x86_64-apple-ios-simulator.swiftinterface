@@ -1,0 +1,50 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.9.2 (swiftlang-5.9.2.2.56 clang-1500.1.0.2.5)
+// swift-module-flags: -target x86_64-apple-ios15.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name Imprint
+// swift-module-flags-ignorable: -enable-bare-slash-regex
+@_exported import Imprint
+import Swift
+import SwiftUI
+import WebKit
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+
+public enum ImprintApp {
+  public static func startApplication(from viewController: UIKit.UIViewController, configuration: Imprint.ImprintConfiguration)
+}
+public class ImprintConfiguration {
+  public var externalReferenceId: Swift.String?
+  public var applicationId: Swift.String?
+  public var additionalData: [Swift.String : Swift.String]?
+  public var onCompletion: ((Imprint.ImprintConfiguration.CompletionState, Imprint.ImprintConfiguration.CompletionMetadata?) -> Swift.Void)?
+  public init(sessionToken: Swift.String, environment: Imprint.ImprintConfiguration.Environment = .production)
+  public enum Environment : Swift.Int {
+    case staging
+    case sandbox
+    case production
+    public init?(rawValue: Swift.Int)
+    public typealias RawValue = Swift.Int
+    public var rawValue: Swift.Int {
+      get
+    }
+  }
+  public typealias CompletionMetadata = [Swift.String : Any]
+  public enum CompletionState : Swift.Int {
+    case offerAccepted
+    case rejected
+    case abandoned
+    public init?(rawValue: Swift.Int)
+    public typealias RawValue = Swift.Int
+    public var rawValue: Swift.Int {
+      get
+    }
+  }
+  @objc deinit
+}
+extension Imprint.ImprintConfiguration.Environment : Swift.Equatable {}
+extension Imprint.ImprintConfiguration.Environment : Swift.Hashable {}
+extension Imprint.ImprintConfiguration.Environment : Swift.RawRepresentable {}
+extension Imprint.ImprintConfiguration.CompletionState : Swift.Equatable {}
+extension Imprint.ImprintConfiguration.CompletionState : Swift.Hashable {}
+extension Imprint.ImprintConfiguration.CompletionState : Swift.RawRepresentable {}
