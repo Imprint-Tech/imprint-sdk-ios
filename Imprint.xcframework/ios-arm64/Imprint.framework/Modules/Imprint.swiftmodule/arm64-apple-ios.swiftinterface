@@ -18,7 +18,7 @@ public class ImprintConfiguration {
   public var applicationId: Swift.String?
   public var additionalData: [Swift.String : Swift.String]?
   public var onCompletion: ((Imprint.ImprintConfiguration.CompletionState, Imprint.ImprintConfiguration.CompletionMetadata?) -> Swift.Void)?
-  public init(sessionToken: Swift.String, environment: Imprint.ImprintConfiguration.Environment = .production)
+  public init(token: Swift.String, environment: Imprint.ImprintConfiguration.Environment = .production)
   public enum Environment : Swift.Int {
     case staging
     case sandbox

@@ -7,7 +7,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Imprint'
-  s.version          = '0.1.0'
+  s.version          = '0.1.1'
   s.summary          = 'Imprint SDK'
 
   s.description      = <<-DESC
@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
   s.author           = { 'wantingshao' => 'wanting@imprint.co' }
   s.source           = { :git => 'https://github.com/Imprint-Tech/imprint-sdk-ios.git', :tag => s.version.to_s }
   s.ios.deployment_target = '15.0'
-  s.swift_versions    = ['5.0']
+  s.swift_version    = '5.0'
   s.ios.vendored_frameworks = [
     "Imprint.xcframework"
   ]

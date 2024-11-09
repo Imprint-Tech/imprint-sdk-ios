@@ -18,7 +18,7 @@ class ViewController: UIViewController {
   }
 
   @IBAction func startTapped(_ sender: Any) {
-    let configuration = ImprintConfiguration(sessionToken: "GENERATE_IN_POST_AUTH", environment: .staging)
+    let configuration = ImprintConfiguration(token: "GENERATE_IN_POST_AUTH", environment: .staging)
     // Optional fields
     configuration.externalReferenceId = "YOUR_CUSTOMER_ID"
     configuration.applicationId = "IMPRINT_GENERATED_GUID"
@@ -31,7 +31,9 @@ class ViewController: UIViewController {
       case .rejected:
         self.completionStateLabel.text = "Application rejected\n\(String(describing: metadata))"
       case .abandoned:
-        self.completionStateLabel.text = "Application abanddoned"
+        self.completionStateLabel.text = "Application abandoned"
+      @unknown default:
+        break
       }
     }
     
