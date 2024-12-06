@@ -10,15 +10,24 @@ import Imprint
 
 class ViewController: UIViewController {
 
-  @IBOutlet weak var completionStateLabel: UILabel!
+  @IBOutlet weak var tokenInput: UITextView!
+  @IBOutlet weak var environmentSelector: UISegmentedControl!
+  @IBOutlet weak var completionState: UITextView!
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    // Do any additional setup after loading the view.
+    setupLayout()
+    
+    // Prefill your token if needed
+    tokenInput.text = ""
   }
 
   @IBAction func startTapped(_ sender: Any) {
-    let configuration = ImprintConfiguration(token: "GENERATE_IN_POST_AUTH", environment: .staging)
+    let token = tokenInput.text ?? ""
+    let environment = ImprintConfiguration.Environment(rawValue: environmentSelector.selectedSegmentIndex) ?? .staging
+    
+    let configuration = ImprintConfiguration(token: token, environment: environment)
+    
     // Optional fields
     configuration.externalReferenceId = "YOUR_CUSTOMER_ID"
     configuration.applicationId = "IMPRINT_GENERATED_GUID"
@@ -27,17 +36,27 @@ class ViewController: UIViewController {
     configuration.onCompletion = { state, metadata in
       switch state {
       case .offerAccepted:
-        self.completionStateLabel.text = "Offer accepted\n\(String(describing: metadata))"
+        self.completionState.text = "Offer accepted\n\(String(describing: metadata))"
       case .rejected:
-        self.completionStateLabel.text = "Application rejected\n\(String(describing: metadata))"
+        self.completionState.text = "Application rejected\n\(String(describing: metadata))"
       case .abandoned:
-        self.completionStateLabel.text = "Application abandoned"
+        self.completionState.text = "Application abandoned"
       @unknown default:
         break
       }
     }
     
     ImprintApp.startApplication(from: self, configuration: configuration)
+  }
+  
+  private func setupLayout(){
+    tokenInput.layer.borderWidth = 1
+    tokenInput.layer.borderColor = UIColor.secondaryLabel.cgColor
+    tokenInput.layer.cornerRadius = 6
+    
+    completionState.layer.borderWidth = 1
+    completionState.layer.borderColor = UIColor.secondaryLabel.cgColor
+    completionState.layer.cornerRadius = 6    
   }
   
 }
