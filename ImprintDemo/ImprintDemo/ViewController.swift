@@ -17,6 +17,7 @@ class ViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     setupLayout()
+    environmentSelector.selectedSegmentIndex = 1
     
     // Prefill your token if needed
     tokenInput.text = ""
@@ -36,9 +37,9 @@ class ViewController: UIViewController {
     configuration.onCompletion = { state, metadata in
       switch state {
       case .offerAccepted:
-        self.completionState.text = "Offer accepted\n\(String(describing: metadata))"
+        self.completionState.text = "Offer accepted\n\(self.jsonString(metadata))"
       case .rejected:
-        self.completionState.text = "Application rejected\n\(String(describing: metadata))"
+        self.completionState.text = "Application rejected\n\(self.jsonString(metadata))"
       case .abandoned:
         self.completionState.text = "Application abandoned"
       @unknown default:
@@ -59,5 +60,15 @@ class ViewController: UIViewController {
     completionState.layer.cornerRadius = 6    
   }
   
+  // Helper
+  private func jsonString(_ dictionary: [String: Any]?) -> String {
+    guard let dictionary else { return "nil" }
+    if let data = try? JSONSerialization.data(withJSONObject: dictionary, options: .prettyPrinted),
+       let jsonString = String(data: data, encoding: .utf8) {
+      return jsonString
+    } else {
+      return (String(describing: dictionary))
+    }
+  }
 }
 

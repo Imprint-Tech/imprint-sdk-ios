@@ -7,7 +7,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Imprint'
-  s.version          = '0.1.2'
+  s.version          = '0.1.3'
   s.summary          = 'Imprint SDK'
 
   s.description      = <<-DESC
