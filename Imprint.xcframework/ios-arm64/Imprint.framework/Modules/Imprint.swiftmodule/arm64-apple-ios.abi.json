@@ -1101,6 +1101,43 @@
                 "moduleName": "Imprint"
               },
               {
+                "kind": "Var",
+                "name": "error",
+                "printedName": "error",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(Imprint.ImprintConfiguration.CompletionState.Type) -> Imprint.ImprintConfiguration.CompletionState",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "CompletionState",
+                        "printedName": "Imprint.ImprintConfiguration.CompletionState",
+                        "usr": "s:7Imprint0A13ConfigurationC15CompletionStateO"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Metatype",
+                        "printedName": "Imprint.ImprintConfiguration.CompletionState.Type",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "CompletionState",
+                            "printedName": "Imprint.ImprintConfiguration.CompletionState",
+                            "usr": "s:7Imprint0A13ConfigurationC15CompletionStateO"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "EnumElement",
+                "usr": "s:7Imprint0A13ConfigurationC15CompletionStateO5erroryA2EmF",
+                "mangledName": "$s7Imprint0A13ConfigurationC15CompletionStateO5erroryA2EmF",
+                "moduleName": "Imprint"
+              },
+              {
                 "kind": "Constructor",
                 "name": "init",
                 "printedName": "init(rawValue:)",
@@ -1493,86 +1530,107 @@
     {
       "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
       "kind": "IntegerLiteral",
-      "offset": 3332,
+      "offset": 3440,
       "length": 7,
       "value": "1"
     },
     {
       "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
       "kind": "IntegerLiteral",
-      "offset": 3349,
+      "offset": 3457,
       "length": 10,
       "value": "2"
     },
     {
       "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
       "kind": "IntegerLiteral",
-      "offset": 3332,
+      "offset": 3440,
       "length": 7,
       "value": "1"
     },
     {
       "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
       "kind": "IntegerLiteral",
-      "offset": 3349,
+      "offset": 3457,
       "length": 10,
       "value": "2"
     },
     {
       "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
       "kind": "IntegerLiteral",
-      "offset": 3332,
+      "offset": 3440,
       "length": 7,
       "value": "1"
     },
     {
       "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
       "kind": "IntegerLiteral",
-      "offset": 3349,
+      "offset": 3457,
       "length": 10,
       "value": "2"
     },
     {
       "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
       "kind": "IntegerLiteral",
-      "offset": 4131,
+      "offset": 4341,
       "length": 8,
       "value": "1"
     },
     {
       "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
       "kind": "IntegerLiteral",
-      "offset": 4149,
+      "offset": 4359,
       "length": 9,
       "value": "2"
     },
     {
       "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
       "kind": "IntegerLiteral",
-      "offset": 4131,
+      "offset": 4378,
+      "length": 5,
+      "value": "3"
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
+      "kind": "IntegerLiteral",
+      "offset": 4341,
       "length": 8,
       "value": "1"
     },
     {
       "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
       "kind": "IntegerLiteral",
-      "offset": 4149,
+      "offset": 4359,
       "length": 9,
       "value": "2"
     },
     {
       "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
       "kind": "IntegerLiteral",
-      "offset": 4131,
+      "offset": 4378,
+      "length": 5,
+      "value": "3"
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
+      "kind": "IntegerLiteral",
+      "offset": 4341,
       "length": 8,
       "value": "1"
     },
     {
       "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
       "kind": "IntegerLiteral",
-      "offset": 4149,
+      "offset": 4359,
       "length": 9,
       "value": "2"
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
+      "kind": "IntegerLiteral",
+      "offset": 4378,
+      "length": 5,
+      "value": "3"
     },
     {
       "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/WebViewWrapper.swift",
@@ -1615,6 +1673,13 @@
       "offset": 1935,
       "length": 10,
       "value": "\"REJECTED\""
+    },
+    {
+      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/WebViewWrapper.swift",
+      "kind": "StringLiteral",
+      "offset": 2037,
+      "length": 7,
+      "value": "\"ERROR\""
     },
     {
       "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/WebViewWrapper.swift",

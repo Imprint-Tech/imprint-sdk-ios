@@ -34,6 +34,7 @@ public class ImprintConfiguration {
     case offerAccepted
     case rejected
     case abandoned
+    case error
     public init?(rawValue: Swift.Int)
     public typealias RawValue = Swift.Int
     public var rawValue: Swift.Int {
