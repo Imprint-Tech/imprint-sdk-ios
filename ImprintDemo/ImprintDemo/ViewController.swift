@@ -42,6 +42,8 @@ class ViewController: UIViewController {
         self.completionState.text = "Application rejected\n\(self.jsonString(metadata))"
       case .abandoned:
         self.completionState.text = "Application abandoned"
+      case .error:
+        self.completionState.text = "Error occured\n\(self.jsonString(metadata))"
       @unknown default:
         break
       }
