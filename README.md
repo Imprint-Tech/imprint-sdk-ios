@@ -3,8 +3,43 @@
 </p>
 
 # Imprint iOS SDK
+Embed the Imprint application experience in your iOS app
 
 ## Installation
+### Option 1
+### Cocoapods
+Add Imprint iOS SDK to your project using CocoaPods(minimum support cocoapods version: 1.16.1):
+
+1. If you haven't already, install CocoaPods:
+
+    ```bash
+   sudo gem install cocoapods
+   ```
+
+2. Create a Podfile in your project directory if you don't have one:
+
+   ```bash
+   pod init
+   ```
+
+3. Add Imprint iOS SDK to your Podfile:
+
+    ```ruby
+   target 'YourApp' do
+      pod 'Imprint'   
+   end
+   ```
+
+4. Install the dependencies:
+
+    ```bash
+   pod install
+   ```
+
+5. Open the `.xcworkspace` file that CocoaPods created (not the `.xcodeproj`).
+
+
+### Option 2
 
 ### Swift Package Manager
 
@@ -17,21 +52,52 @@
 
 You can also add Imprint as a dependency to your `Package.swift`:
 
-````swift
-dependencies: [
-    .package(url: "https://github.com/Imprint-Tech/imprint-sdk-ios", from: "0.1.5")
-]
+    ```swift
+    dependencies: [
+        .package(url: "https://github.com/Imprint-Tech/imprint-sdk-ios", from: "0.1.5")
+    ]
+    ```
+## Implementation
+1. Import the SDK
+Import the SDK in your view controllers or wherever needed:
 
-### CocoaPods
+    ```swift
+    import Imprint
+    ```
 
-Add the following line to your Podfile:
+2. Configuration
+Create an instance of ImprintConfiguration with your client_secret and environment, then assign additional optional fields as needed.
 
-```ruby
-pod 'Imprint'
-````
+    ```swift
+    let configuration = ImprintConfiguration(client_secret: "client_secret", environment: .sandbox)
+    ```
 
-Then run:
+3. Define the Completion Handler
+Define the completion handler onCompletion to manage the terminal states when the application flow ends.
 
-```bash
-pod install
-```
+    ```swift
+    configuration.onCompletion = { state, metadata in
+      switch state {
+      case .offerAccepted:
+        print("Offer accepted, metadata: \(String(describing: metadata))")
+      case .rejected:
+        print("Application rejected, metadata: \(String(describing: metadata))")
+      case .abandoned:
+        print("Flow abandoned, metadata: \(String(describing: metadata))")
+      case .error:
+        print("Error occurred, metadata: \(String(describing: metadata))")
+      }
+      // Perform any generic actions after the flow ends if needed
+    }
+    ```
+
+4. Start the Application flow
+Once you’ve configured the ImprintConfiguration, initiate the application flow by calling ImprintApp.startApplication from your view controller.
+    
+    ```swift
+    public static func startApplication(from viewController: UIViewController, configuration: ImprintConfiguration)
+    ```
+    
+    from viewController: The view controller from which the application flow will be presented
+
+configuration: The previously created ImprintConfiguration object containing your API key and completion handler
