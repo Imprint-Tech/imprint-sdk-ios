@@ -1,8 +1,8 @@
 {
   "ABIRoot": {
     "kind": "Root",
-    "name": "TopLevel",
-    "printedName": "TopLevel",
+    "name": "Imprint",
+    "printedName": "Imprint",
     "children": [
       {
         "kind": "Import",
@@ -81,6 +81,22 @@
         "declAttributes": [
           "AccessControl",
           "RawDocComment"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          }
         ]
       },
       {
@@ -193,117 +209,6 @@
                 "declKind": "Accessor",
                 "usr": "s:7Imprint0A13ConfigurationC19externalReferenceIdSSSgvM",
                 "mangledName": "$s7Imprint0A13ConfigurationC19externalReferenceIdSSSgvM",
-                "moduleName": "Imprint",
-                "implicit": true,
-                "accessorKind": "_modify"
-              }
-            ]
-          },
-          {
-            "kind": "Var",
-            "name": "applicationId",
-            "printedName": "applicationId",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "Optional",
-                "printedName": "Swift.String?",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "String",
-                    "printedName": "Swift.String",
-                    "usr": "s:SS"
-                  }
-                ],
-                "usr": "s:Sq"
-              }
-            ],
-            "declKind": "Var",
-            "usr": "s:7Imprint0A13ConfigurationC13applicationIdSSSgvp",
-            "mangledName": "$s7Imprint0A13ConfigurationC13applicationIdSSSgvp",
-            "moduleName": "Imprint",
-            "declAttributes": [
-              "HasInitialValue",
-              "HasStorage",
-              "AccessControl",
-              "RawDocComment"
-            ],
-            "hasStorage": true,
-            "accessors": [
-              {
-                "kind": "Accessor",
-                "name": "Get",
-                "printedName": "Get()",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Optional",
-                    "printedName": "Swift.String?",
-                    "children": [
-                      {
-                        "kind": "TypeNominal",
-                        "name": "String",
-                        "printedName": "Swift.String",
-                        "usr": "s:SS"
-                      }
-                    ],
-                    "usr": "s:Sq"
-                  }
-                ],
-                "declKind": "Accessor",
-                "usr": "s:7Imprint0A13ConfigurationC13applicationIdSSSgvg",
-                "mangledName": "$s7Imprint0A13ConfigurationC13applicationIdSSSgvg",
-                "moduleName": "Imprint",
-                "implicit": true,
-                "accessorKind": "get"
-              },
-              {
-                "kind": "Accessor",
-                "name": "Set",
-                "printedName": "Set()",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Void",
-                    "printedName": "()"
-                  },
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Optional",
-                    "printedName": "Swift.String?",
-                    "children": [
-                      {
-                        "kind": "TypeNominal",
-                        "name": "String",
-                        "printedName": "Swift.String",
-                        "usr": "s:SS"
-                      }
-                    ],
-                    "usr": "s:Sq"
-                  }
-                ],
-                "declKind": "Accessor",
-                "usr": "s:7Imprint0A13ConfigurationC13applicationIdSSSgvs",
-                "mangledName": "$s7Imprint0A13ConfigurationC13applicationIdSSSgvs",
-                "moduleName": "Imprint",
-                "implicit": true,
-                "accessorKind": "set"
-              },
-              {
-                "kind": "Accessor",
-                "name": "Modify",
-                "printedName": "Modify()",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Void",
-                    "printedName": "()"
-                  }
-                ],
-                "declKind": "Accessor",
-                "usr": "s:7Imprint0A13ConfigurationC13applicationIdSSSgvM",
-                "mangledName": "$s7Imprint0A13ConfigurationC13applicationIdSSSgvM",
                 "moduleName": "Imprint",
                 "implicit": true,
                 "accessorKind": "_modify"
@@ -715,13 +620,19 @@
           {
             "kind": "Constructor",
             "name": "init",
-            "printedName": "init(token:environment:)",
+            "printedName": "init(clientSecret:partnerReference:environment:)",
             "children": [
               {
                 "kind": "TypeNominal",
                 "name": "ImprintConfiguration",
                 "printedName": "Imprint.ImprintConfiguration",
                 "usr": "s:7Imprint0A13ConfigurationC"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
               },
               {
                 "kind": "TypeNominal",
@@ -738,8 +649,8 @@
               }
             ],
             "declKind": "Constructor",
-            "usr": "s:7Imprint0A13ConfigurationC5token11environmentACSS_AC11EnvironmentOtcfc",
-            "mangledName": "$s7Imprint0A13ConfigurationC5token11environmentACSS_AC11EnvironmentOtcfc",
+            "usr": "s:7Imprint0A13ConfigurationC12clientSecret16partnerReference11environmentACSS_SSAC11EnvironmentOtcfc",
+            "mangledName": "$s7Imprint0A13ConfigurationC12clientSecret16partnerReference11environmentACSS_SSAC11EnvironmentOtcfc",
             "moduleName": "Imprint",
             "declAttributes": [
               "AccessControl",
@@ -946,6 +857,20 @@
             ],
             "enumRawTypeName": "Int",
             "conformances": [
+              {
+                "kind": "Conformance",
+                "name": "Copyable",
+                "printedName": "Copyable",
+                "usr": "s:s8CopyableP",
+                "mangledName": "$ss8CopyableP"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Escapable",
+                "printedName": "Escapable",
+                "usr": "s:s9EscapableP",
+                "mangledName": "$ss9EscapableP"
+              },
               {
                 "kind": "Conformance",
                 "name": "Equatable",
@@ -1222,6 +1147,20 @@
             "conformances": [
               {
                 "kind": "Conformance",
+                "name": "Copyable",
+                "printedName": "Copyable",
+                "usr": "s:s8CopyableP",
+                "mangledName": "$ss8CopyableP"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Escapable",
+                "printedName": "Escapable",
+                "usr": "s:s9EscapableP",
+                "mangledName": "$ss9EscapableP"
+              },
+              {
+                "kind": "Conformance",
                 "name": "Equatable",
                 "printedName": "Equatable",
                 "usr": "s:SQ",
@@ -1266,6 +1205,22 @@
         "declAttributes": [
           "AccessControl",
           "RawDocComment"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          }
         ]
       },
       {
@@ -1290,403 +1245,81 @@
   },
   "ConstValues": [
     {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationView.swift",
-      "kind": "IntegerLiteral",
-      "offset": 283,
-      "length": 1,
-      "value": "0"
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationView.swift",
-      "kind": "IntegerLiteral",
-      "offset": 582,
-      "length": 2,
-      "value": "16"
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationView.swift",
+      "filePath": "\/Users\/xingtanhu\/Workspace\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationView.swift",
       "kind": "StringLiteral",
-      "offset": 712,
-      "length": 7,
-      "value": "\"xmark\""
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationView.swift",
-      "kind": "IntegerLiteral",
-      "offset": 747,
-      "length": 2,
-      "value": "48"
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationView.swift",
-      "kind": "IntegerLiteral",
-      "offset": 759,
-      "length": 2,
-      "value": "48"
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationView.swift",
-      "kind": "FloatLiteral",
-      "offset": 803,
-      "length": 5,
-      "value": "0.137"
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationView.swift",
-      "kind": "FloatLiteral",
-      "offset": 817,
-      "length": 5,
-      "value": "0.137"
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationView.swift",
-      "kind": "FloatLiteral",
-      "offset": 830,
-      "length": 5,
-      "value": "0.137"
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationView.swift",
-      "kind": "IntegerLiteral",
-      "offset": 870,
-      "length": 2,
-      "value": "16"
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationView.swift",
-      "kind": "IntegerLiteral",
-      "offset": 932,
-      "length": 1,
-      "value": "4"
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationView.swift",
-      "kind": "IntegerLiteral",
-      "offset": 964,
-      "length": 2,
-      "value": "56"
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationView.swift",
-      "kind": "StringLiteral",
-      "offset": 1430,
+      "offset": 1437,
       "length": 2,
       "value": "\"\""
     },
     {
-      "filePath": "@__swiftmacro_7Imprint33_A166141EEC723622360CF2C66B5AD77ALl7PreviewfMf_.swift",
+      "filePath": "\/Users\/xingtanhu\/Workspace\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationView.swift",
       "kind": "StringLiteral",
-      "offset": 236,
-      "length": 31,
-      "value": "\"Imprint\/ApplicationView.swift\""
+      "offset": 1459,
+      "length": 2,
+      "value": "\"\""
     },
     {
-      "filePath": "@__swiftmacro_7Imprint33_A166141EEC723622360CF2C66B5AD77ALl7PreviewfMf_.swift",
+      "filePath": "\/Users\/xingtanhu\/Workspace\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
       "kind": "IntegerLiteral",
-      "offset": 295,
-      "length": 2,
-      "value": "60"
-    },
-    {
-      "filePath": "@__swiftmacro_7Imprint33_A166141EEC723622360CF2C66B5AD77ALl7PreviewfMf_.swift",
-      "kind": "IntegerLiteral",
-      "offset": 327,
-      "length": 1,
-      "value": "1"
-    },
-    {
-      "filePath": "@__swiftmacro_7Imprint33_A166141EEC723622360CF2C66B5AD77ALl7PreviewfMf_.swift",
-      "kind": "StringLiteral",
-      "offset": 513,
-      "length": 2,
-      "value": "\"\""
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationViewModel.swift",
-      "kind": "StringLiteral",
-      "offset": 472,
-      "length": 2,
-      "value": "\"\""
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationViewModel.swift",
-      "kind": "StringLiteral",
-      "offset": 546,
-      "length": 33,
-      "value": "\"https:\/\/apply.stg.imprintapi.co\""
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationViewModel.swift",
-      "kind": "StringLiteral",
-      "offset": 612,
-      "length": 30,
-      "value": "\"https:\/\/apply.sbx.imprint.co\""
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationViewModel.swift",
-      "kind": "StringLiteral",
-      "offset": 678,
-      "length": 26,
-      "value": "\"https:\/\/apply.imprint.co\""
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationViewModel.swift",
-      "kind": "StringLiteral",
-      "offset": 787,
-      "length": 2,
-      "value": "\"\""
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationViewModel.swift",
-      "kind": "StringLiteral",
-      "offset": 809,
-      "length": 66,
-      "value": "\"\""
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationViewModel.swift",
-      "kind": "StringLiteral",
-      "offset": 817,
-      "length": 1,
-      "value": "\"\/start?token=\""
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationViewModel.swift",
-      "kind": "StringLiteral",
-      "offset": 852,
-      "length": 1,
-      "value": "\"&device-id=\""
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationViewModel.swift",
-      "kind": "StringLiteral",
-      "offset": 874,
-      "length": 1,
-      "value": "\"\""
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationViewModel.swift",
-      "kind": "StringLiteral",
-      "offset": 951,
-      "length": 33,
-      "value": "\"&applicationId=\""
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationViewModel.swift",
-      "kind": "StringLiteral",
-      "offset": 983,
-      "length": 1,
-      "value": "\"\""
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationViewModel.swift",
-      "kind": "StringLiteral",
-      "offset": 1078,
-      "length": 45,
-      "value": "\"&externalReferenceId=\""
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationViewModel.swift",
-      "kind": "StringLiteral",
-      "offset": 1122,
-      "length": 1,
-      "value": "\"\""
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationViewModel.swift",
-      "kind": "StringLiteral",
-      "offset": 1252,
-      "length": 18,
-      "value": "\"&\""
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationViewModel.swift",
-      "kind": "StringLiteral",
-      "offset": 1260,
-      "length": 1,
-      "value": "\"=\""
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/ApplicationViewModel.swift",
-      "kind": "StringLiteral",
-      "offset": 1269,
-      "length": 1,
-      "value": "\"\""
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
-      "kind": "BooleanLiteral",
-      "offset": 813,
-      "length": 4,
-      "value": "true"
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
-      "kind": "BooleanLiteral",
-      "offset": 874,
-      "length": 4,
-      "value": "true"
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
-      "kind": "IntegerLiteral",
-      "offset": 3440,
+      "offset": 3644,
       "length": 7,
       "value": "1"
     },
     {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
+      "filePath": "\/Users\/xingtanhu\/Workspace\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
       "kind": "IntegerLiteral",
-      "offset": 3457,
+      "offset": 3661,
       "length": 10,
       "value": "2"
     },
     {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
+      "filePath": "\/Users\/xingtanhu\/Workspace\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
       "kind": "IntegerLiteral",
-      "offset": 3440,
-      "length": 7,
-      "value": "1"
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
-      "kind": "IntegerLiteral",
-      "offset": 3457,
-      "length": 10,
-      "value": "2"
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
-      "kind": "IntegerLiteral",
-      "offset": 3440,
-      "length": 7,
-      "value": "1"
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
-      "kind": "IntegerLiteral",
-      "offset": 3457,
-      "length": 10,
-      "value": "2"
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
-      "kind": "IntegerLiteral",
-      "offset": 4341,
+      "offset": 4825,
       "length": 8,
       "value": "1"
     },
     {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
+      "filePath": "\/Users\/xingtanhu\/Workspace\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
       "kind": "IntegerLiteral",
-      "offset": 4359,
+      "offset": 4843,
       "length": 9,
       "value": "2"
     },
     {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
+      "filePath": "\/Users\/xingtanhu\/Workspace\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
       "kind": "IntegerLiteral",
-      "offset": 4378,
+      "offset": 4862,
       "length": 5,
       "value": "3"
     },
     {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
-      "kind": "IntegerLiteral",
-      "offset": 4341,
-      "length": 8,
-      "value": "1"
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
-      "kind": "IntegerLiteral",
-      "offset": 4359,
-      "length": 9,
-      "value": "2"
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
-      "kind": "IntegerLiteral",
-      "offset": 4378,
-      "length": 5,
-      "value": "3"
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
-      "kind": "IntegerLiteral",
-      "offset": 4341,
-      "length": 8,
-      "value": "1"
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
-      "kind": "IntegerLiteral",
-      "offset": 4359,
-      "length": 9,
-      "value": "2"
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
-      "kind": "IntegerLiteral",
-      "offset": 4378,
-      "length": 5,
-      "value": "3"
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/WebViewWrapper.swift",
+      "filePath": "\/Users\/xingtanhu\/Workspace\/imprint-sdk-ios-source\/Framework\/Imprint\/WebViewWrapper.swift",
       "kind": "StringLiteral",
       "offset": 209,
       "length": 20,
       "value": "\"imprintWebCallback\""
     },
     {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/WebViewWrapper.swift",
+      "filePath": "\/Users\/xingtanhu\/Workspace\/imprint-sdk-ios-source\/Framework\/Imprint\/WebViewWrapper.swift",
       "kind": "StringLiteral",
       "offset": 255,
       "length": 9,
       "value": "\"logoUrl\""
     },
     {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/WebViewWrapper.swift",
+      "filePath": "\/Users\/xingtanhu\/Workspace\/imprint-sdk-ios-source\/Framework\/Imprint\/WebViewWrapper.swift",
       "kind": "StringLiteral",
       "offset": 292,
       "length": 11,
       "value": "\"eventName\""
     },
     {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/WebViewWrapper.swift",
+      "filePath": "\/Users\/xingtanhu\/Workspace\/imprint-sdk-ios-source\/Framework\/Imprint\/WebViewWrapper.swift",
       "kind": "StringLiteral",
       "offset": 330,
       "length": 10,
       "value": "\"metadata\""
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/WebViewWrapper.swift",
-      "kind": "StringLiteral",
-      "offset": 1822,
-      "length": 16,
-      "value": "\"OFFER_ACCEPTED\""
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/WebViewWrapper.swift",
-      "kind": "StringLiteral",
-      "offset": 1935,
-      "length": 10,
-      "value": "\"REJECTED\""
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/WebViewWrapper.swift",
-      "kind": "StringLiteral",
-      "offset": 2037,
-      "length": 7,
-      "value": "\"ERROR\""
-    },
-    {
-      "filePath": "\/Users\/wantingshao\/Desktop\/imprint-sdk-ios-source\/Framework\/Imprint\/WebViewWrapper.swift",
-      "kind": "StringLiteral",
-      "offset": 923,
-      "length": 11,
-      "value": "\"Imprint.Coordinator\""
     }
   ]
 }
