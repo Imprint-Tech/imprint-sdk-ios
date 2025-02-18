@@ -3,16 +3,36 @@
 </p>
 
 # Imprint iOS SDK
-Embed the Imprint application experience in your iOS app
 
 ## Installation
+
 ### Option 1
+
+### Swift Package Manager
+
+1. Add the following repository URL:
+   
+   ```
+   https://github.com/Imprint-Tech/imprint-sdk-ios
+   ```
+2. Select your desired version or branch
+3. Click **Add Package**
+
+You can also add Imprint as a dependency to your `Package.swift`:
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/Imprint-Tech/imprint-sdk-ios", from: "0.1.6")
+]
+```
+
+### Option 2
 ### Cocoapods
 Add Imprint iOS SDK to your project using CocoaPods(minimum support cocoapods version: 1.16.1):
 
 1. If you haven't already, install CocoaPods:
 
-    ```bash
+   ```bash
    sudo gem install cocoapods
    ```
 
@@ -39,37 +59,18 @@ Add Imprint iOS SDK to your project using CocoaPods(minimum support cocoapods ve
 5. Open the `.xcworkspace` file that CocoaPods created (not the `.xcodeproj`).
 
 
-### Option 2
-
-### Swift Package Manager
-
-1. Add the following repository URL:
-   ```
-   https://github.com/Imprint-Tech/imprint-sdk-ios
-   ```
-2. Select your desired version or branch
-3. Click **Add Package**
-
-You can also add Imprint as a dependency to your `Package.swift`:
-
-    ```swift
-    dependencies: [
-        .package(url: "https://github.com/Imprint-Tech/imprint-sdk-ios", from: "0.1.5")
-    ]
-    ```
 ## Implementation
 1. Import the SDK
-Import the SDK in your view controllers or wherever needed:
 
     ```swift
     import Imprint
     ```
 
 2. Configuration
-Create an instance of ImprintConfiguration with your client_secret and environment, then assign additional optional fields as needed.
+Create an instance of `ImprintConfiguration` with your `client_secret`, `partner_reference` and `environment`, then assign additional optional fields as needed.
 
     ```swift
-    let configuration = ImprintConfiguration(client_secret: "client_secret", environment: .sandbox)
+    let configuration = ImprintConfiguration(clientSecret: "client_secret", partnerReference: "partner_reference", environment: .sandbox)
     ```
 
 3. Define the Completion Handler
@@ -98,6 +99,7 @@ Once you’ve configured the ImprintConfiguration, initiate the application flow
     public static func startApplication(from viewController: UIViewController, configuration: ImprintConfiguration)
     ```
     
-    from viewController: The view controller from which the application flow will be presented
+    
+`viewController`: The view controller from which the application flow will be presented
 
-configuration: The previously created ImprintConfiguration object containing your API key and completion handler
+`configuration`: The previously created ImprintConfiguration object containing your API key and completion handler
