@@ -1,5 +1,5 @@
 PODS:
-  - Imprint (0.1.5)
+  - Imprint (0.1.6)
 
 DEPENDENCIES:
   - Imprint
@@ -9,7 +9,7 @@ SPEC REPOS:
     - Imprint
 
 SPEC CHECKSUMS:
-  Imprint: d66553897bf750a39f1fe02e7e70a7b6786b7022
+  Imprint: c0ff3c834cfbb523fb9091539bbeb0572e21ee61
 
 PODFILE CHECKSUM: 840bc1ae169e623bfe490ac93fe6bfb2261769e7
 
