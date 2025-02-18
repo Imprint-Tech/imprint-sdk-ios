@@ -10,7 +10,8 @@ import Imprint
 
 class ViewController: UIViewController {
 
-  @IBOutlet weak var tokenInput: UITextView!
+  @IBOutlet weak var clientSecretInput: UITextView!
+  @IBOutlet weak var partnerRefInput: UITextView!
   @IBOutlet weak var environmentSelector: UISegmentedControl!
   @IBOutlet weak var completionState: UITextView!
   
@@ -20,18 +21,18 @@ class ViewController: UIViewController {
     environmentSelector.selectedSegmentIndex = 1
     
     // Prefill your token if needed
-    tokenInput.text = ""
+    clientSecretInput.text = ""
   }
 
   @IBAction func startTapped(_ sender: Any) {
-    let token = tokenInput.text ?? ""
+    let clientSecret = clientSecretInput.text ?? ""
+    let partnerReference = partnerRefInput.text ?? ""
     let environment = ImprintConfiguration.Environment(rawValue: environmentSelector.selectedSegmentIndex) ?? .staging
     
-    let configuration = ImprintConfiguration(token: token, environment: environment)
+    let configuration = ImprintConfiguration(clientSecret: clientSecret, partnerReference: partnerReference, environment: environment)
     
     // Optional fields
     configuration.externalReferenceId = "YOUR_CUSTOMER_ID"
-    configuration.applicationId = "IMPRINT_GENERATED_GUID"
     configuration.additionalData = ["other": "value"]
     
     configuration.onCompletion = { state, metadata in
@@ -53,9 +54,13 @@ class ViewController: UIViewController {
   }
   
   private func setupLayout(){
-    tokenInput.layer.borderWidth = 1
-    tokenInput.layer.borderColor = UIColor.secondaryLabel.cgColor
-    tokenInput.layer.cornerRadius = 6
+    clientSecretInput.layer.borderWidth = 1
+    clientSecretInput.layer.borderColor = UIColor.secondaryLabel.cgColor
+    clientSecretInput.layer.cornerRadius = 6
+    
+    partnerRefInput.layer.borderWidth = 1
+    partnerRefInput.layer.borderColor = UIColor.secondaryLabel.cgColor
+    partnerRefInput.layer.cornerRadius = 6
     
     completionState.layer.borderWidth = 1
     completionState.layer.borderColor = UIColor.secondaryLabel.cgColor
