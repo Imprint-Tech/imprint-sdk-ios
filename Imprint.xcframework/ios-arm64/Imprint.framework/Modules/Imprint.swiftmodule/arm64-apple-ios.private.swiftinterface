@@ -14,9 +14,7 @@ public enum ImprintApp {
   public static func startApplication(from viewController: UIKit.UIViewController, configuration: Imprint.ImprintConfiguration)
 }
 public class ImprintConfiguration {
-  public var externalReferenceId: Swift.String?
-  public var additionalData: [Swift.String : Swift.String]?
-  public var onCompletion: ((Imprint.ImprintConfiguration.CompletionState, Imprint.ImprintConfiguration.CompletionMetadata?) -> Swift.Void)?
+  public var onCompletion: ((Imprint.ImprintConfiguration.CompletionState, Imprint.ImprintConfiguration.CompletionData?) -> Swift.Void)?
   public init(clientSecret: Swift.String, partnerReference: Swift.String, environment: Imprint.ImprintConfiguration.Environment = .production)
   public enum Environment : Swift.Int {
     case staging
@@ -28,7 +26,7 @@ public class ImprintConfiguration {
       get
     }
   }
-  public typealias CompletionMetadata = [Swift.String : Any]
+  public typealias CompletionData = [Swift.String : Any?]
   public enum CompletionState : Swift.Int {
     case offerAccepted
     case rejected
