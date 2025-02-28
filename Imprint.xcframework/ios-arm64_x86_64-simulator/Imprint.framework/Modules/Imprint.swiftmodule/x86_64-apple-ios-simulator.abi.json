@@ -106,282 +106,18 @@
         "children": [
           {
             "kind": "Var",
-            "name": "externalReferenceId",
-            "printedName": "externalReferenceId",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "Optional",
-                "printedName": "Swift.String?",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "String",
-                    "printedName": "Swift.String",
-                    "usr": "s:SS"
-                  }
-                ],
-                "usr": "s:Sq"
-              }
-            ],
-            "declKind": "Var",
-            "usr": "s:7Imprint0A13ConfigurationC19externalReferenceIdSSSgvp",
-            "mangledName": "$s7Imprint0A13ConfigurationC19externalReferenceIdSSSgvp",
-            "moduleName": "Imprint",
-            "declAttributes": [
-              "HasInitialValue",
-              "HasStorage",
-              "AccessControl",
-              "RawDocComment"
-            ],
-            "hasStorage": true,
-            "accessors": [
-              {
-                "kind": "Accessor",
-                "name": "Get",
-                "printedName": "Get()",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Optional",
-                    "printedName": "Swift.String?",
-                    "children": [
-                      {
-                        "kind": "TypeNominal",
-                        "name": "String",
-                        "printedName": "Swift.String",
-                        "usr": "s:SS"
-                      }
-                    ],
-                    "usr": "s:Sq"
-                  }
-                ],
-                "declKind": "Accessor",
-                "usr": "s:7Imprint0A13ConfigurationC19externalReferenceIdSSSgvg",
-                "mangledName": "$s7Imprint0A13ConfigurationC19externalReferenceIdSSSgvg",
-                "moduleName": "Imprint",
-                "implicit": true,
-                "accessorKind": "get"
-              },
-              {
-                "kind": "Accessor",
-                "name": "Set",
-                "printedName": "Set()",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Void",
-                    "printedName": "()"
-                  },
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Optional",
-                    "printedName": "Swift.String?",
-                    "children": [
-                      {
-                        "kind": "TypeNominal",
-                        "name": "String",
-                        "printedName": "Swift.String",
-                        "usr": "s:SS"
-                      }
-                    ],
-                    "usr": "s:Sq"
-                  }
-                ],
-                "declKind": "Accessor",
-                "usr": "s:7Imprint0A13ConfigurationC19externalReferenceIdSSSgvs",
-                "mangledName": "$s7Imprint0A13ConfigurationC19externalReferenceIdSSSgvs",
-                "moduleName": "Imprint",
-                "implicit": true,
-                "accessorKind": "set"
-              },
-              {
-                "kind": "Accessor",
-                "name": "Modify",
-                "printedName": "Modify()",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Void",
-                    "printedName": "()"
-                  }
-                ],
-                "declKind": "Accessor",
-                "usr": "s:7Imprint0A13ConfigurationC19externalReferenceIdSSSgvM",
-                "mangledName": "$s7Imprint0A13ConfigurationC19externalReferenceIdSSSgvM",
-                "moduleName": "Imprint",
-                "implicit": true,
-                "accessorKind": "_modify"
-              }
-            ]
-          },
-          {
-            "kind": "Var",
-            "name": "additionalData",
-            "printedName": "additionalData",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "Optional",
-                "printedName": "[Swift.String : Swift.String]?",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Dictionary",
-                    "printedName": "[Swift.String : Swift.String]",
-                    "children": [
-                      {
-                        "kind": "TypeNominal",
-                        "name": "String",
-                        "printedName": "Swift.String",
-                        "usr": "s:SS"
-                      },
-                      {
-                        "kind": "TypeNominal",
-                        "name": "String",
-                        "printedName": "Swift.String",
-                        "usr": "s:SS"
-                      }
-                    ],
-                    "usr": "s:SD"
-                  }
-                ],
-                "usr": "s:Sq"
-              }
-            ],
-            "declKind": "Var",
-            "usr": "s:7Imprint0A13ConfigurationC14additionalDataSDyS2SGSgvp",
-            "mangledName": "$s7Imprint0A13ConfigurationC14additionalDataSDyS2SGSgvp",
-            "moduleName": "Imprint",
-            "declAttributes": [
-              "HasInitialValue",
-              "HasStorage",
-              "AccessControl",
-              "RawDocComment"
-            ],
-            "hasStorage": true,
-            "accessors": [
-              {
-                "kind": "Accessor",
-                "name": "Get",
-                "printedName": "Get()",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Optional",
-                    "printedName": "[Swift.String : Swift.String]?",
-                    "children": [
-                      {
-                        "kind": "TypeNominal",
-                        "name": "Dictionary",
-                        "printedName": "[Swift.String : Swift.String]",
-                        "children": [
-                          {
-                            "kind": "TypeNominal",
-                            "name": "String",
-                            "printedName": "Swift.String",
-                            "usr": "s:SS"
-                          },
-                          {
-                            "kind": "TypeNominal",
-                            "name": "String",
-                            "printedName": "Swift.String",
-                            "usr": "s:SS"
-                          }
-                        ],
-                        "usr": "s:SD"
-                      }
-                    ],
-                    "usr": "s:Sq"
-                  }
-                ],
-                "declKind": "Accessor",
-                "usr": "s:7Imprint0A13ConfigurationC14additionalDataSDyS2SGSgvg",
-                "mangledName": "$s7Imprint0A13ConfigurationC14additionalDataSDyS2SGSgvg",
-                "moduleName": "Imprint",
-                "implicit": true,
-                "accessorKind": "get"
-              },
-              {
-                "kind": "Accessor",
-                "name": "Set",
-                "printedName": "Set()",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Void",
-                    "printedName": "()"
-                  },
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Optional",
-                    "printedName": "[Swift.String : Swift.String]?",
-                    "children": [
-                      {
-                        "kind": "TypeNominal",
-                        "name": "Dictionary",
-                        "printedName": "[Swift.String : Swift.String]",
-                        "children": [
-                          {
-                            "kind": "TypeNominal",
-                            "name": "String",
-                            "printedName": "Swift.String",
-                            "usr": "s:SS"
-                          },
-                          {
-                            "kind": "TypeNominal",
-                            "name": "String",
-                            "printedName": "Swift.String",
-                            "usr": "s:SS"
-                          }
-                        ],
-                        "usr": "s:SD"
-                      }
-                    ],
-                    "usr": "s:Sq"
-                  }
-                ],
-                "declKind": "Accessor",
-                "usr": "s:7Imprint0A13ConfigurationC14additionalDataSDyS2SGSgvs",
-                "mangledName": "$s7Imprint0A13ConfigurationC14additionalDataSDyS2SGSgvs",
-                "moduleName": "Imprint",
-                "implicit": true,
-                "accessorKind": "set"
-              },
-              {
-                "kind": "Accessor",
-                "name": "Modify",
-                "printedName": "Modify()",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Void",
-                    "printedName": "()"
-                  }
-                ],
-                "declKind": "Accessor",
-                "usr": "s:7Imprint0A13ConfigurationC14additionalDataSDyS2SGSgvM",
-                "mangledName": "$s7Imprint0A13ConfigurationC14additionalDataSDyS2SGSgvM",
-                "moduleName": "Imprint",
-                "implicit": true,
-                "accessorKind": "_modify"
-              }
-            ]
-          },
-          {
-            "kind": "Var",
             "name": "onCompletion",
             "printedName": "onCompletion",
             "children": [
               {
                 "kind": "TypeNominal",
                 "name": "Optional",
-                "printedName": "((Imprint.ImprintConfiguration.CompletionState, [Swift.String : Any]?) -> ())?",
+                "printedName": "((Imprint.ImprintConfiguration.CompletionState, [Swift.String : Any?]?) -> ())?",
                 "children": [
                   {
                     "kind": "TypeFunc",
                     "name": "Function",
-                    "printedName": "(Imprint.ImprintConfiguration.CompletionState, [Swift.String : Any]?) -> ()",
+                    "printedName": "(Imprint.ImprintConfiguration.CompletionState, [Swift.String : Any?]?) -> ()",
                     "children": [
                       {
                         "kind": "TypeNominal",
@@ -391,7 +127,7 @@
                       {
                         "kind": "TypeNominal",
                         "name": "Tuple",
-                        "printedName": "(Imprint.ImprintConfiguration.CompletionState, [Swift.String : Any]?)",
+                        "printedName": "(Imprint.ImprintConfiguration.CompletionState, [Swift.String : Any?]?)",
                         "children": [
                           {
                             "kind": "TypeNominal",
@@ -402,12 +138,12 @@
                           {
                             "kind": "TypeNominal",
                             "name": "Optional",
-                            "printedName": "[Swift.String : Any]?",
+                            "printedName": "[Swift.String : Any?]?",
                             "children": [
                               {
                                 "kind": "TypeNominal",
                                 "name": "Dictionary",
-                                "printedName": "[Swift.String : Any]",
+                                "printedName": "[Swift.String : Any?]",
                                 "children": [
                                   {
                                     "kind": "TypeNominal",
@@ -417,8 +153,16 @@
                                   },
                                   {
                                     "kind": "TypeNominal",
-                                    "name": "ProtocolComposition",
-                                    "printedName": "Any"
+                                    "name": "Optional",
+                                    "printedName": "Any?",
+                                    "children": [
+                                      {
+                                        "kind": "TypeNominal",
+                                        "name": "ProtocolComposition",
+                                        "printedName": "Any"
+                                      }
+                                    ],
+                                    "usr": "s:Sq"
                                   }
                                 ],
                                 "usr": "s:SD"
@@ -435,8 +179,8 @@
               }
             ],
             "declKind": "Var",
-            "usr": "s:7Imprint0A13ConfigurationC12onCompletionyAC0D5StateO_SDySSypGSgtcSgvp",
-            "mangledName": "$s7Imprint0A13ConfigurationC12onCompletionyAC0D5StateO_SDySSypGSgtcSgvp",
+            "usr": "s:7Imprint0A13ConfigurationC12onCompletionyAC0D5StateO_SDySSypSgGSgtcSgvp",
+            "mangledName": "$s7Imprint0A13ConfigurationC12onCompletionyAC0D5StateO_SDySSypSgGSgtcSgvp",
             "moduleName": "Imprint",
             "declAttributes": [
               "HasInitialValue",
@@ -454,12 +198,12 @@
                   {
                     "kind": "TypeNominal",
                     "name": "Optional",
-                    "printedName": "((Imprint.ImprintConfiguration.CompletionState, [Swift.String : Any]?) -> ())?",
+                    "printedName": "((Imprint.ImprintConfiguration.CompletionState, [Swift.String : Any?]?) -> ())?",
                     "children": [
                       {
                         "kind": "TypeFunc",
                         "name": "Function",
-                        "printedName": "(Imprint.ImprintConfiguration.CompletionState, [Swift.String : Any]?) -> ()",
+                        "printedName": "(Imprint.ImprintConfiguration.CompletionState, [Swift.String : Any?]?) -> ()",
                         "children": [
                           {
                             "kind": "TypeNominal",
@@ -469,7 +213,7 @@
                           {
                             "kind": "TypeNominal",
                             "name": "Tuple",
-                            "printedName": "(Imprint.ImprintConfiguration.CompletionState, [Swift.String : Any]?)",
+                            "printedName": "(Imprint.ImprintConfiguration.CompletionState, [Swift.String : Any?]?)",
                             "children": [
                               {
                                 "kind": "TypeNominal",
@@ -480,12 +224,12 @@
                               {
                                 "kind": "TypeNominal",
                                 "name": "Optional",
-                                "printedName": "[Swift.String : Any]?",
+                                "printedName": "[Swift.String : Any?]?",
                                 "children": [
                                   {
                                     "kind": "TypeNominal",
                                     "name": "Dictionary",
-                                    "printedName": "[Swift.String : Any]",
+                                    "printedName": "[Swift.String : Any?]",
                                     "children": [
                                       {
                                         "kind": "TypeNominal",
@@ -495,8 +239,16 @@
                                       },
                                       {
                                         "kind": "TypeNominal",
-                                        "name": "ProtocolComposition",
-                                        "printedName": "Any"
+                                        "name": "Optional",
+                                        "printedName": "Any?",
+                                        "children": [
+                                          {
+                                            "kind": "TypeNominal",
+                                            "name": "ProtocolComposition",
+                                            "printedName": "Any"
+                                          }
+                                        ],
+                                        "usr": "s:Sq"
                                       }
                                     ],
                                     "usr": "s:SD"
@@ -513,8 +265,8 @@
                   }
                 ],
                 "declKind": "Accessor",
-                "usr": "s:7Imprint0A13ConfigurationC12onCompletionyAC0D5StateO_SDySSypGSgtcSgvg",
-                "mangledName": "$s7Imprint0A13ConfigurationC12onCompletionyAC0D5StateO_SDySSypGSgtcSgvg",
+                "usr": "s:7Imprint0A13ConfigurationC12onCompletionyAC0D5StateO_SDySSypSgGSgtcSgvg",
+                "mangledName": "$s7Imprint0A13ConfigurationC12onCompletionyAC0D5StateO_SDySSypSgGSgtcSgvg",
                 "moduleName": "Imprint",
                 "implicit": true,
                 "accessorKind": "get"
@@ -532,12 +284,12 @@
                   {
                     "kind": "TypeNominal",
                     "name": "Optional",
-                    "printedName": "((Imprint.ImprintConfiguration.CompletionState, [Swift.String : Any]?) -> ())?",
+                    "printedName": "((Imprint.ImprintConfiguration.CompletionState, [Swift.String : Any?]?) -> ())?",
                     "children": [
                       {
                         "kind": "TypeFunc",
                         "name": "Function",
-                        "printedName": "(Imprint.ImprintConfiguration.CompletionState, [Swift.String : Any]?) -> ()",
+                        "printedName": "(Imprint.ImprintConfiguration.CompletionState, [Swift.String : Any?]?) -> ()",
                         "children": [
                           {
                             "kind": "TypeNominal",
@@ -547,7 +299,7 @@
                           {
                             "kind": "TypeNominal",
                             "name": "Tuple",
-                            "printedName": "(Imprint.ImprintConfiguration.CompletionState, [Swift.String : Any]?)",
+                            "printedName": "(Imprint.ImprintConfiguration.CompletionState, [Swift.String : Any?]?)",
                             "children": [
                               {
                                 "kind": "TypeNominal",
@@ -558,12 +310,12 @@
                               {
                                 "kind": "TypeNominal",
                                 "name": "Optional",
-                                "printedName": "[Swift.String : Any]?",
+                                "printedName": "[Swift.String : Any?]?",
                                 "children": [
                                   {
                                     "kind": "TypeNominal",
                                     "name": "Dictionary",
-                                    "printedName": "[Swift.String : Any]",
+                                    "printedName": "[Swift.String : Any?]",
                                     "children": [
                                       {
                                         "kind": "TypeNominal",
@@ -573,8 +325,16 @@
                                       },
                                       {
                                         "kind": "TypeNominal",
-                                        "name": "ProtocolComposition",
-                                        "printedName": "Any"
+                                        "name": "Optional",
+                                        "printedName": "Any?",
+                                        "children": [
+                                          {
+                                            "kind": "TypeNominal",
+                                            "name": "ProtocolComposition",
+                                            "printedName": "Any"
+                                          }
+                                        ],
+                                        "usr": "s:Sq"
                                       }
                                     ],
                                     "usr": "s:SD"
@@ -591,8 +351,8 @@
                   }
                 ],
                 "declKind": "Accessor",
-                "usr": "s:7Imprint0A13ConfigurationC12onCompletionyAC0D5StateO_SDySSypGSgtcSgvs",
-                "mangledName": "$s7Imprint0A13ConfigurationC12onCompletionyAC0D5StateO_SDySSypGSgtcSgvs",
+                "usr": "s:7Imprint0A13ConfigurationC12onCompletionyAC0D5StateO_SDySSypSgGSgtcSgvs",
+                "mangledName": "$s7Imprint0A13ConfigurationC12onCompletionyAC0D5StateO_SDySSypSgGSgtcSgvs",
                 "moduleName": "Imprint",
                 "implicit": true,
                 "accessorKind": "set"
@@ -609,8 +369,8 @@
                   }
                 ],
                 "declKind": "Accessor",
-                "usr": "s:7Imprint0A13ConfigurationC12onCompletionyAC0D5StateO_SDySSypGSgtcSgvM",
-                "mangledName": "$s7Imprint0A13ConfigurationC12onCompletionyAC0D5StateO_SDySSypGSgtcSgvM",
+                "usr": "s:7Imprint0A13ConfigurationC12onCompletionyAC0D5StateO_SDySSypSgGSgtcSgvM",
+                "mangledName": "$s7Imprint0A13ConfigurationC12onCompletionyAC0D5StateO_SDySSypSgGSgtcSgvM",
                 "moduleName": "Imprint",
                 "implicit": true,
                 "accessorKind": "_modify"
@@ -1261,35 +1021,35 @@
     {
       "filePath": "\/Users\/xingtanhu\/Workspace\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
       "kind": "IntegerLiteral",
-      "offset": 3644,
+      "offset": 3056,
       "length": 7,
       "value": "1"
     },
     {
       "filePath": "\/Users\/xingtanhu\/Workspace\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
       "kind": "IntegerLiteral",
-      "offset": 3661,
+      "offset": 3073,
       "length": 10,
       "value": "2"
     },
     {
       "filePath": "\/Users\/xingtanhu\/Workspace\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
       "kind": "IntegerLiteral",
-      "offset": 4825,
+      "offset": 3825,
       "length": 8,
       "value": "1"
     },
     {
       "filePath": "\/Users\/xingtanhu\/Workspace\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
       "kind": "IntegerLiteral",
-      "offset": 4843,
+      "offset": 3843,
       "length": 9,
       "value": "2"
     },
     {
       "filePath": "\/Users\/xingtanhu\/Workspace\/imprint-sdk-ios-source\/Framework\/Imprint\/Imprint.swift",
       "kind": "IntegerLiteral",
-      "offset": 4862,
+      "offset": 3862,
       "length": 5,
       "value": "3"
     },
@@ -1317,9 +1077,9 @@
     {
       "filePath": "\/Users\/xingtanhu\/Workspace\/imprint-sdk-ios-source\/Framework\/Imprint\/WebViewWrapper.swift",
       "kind": "StringLiteral",
-      "offset": 330,
-      "length": 10,
-      "value": "\"metadata\""
+      "offset": 326,
+      "length": 6,
+      "value": "\"data\""
     }
   ]
 }
