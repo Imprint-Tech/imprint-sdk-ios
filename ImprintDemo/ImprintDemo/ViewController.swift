@@ -31,10 +31,6 @@ class ViewController: UIViewController {
     
     let configuration = ImprintConfiguration(clientSecret: clientSecret, partnerReference: partnerReference, environment: environment)
     
-    // Optional fields
-    configuration.externalReferenceId = "YOUR_CUSTOMER_ID"
-    configuration.additionalData = ["other": "value"]
-    
     configuration.onCompletion = { state, metadata in
       switch state {
       case .offerAccepted:
