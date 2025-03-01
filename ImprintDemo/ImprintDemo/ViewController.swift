@@ -31,20 +31,16 @@ class ViewController: UIViewController {
     
     let configuration = ImprintConfiguration(clientSecret: clientSecret, partnerReference: partnerReference, environment: environment)
     
-    // Optional fields
-    configuration.externalReferenceId = "YOUR_CUSTOMER_ID"
-    configuration.additionalData = ["other": "value"]
-    
-    configuration.onCompletion = { state, metadata in
+    configuration.onCompletion = { state, data in
       switch state {
       case .offerAccepted:
-        self.completionState.text = "Offer accepted\n\(self.jsonString(metadata))"
+        self.completionState.text = "Offer accepted\n\(self.jsonString(data))"
       case .rejected:
-        self.completionState.text = "Application rejected\n\(self.jsonString(metadata))"
+        self.completionState.text = "Application rejected\n\(self.jsonString(data))"
       case .abandoned:
         self.completionState.text = "Application abandoned"
       case .error:
-        self.completionState.text = "Error occured\n\(self.jsonString(metadata))"
+        self.completionState.text = "Error occured\n\(self.jsonString(data))"
       @unknown default:
         break
       }
