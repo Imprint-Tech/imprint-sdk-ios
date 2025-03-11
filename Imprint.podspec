@@ -20,8 +20,6 @@ Pod::Spec.new do |s|
   s.source           = { :git => 'https://github.com/Imprint-Tech/imprint-sdk-ios.git', :tag => s.version.to_s }
   s.ios.deployment_target = '15.0'
   s.swift_version    = '5.0'
-  s.ios.vendored_frameworks = [
-    "Imprint.xcframework"
-  ]
+  s.source_files = 'Sources/*.{swift}'
   
 end

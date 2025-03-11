@@ -13,9 +13,16 @@ let package = Package(
         )
     ],
     targets: [
-        .binaryTarget(
+        .target(
             name: "Imprint",
-            path: "Imprint.xcframework"
+            path: "Sources",
+            exclude: [],
+            sources: ["."],
+            resources: [],
+            publicHeadersPath: nil,
+            cSettings: [],
+            swiftSettings: [],
+            linkerSettings: []
         )
     ]
 )
