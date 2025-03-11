@@ -1,5 +1,5 @@
 <p>
-  <img src="Assets/imprintLogoSmall.png" alt="Imprint Logo" width="40px">
+  <img src="assets/imprintLogoSmall.png" alt="Imprint Logo" width="40px">
 </p>
 
 # Imprint iOS SDK
