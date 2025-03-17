@@ -85,7 +85,8 @@
 				1F333F242CDC7C9200C84613 /* WebViewWrapper.swift */,
 				1F333F1C2CDC7C6300C84613 /* Imprint.h */,
 			);
-			path = Imprint;
+			name = Imprint;
+			path = Sources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+
+      - name: Checkout SDK Repository
+        uses: actions/checkout@v3
+      
+      # Build SDK Source Files
+      - name: Build SDK
+        run: |
+          xcodebuild clean build -project Imprint.xcodeproj -scheme Imprint -destination "platform=iOS Simulator,name=iPhone 14,OS=17.2" | xcpretty
+
+      # Run Unit Tests
+      - name: Run Unit Tests
+        run: |
+          xcodebuild test -project Imprint.xcodeproj -scheme Imprint -destination "platform=iOS Simulator,name=iPhone 14,OS=17.2" | xcpretty
+
+      # Test Demo App with CocoaPods Integration
+      - name: Install Pods for Demo App
+        working-directory: ImprintDemo
+        run: pod install
+
+      - name: Build Demo App via CocoaPods
+        working-directory: ImprintDemo
+        run: |
+          xcodebuild clean build -workspace ImprintDemo.xcworkspace -scheme ImprintDemo -destination "platform=iOS Simulator,name=iPhone 14,OS=17.2" | xcpretty
+
+      # Test Swift Package Manager Integration
+      - name: Validate Swift Package
+        run: swift build -Xswiftc "-sdk" -Xswiftc "$(xcrun --sdk iphonesimulator --show-sdk-path)" -Xswiftc "-target" -Xswiftc "x86_64-apple-ios17.2-simulator"
