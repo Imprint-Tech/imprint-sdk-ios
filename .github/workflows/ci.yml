@@ -4,37 +4,67 @@ on:
   push:
     branches: [main]
   pull_request:
+    branches: [main]
+
+# Add permissions restriction
+permissions:
+  contents: read
 
 jobs:
   build:
+    # Only run this workflow for authorized contributors
+    if: |
+      (github.event_name == 'push' && github.repository_owner == 'Imprint-Tech') ||
+      (github.event_name == 'pull_request' && 
+        (github.event.pull_request.user.login == github.repository_owner || 
+         endsWith(github.event.pull_request.user.email, '@imprint.co')))
+
     runs-on: self-hosted
+
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.9.1
 
+       # Set timeout to prevent long-running jobs from hogging resources
       - name: Checkout SDK Repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 1  # Limit git history to reduce exposure
+          persist-credentials: false  # Don't persist GitHub credentials
       
       # Build SDK Source Files
       - name: Build SDK
         run: |
-          xcodebuild clean build -project Imprint.xcodeproj -scheme Imprint -destination "platform=iOS Simulator,name=iPhone 14,OS=17.2" | xcpretty
+          set +x
+          xcodebuild clean build -project Imprint.xcodeproj -scheme Imprint -destination "platform=iOS Simulator,name=iPhone 14,OS=17.2" | grep -v "sensitive" | xcpretty
 
       # Run Unit Tests
       - name: Run Unit Tests
         run: |
-          xcodebuild test -project Imprint.xcodeproj -scheme Imprint -destination "platform=iOS Simulator,name=iPhone 14,OS=17.2" | xcpretty
+          set +x
+          xcodebuild test -project Imprint.xcodeproj -scheme Imprint -destination "platform=iOS Simulator,name=iPhone 14,OS=17.2" | grep -v "sensitive" | xcpretty
 
       # Test Demo App with CocoaPods Integration
       - name: Install Pods for Demo App
         working-directory: ImprintDemo
-        run: pod install
+        run: |
+          set +x
+          pod install --no-repo-update
 
       - name: Build Demo App via CocoaPods
         working-directory: ImprintDemo
         run: |
-          xcodebuild clean build -workspace ImprintDemo.xcworkspace -scheme ImprintDemo -destination "platform=iOS Simulator,name=iPhone 14,OS=17.2" | xcpretty
+          set +x
+          xcodebuild clean build -workspace ImprintDemo.xcworkspace -scheme ImprintDemo -destination "platform=iOS Simulator,name=iPhone 14,OS=17.2" | grep -v "sensitive" | xcpretty
 
       # Test Swift Package Manager Integration
       - name: Validate Swift Package
         run: swift build -Xswiftc "-sdk" -Xswiftc "$(xcrun --sdk iphonesimulator --show-sdk-path)" -Xswiftc "-target" -Xswiftc "x86_64-apple-ios17.2-simulator"
+
+      # Clean up workspace
+      - name: Clean up
+        if: always()
+        run: |
+          set +x
+          rm -rf ~/Library/Developer/Xcode/DerivedData/Imprint-*
+          rm -rf ~/Library/Caches/CocoaPods
