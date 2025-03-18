@@ -1,0 +1,162 @@
+name: CD
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Release Type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+# Restrict permissions
+permissions:
+  contents: write  # Needed for creating releases
+  
+jobs:
+  release:
+    runs-on: self-hosted
+    # Only run this workflow when triggered by authorized users
+    if: |
+      github.ref == 'refs/heads/main' && 
+      (github.actor == github.repository_owner || 
+       contains(github.actor, 'imprint-tech') || 
+       contains(github.actor, 'ImprintTech'))
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Need full history for changelog
+          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: false  # Don't persist credentials after this step
+
+      # Configure Git identity for the bot
+      - name: Configure Git
+        run: |
+          git config --local user.name "GitHub Actions Bot"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+
+      # Update version in podspec and Package.swift
+      - name: Update Version
+        id: version
+        run: |
+          set +x  # Don't echo commands
+          # Get current version from podspec
+          CURRENT_VERSION=$(grep -m 1 "s.version" Imprint.podspec | sed 's/.*= "\(.*\)".*/\1/')
+          echo "Current version: $CURRENT_VERSION"
+          
+          # Calculate new version based on input
+          IFS='.' read -r major minor patch <<< "$CURRENT_VERSION"
+          if [ "${{ github.event.inputs.release_type }}" == "major" ]; then
+            NEW_VERSION="$((major + 1)).0.0"
+          elif [ "${{ github.event.inputs.release_type }}" == "minor" ]; then
+            NEW_VERSION="$major.$((minor + 1)).0"
+          else
+            NEW_VERSION="$major.$minor.$((patch + 1))"
+          fi
+          echo "New version: $NEW_VERSION"
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          
+          # Update podspec
+          sed -i '' "s/s.version *= *\"$CURRENT_VERSION\"/s.version = \"$NEW_VERSION\"/" Imprint.podspec
+
+      # Generate changelog - sanitize output
+      - name: Generate Changelog
+        id: changelog
+        run: |
+          set +x  # Don't echo commands
+          # Find the previous tag
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          
+          if [ -z "$PREVIOUS_TAG" ]; then
+            # If no previous tag exists, use all commits
+            echo "No previous tag found, including all commits in changelog"
+            CHANGELOG=$(git log --pretty=format:"- %s (%h)" --no-merges | grep -v -i "secret\|password\|token\|key\|credential")
+          else
+            # Get commits since the last tag
+            echo "Generating changelog since tag: $PREVIOUS_TAG"
+            CHANGELOG=$(git log ${PREVIOUS_TAG}..HEAD --pretty=format:"- %s (%h)" --no-merges | grep -v -i "secret\|password\|token\|key\|credential")
+          fi
+          
+          # Categorize commits - sanitize output 
+          FEATURES=$(echo "$CHANGELOG" | grep -i "feat\|feature\|add" | grep -v -i "secret\|password\|token\|key\|credential" || echo "")
+          FIXES=$(echo "$CHANGELOG" | grep -i "fix\|bug\|issue" | grep -v -i "secret\|password\|token\|key\|credential" || echo "")
+          IMPROVEMENTS=$(echo "$CHANGELOG" | grep -i "improve\|enhance\|refactor\|perf" | grep -v -i "secret\|password\|token\|key\|credential" || echo "")
+          OTHERS=$(echo "$CHANGELOG" | grep -v -i "feat\|feature\|add\|fix\|bug\|issue\|improve\|enhance\|refactor\|perf\|secret\|password\|token\|key\|credential" || echo "")
+          
+          # Create formatted changelog
+          # Use GitHub Actions' multiline output syntax directly
+          {
+            echo "changelog<<CHANGELOG_EOF"
+            echo "## What's Changed in v${{ steps.version.outputs.new_version }}"
+            echo ""
+            
+            if [ ! -z "$FEATURES" ]; then
+              echo "### New Features"
+              echo "$FEATURES"
+              echo ""
+            fi
+            
+            if [ ! -z "$FIXES" ]; then
+              echo "### Bug Fixes"
+              echo "$FIXES"
+              echo ""
+            fi
+            
+            if [ ! -z "$IMPROVEMENTS" ]; then
+              echo "### Improvements"
+              echo "$IMPROVEMENTS"
+              echo ""
+            fi
+            
+            if [ ! -z "$OTHERS" ]; then
+              echo "### Other Changes"
+              echo "$OTHERS"
+              echo ""
+            fi
+            
+            echo "CHANGELOG_EOF"
+          } >> $GITHUB_OUTPUT
+
+      # Create a tag and push with GITHUB_TOKEN
+      - name: Create Tag
+        run: |
+          set +x  # Don't echo commands
+          NEW_VERSION=${{ steps.version.outputs.new_version }}
+          git add Imprint.podspec Package.swift
+          git commit -m "Release $NEW_VERSION"
+          git tag $NEW_VERSION
+          git push && git push --tags
+
+      # Publish to CocoaPods - use dedicated secret
+      - name: Publish to CocoaPods
+        env:
+          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+        run: |
+          set +x  # Don't echo commands
+          pod trunk push Imprint.podspec --allow-warnings --silent  # Reduce log verbosity
+
+      # Create GitHub Release with Changelog
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.version.outputs.new_version }}
+          name: Release ${{ steps.version.outputs.new_version }}
+          body: ${{ steps.changelog.outputs.changelog }}
+          draft: false
+          prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # Clean up workspace after release
+      - name: Clean up
+        if: always()
+        run: |
+          set +x  # Don't echo commands
+          rm -rf ~/Library/Developer/Xcode/DerivedData/Imprint-*
+          rm -rf ~/Library/Caches/org.carthage.CarthageKit
+          rm -rf ~/Library/Caches/CocoaPods
