@@ -65,10 +65,15 @@ public class ImprintConfiguration {
   /// Data dictionary passed to the completion handler, containing flexible key-value pairs.
   /// Common keys may include:
   /// - Note: Other keys may be provided; contact your Imprint team for details.
-  ///   - `customer_id` (String | nil): Imprint identifier for customer
-  ///   - `payment_method_id` (String | nil): Identifier to the payment method of customer in current webflow session
-  ///   - `partner_customer_id` (String | nil): Partner identifier for customer
-  ///   - `error_code` (String | nil): Identifier for the specific issue encountered.
+  ///   event_name: string | null;              // Name of the event (from above list)
+  ///   timestamp: string | null;               // ISO timestamp when event occurred
+  ///   session_id: string | null;              // Unique identifier for this application session
+  ///   customer_id: string | null;             // Imprint identifier for customer
+  ///   partner_customer_id: string | null;     // Partner identifier for customer
+  ///   payment_method_id: string | null;       // Identifier for Payment Method
+  ///   error_code: string | null;              // Standardized error code
+  ///   error_message: string | null;           // Human-readable error description
+}
 
   public typealias CompletionData = [String: Any?]
   
