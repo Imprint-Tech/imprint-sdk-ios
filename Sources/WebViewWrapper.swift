@@ -12,7 +12,8 @@ struct WebViewWrapper: UIViewRepresentable {
   enum Constants {
     static let callbackHandlerName = "imprintWebCallback"
     static let logoUrl = "logoUrl"
-    static let eventName = "eventName"
+    static let eventName = "event_name"
+    static let errorCode = "error_code"
     static let data = "data"
   }
   
@@ -51,22 +52,35 @@ struct WebViewWrapper: UIViewRepresentable {
           // load logo on navbar
           viewModel.updateLogoUrl(logoUrl)
           return
-        } else if let event = body[Constants.eventName] as? String,
-                  let data = body[Constants.data] as? ImprintConfiguration.CompletionData {
-          switch event {
-          case "OFFER_ACCEPTED":
-            viewModel.updateCompletionState(.offerAccepted, data: data)
-          case "REJECTED":
-            viewModel.updateCompletionState(.rejected, data: data)
-          case "ERROR":
-            viewModel.updateCompletionState(.error, data: data)
-          case "ABANDONED":
-            viewModel.updateCompletionState(.abandoned, data: data)
+        } else if let eventData = body as? ImprintConfiguration.CompletionData,
+                  let event = eventData[Constants.eventName] as? String,
+                  let state = ImprintConfiguration.ProcessState(rawValue: event){
+          viewModel.processState = state
+          switch state {
+          case .offerAccepted:
+            viewModel.updateCompletionState(.offerAccepted, data: eventData)
+          case .rejected:
+            viewModel.updateCompletionState(.rejected, data: eventData)
+          case .error:
+            viewModel.updateCompletionState(.error, data: processErrorData(eventData))
           default:
-            break
+            viewModel.updateCompletionState(.inProgress, data: eventData)
           }
         }
       }
+    }
+    
+    // Helper method to process error data
+    private func processErrorData(_ data: ImprintConfiguration.CompletionData) -> ImprintConfiguration.CompletionData {
+      var processedData = data
+      
+      // Convert error_code string to ErrorCode enum if present
+      if let errorCodeString = data[Constants.errorCode] as? String {
+        let errorCode = ImprintConfiguration.ErrorCode.from(stringValue: errorCodeString)
+        processedData[Constants.errorCode] = errorCode.rawValue
+      }
+      
+      return processedData
     }
   }
 }

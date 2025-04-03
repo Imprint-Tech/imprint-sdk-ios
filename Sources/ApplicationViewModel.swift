@@ -12,7 +12,8 @@ class ApplicationViewModel: ObservableObject {
   private let configuration: ImprintConfiguration
   
   @Published var logoUrl: URL?
-  @Published var completionState: ImprintConfiguration.CompletionState = .abandoned
+  @Published var completionState: ImprintConfiguration.CompletionState = .inProgress
+  @Published var processState: ImprintConfiguration.ProcessState?
   var completionData: ImprintConfiguration.CompletionData?
   
   init(configuration: ImprintConfiguration) {

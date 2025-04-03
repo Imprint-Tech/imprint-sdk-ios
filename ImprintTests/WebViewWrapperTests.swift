@@ -29,13 +29,11 @@ class WebViewWrapperTests: XCTestCase {
   func testOfferAcceptedMessage() {
     // Arrange
     let messageBody: [String: Any] = [
-      "eventName": "OFFER_ACCEPTED",
-      "data": [
-        "consumerId": "consumer-123",
-        "applicationId": "app-456",
-        "externalReferenceId": "partner-ref-789",
-        "accountId": "account-321"
-      ]
+      "event_name": "OFFER_ACCEPTED",
+      "consumerId": "consumer-123",
+      "applicationId": "app-456",
+      "externalReferenceId": "partner-ref-789",
+      "accountId": "account-321"
     ]
     let message = MockWKScriptMessage(name: WebViewWrapper.Constants.callbackHandlerName, body: messageBody)
     
@@ -44,6 +42,7 @@ class WebViewWrapperTests: XCTestCase {
     
     // Assert
     XCTAssertEqual(viewModel.completionState, .offerAccepted)
+    XCTAssertEqual(viewModel.processState, .offerAccepted)
     XCTAssertEqual(viewModel.completionData?["consumerId"] as? String, "consumer-123")
     XCTAssertEqual(viewModel.completionData?["applicationId"] as? String, "app-456")
     XCTAssertEqual(viewModel.completionData?["externalReferenceId"] as? String, "partner-ref-789")
@@ -53,8 +52,8 @@ class WebViewWrapperTests: XCTestCase {
   func testRejectedMessage() {
     // Arrange
     let messageBody: [String: Any] = [
-      "eventName": "REJECTED",
-      "data": ["errorCode": "invalidToken"]
+      "event_name": "REJECTED",
+      "error_code": "invalidToken"
     ]
     let message = MockWKScriptMessage(name: WebViewWrapper.Constants.callbackHandlerName, body: messageBody)
     
@@ -63,18 +62,57 @@ class WebViewWrapperTests: XCTestCase {
     
     // Assert
     XCTAssertEqual(viewModel.completionState, .rejected)
-    XCTAssertEqual(viewModel.completionData?["errorCode"] as? String, "invalidToken")
+    XCTAssertEqual(viewModel.processState, .rejected)
+    XCTAssertEqual(viewModel.completionData?["error_code"] as? String, "invalidToken")
+  }
+  
+  func testErrorMessage() {
+    // Arrange
+    let messageBody: [String: Any] = [
+      "event_name": "ERROR",
+      "error_code": "INVALID_CLIENT_SECRET",
+      "error_message": "The client secret provided is invalid"
+    ]
+    let message = MockWKScriptMessage(name: WebViewWrapper.Constants.callbackHandlerName, body: messageBody)
+    
+    // Act
+    coordinator.userContentController(WKUserContentController(), didReceive: message)
+    
+    // Assert
+    XCTAssertEqual(viewModel.completionState, .error)
+    XCTAssertEqual(viewModel.processState, .error) // New assertion for process state
+    XCTAssertEqual(viewModel.completionData?["error_code"] as? String, "INVALID_CLIENT_SECRET")
+  }
+  
+  func testInProgressMessage() {
+    // Test cases for states that map to inProgress
+    let inProgressStates = ["INITIATED", "APPLICATION_STARTED", "OFFER_PRESENTED",
+                          "OFFER_DECLINED", "APPLICATION_REVIEW", "CREDIT_FROZEN", "ABANDONED"]
+    
+    for state in inProgressStates {
+      // Arrange
+      let messageBody: [String: Any] = [
+        "event_name": state,
+        "session_id": "session-123"
+      ]
+      let message = MockWKScriptMessage(name: WebViewWrapper.Constants.callbackHandlerName, body: messageBody)
+      
+      // Act
+      coordinator.userContentController(WKUserContentController(), didReceive: message)
+      
+      // Assert
+      XCTAssertEqual(viewModel.completionState, .inProgress, "State \(state) should map to inProgress")
+      XCTAssertEqual(viewModel.processState?.rawValue, state) // Check internal process state
+    }
   }
   
   func testAdditionalDataFields() {
     // Arrange
     let messageBody: [String: Any] = [
-      "eventName": "OFFER_ACCEPTED",
-      "data": [
-        "customer_id": "customer-xyz",
-        "payment_method_id": "payment-abc",
-        "partner_customer_id": "partner-987"
-      ]
+      "event_name": "OFFER_ACCEPTED",
+      "customer_id": "customer-xyz",
+      "payment_method_id": "payment-abc",
+      "partner_customer_id": "partner-987"
     ]
     let message = MockWKScriptMessage(name: WebViewWrapper.Constants.callbackHandlerName, body: messageBody)
     
@@ -90,7 +128,7 @@ class WebViewWrapperTests: XCTestCase {
   func testNullableDataFields() {
     // Arrange
     let messageBody: [String: Any] = [
-      "eventName": "OFFER_ACCEPTED",
+      "event_name": "OFFER_ACCEPTED",
       "data": [
         "customer_id": nil,
         "payment_method_id": nil,
@@ -119,7 +157,8 @@ class WebViewWrapperTests: XCTestCase {
     coordinator.userContentController(WKUserContentController(), didReceive: message)
     
     // Assert
-    XCTAssertEqual(viewModel.completionState, .abandoned) // No state change should happen
+    XCTAssertEqual(viewModel.completionState, .inProgress)
+    XCTAssertNil(viewModel.processState)
   }
   
   func testLogoUrlMessage() {
@@ -134,6 +173,22 @@ class WebViewWrapperTests: XCTestCase {
     
     // Assert
     XCTAssertEqual(viewModel.logoUrl?.absoluteString, "https://example.com/logo.png")
+  }
+  
+  func testErrorCodeMapping() {
+    // Arrange
+    let messageBody: [String: Any] = [
+      "event_name": "ERROR",
+      "error_code": "INVALID_CLIENT_SECRET"
+    ]
+    let message = MockWKScriptMessage(name: WebViewWrapper.Constants.callbackHandlerName, body: messageBody)
+    
+    // Act
+    coordinator.userContentController(WKUserContentController(), didReceive: message)
+    
+    // Assert
+    XCTAssertEqual(viewModel.completionState, .error)
+    XCTAssertEqual(viewModel.completionData?["error_code"] as? String, "INVALID_CLIENT_SECRET")
   }
 }
 
