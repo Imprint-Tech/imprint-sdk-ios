@@ -76,7 +76,41 @@ public class ImprintConfiguration {
   public enum CompletionState: Int {
     case offerAccepted
     case rejected
-    case abandoned
+    case inProgress   // (New in v0.2) state to handle all intermediate states including abandonment
     case error
+  }
+  
+  public enum ProcessState: String, Codable {
+    case initiated = "INITIATED"
+    case applicationStarted = "APPLICATION_STARTED"
+    case offerPresented = "OFFER_PRESENTED"
+    case offerAccepted = "OFFER_ACCEPTED"
+    case offerDeclined = "OFFER_DECLINED"
+    case rejected = "REJECTED"
+    case applicationReview = "APPLICATION_REVIEW"
+    case creditFrozen = "CREDIT_FROZEN"
+    case abandoned = "ABANDONED"
+    case error = "ERROR"
+  }
+  
+  public enum ErrorCode: String, Codable {
+    // Authentication errors
+    case invalidClientSecret = "INVALID_CLIENT_SECRET"
+    case invalidPartnerReference = "INVALID_PARTNER_REFERENCE"
+    
+    // Network errors
+    case networkConnectionFailed = "NETWORK_CONNECTION_FAILED"
+    case serverError = "SERVER_ERROR"
+    case timeoutError = "TIMEOUT_ERROR"
+    
+    // Fallback
+    case unknown = "UNKNOWN_ERROR"
+    
+    /// Creates an ErrorCode from a string representation
+    /// - Parameter stringValue: The string representation of the error code
+    /// - Returns: The corresponding ErrorCode or .unknown if not recognized
+    public static func from(stringValue: String) -> ErrorCode {
+      return ErrorCode(rawValue: stringValue) ?? .unknown
+    }
   }
 }
