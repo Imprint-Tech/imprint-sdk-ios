@@ -52,19 +52,19 @@ struct WebViewWrapper: UIViewRepresentable {
           // load logo on navbar
           viewModel.updateLogoUrl(logoUrl)
           return
-        } else if let event = body[Constants.eventName] as? String,
-                  let state = ImprintConfiguration.ProcessState(rawValue: event),
-                  let data = body[Constants.data] as? ImprintConfiguration.CompletionData {
+        } else if let eventData = body as? ImprintConfiguration.CompletionData,
+                  let event = eventData[Constants.eventName] as? String,
+                  let state = ImprintConfiguration.ProcessState(rawValue: event){
           viewModel.processState = state
           switch state {
           case .offerAccepted:
-            viewModel.updateCompletionState(.offerAccepted, data: data)
+            viewModel.updateCompletionState(.offerAccepted, data: eventData)
           case .rejected:
-            viewModel.updateCompletionState(.rejected, data: data)
+            viewModel.updateCompletionState(.rejected, data: eventData)
           case .error:
-            viewModel.updateCompletionState(.error, data: processErrorData(data))
+            viewModel.updateCompletionState(.error, data: processErrorData(eventData))
           default:
-            viewModel.updateCompletionState(.inProgress, data: data)
+            viewModel.updateCompletionState(.inProgress, data: eventData)
           }
         }
       }

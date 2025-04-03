@@ -30,12 +30,10 @@ class WebViewWrapperTests: XCTestCase {
     // Arrange
     let messageBody: [String: Any] = [
       "event_name": "OFFER_ACCEPTED",
-      "data": [
-        "consumerId": "consumer-123",
-        "applicationId": "app-456",
-        "externalReferenceId": "partner-ref-789",
-        "accountId": "account-321"
-      ]
+      "consumerId": "consumer-123",
+      "applicationId": "app-456",
+      "externalReferenceId": "partner-ref-789",
+      "accountId": "account-321"
     ]
     let message = MockWKScriptMessage(name: WebViewWrapper.Constants.callbackHandlerName, body: messageBody)
     
@@ -55,7 +53,7 @@ class WebViewWrapperTests: XCTestCase {
     // Arrange
     let messageBody: [String: Any] = [
       "event_name": "REJECTED",
-      "data": ["error_code": "invalidToken"]
+      "error_code": "invalidToken"
     ]
     let message = MockWKScriptMessage(name: WebViewWrapper.Constants.callbackHandlerName, body: messageBody)
     
@@ -72,10 +70,8 @@ class WebViewWrapperTests: XCTestCase {
     // Arrange
     let messageBody: [String: Any] = [
       "event_name": "ERROR",
-      "data": [
-        "error_code": "INVALID_CLIENT_SECRET",
-        "error_message": "The client secret provided is invalid"
-      ]
+      "error_code": "INVALID_CLIENT_SECRET",
+      "error_message": "The client secret provided is invalid"
     ]
     let message = MockWKScriptMessage(name: WebViewWrapper.Constants.callbackHandlerName, body: messageBody)
     
@@ -97,9 +93,7 @@ class WebViewWrapperTests: XCTestCase {
       // Arrange
       let messageBody: [String: Any] = [
         "event_name": state,
-        "data": [
-          "session_id": "session-123"
-        ]
+        "session_id": "session-123"
       ]
       let message = MockWKScriptMessage(name: WebViewWrapper.Constants.callbackHandlerName, body: messageBody)
       
@@ -116,11 +110,9 @@ class WebViewWrapperTests: XCTestCase {
     // Arrange
     let messageBody: [String: Any] = [
       "event_name": "OFFER_ACCEPTED",
-      "data": [
-        "customer_id": "customer-xyz",
-        "payment_method_id": "payment-abc",
-        "partner_customer_id": "partner-987"
-      ]
+      "customer_id": "customer-xyz",
+      "payment_method_id": "payment-abc",
+      "partner_customer_id": "partner-987"
     ]
     let message = MockWKScriptMessage(name: WebViewWrapper.Constants.callbackHandlerName, body: messageBody)
     
@@ -187,9 +179,7 @@ class WebViewWrapperTests: XCTestCase {
     // Arrange
     let messageBody: [String: Any] = [
       "event_name": "ERROR",
-      "data": [
-        "error_code": "INVALID_CLIENT_SECRET"
-      ]
+      "error_code": "INVALID_CLIENT_SECRET"
     ]
     let message = MockWKScriptMessage(name: WebViewWrapper.Constants.callbackHandlerName, body: messageBody)
     
