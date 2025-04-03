@@ -37,8 +37,8 @@ class ViewController: UIViewController {
         self.completionState.text = "Offer accepted\n\(self.jsonString(data))"
       case .rejected:
         self.completionState.text = "Application rejected\n\(self.jsonString(data))"
-      case .abandoned:
-        self.completionState.text = "Application abandoned"
+      case .inProgress:
+        self.completionState.text = "Application Interrupted - In Progress"
       case .error:
         self.completionState.text = "Error occured\n\(self.jsonString(data))"
       @unknown default:
