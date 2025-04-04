@@ -81,13 +81,12 @@ class WebViewWrapperTests: XCTestCase {
     // Assert
     XCTAssertEqual(viewModel.completionState, .error)
     XCTAssertEqual(viewModel.processState, .error) // New assertion for process state
-    XCTAssertEqual(viewModel.completionData?["error_code"] as? String, "INVALID_CLIENT_SECRET")
+    XCTAssertEqual(viewModel.completionData?["error_code"] as? ImprintConfiguration.ErrorCode, .invalidClientSecret)
   }
   
   func testInProgressMessage() {
     // Test cases for states that map to inProgress
-    let inProgressStates = ["INITIATED", "APPLICATION_STARTED", "OFFER_PRESENTED",
-                          "OFFER_DECLINED", "APPLICATION_REVIEW", "CREDIT_FROZEN", "ABANDONED"]
+    let inProgressStates = ["INITIATED", "APPLICATION_STARTED", "OFFER_PRESENTED", "APPLICATION_REVIEW", "CREDIT_FROZEN", "CUSTOMER_CLOSED"]
     
     for state in inProgressStates {
       // Arrange
@@ -173,22 +172,6 @@ class WebViewWrapperTests: XCTestCase {
     
     // Assert
     XCTAssertEqual(viewModel.logoUrl?.absoluteString, "https://example.com/logo.png")
-  }
-  
-  func testErrorCodeMapping() {
-    // Arrange
-    let messageBody: [String: Any] = [
-      "event_name": "ERROR",
-      "error_code": "INVALID_CLIENT_SECRET"
-    ]
-    let message = MockWKScriptMessage(name: WebViewWrapper.Constants.callbackHandlerName, body: messageBody)
-    
-    // Act
-    coordinator.userContentController(WKUserContentController(), didReceive: message)
-    
-    // Assert
-    XCTAssertEqual(viewModel.completionState, .error)
-    XCTAssertEqual(viewModel.completionData?["error_code"] as? String, "INVALID_CLIENT_SECRET")
   }
 }
 
