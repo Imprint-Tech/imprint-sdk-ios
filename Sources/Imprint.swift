@@ -73,7 +73,6 @@ public class ImprintConfiguration {
   ///   payment_method_id: string | null;       // Identifier for Payment Method
   ///   error_code: string | null;              // Standardized error code
   ///   error_message: string | null;           // Human-readable error description
-}
 
   public typealias CompletionData = [String: Any?]
   
