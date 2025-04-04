@@ -71,7 +71,7 @@ public class ImprintConfiguration {
   ///   customer_id: string | null;             // Imprint identifier for customer
   ///   partner_customer_id: string | null;     // Partner identifier for customer
   ///   payment_method_id: string | null;       // Identifier for Payment Method
-  ///   error_code: string | null;              // Standardized error code
+  ///   error_code: ErrorCode | null;           // Standardized error code
   ///   error_message: string | null;           // Human-readable error description
 
   public typealias CompletionData = [String: Any?]
@@ -89,11 +89,10 @@ public class ImprintConfiguration {
     case applicationStarted = "APPLICATION_STARTED"
     case offerPresented = "OFFER_PRESENTED"
     case offerAccepted = "OFFER_ACCEPTED"
-    case offerDeclined = "OFFER_DECLINED"
     case rejected = "REJECTED"
     case applicationReview = "APPLICATION_REVIEW"
     case creditFrozen = "CREDIT_FROZEN"
-    case abandoned = "ABANDONED"
+    case customerClosed = "CUSTOMER_CLOSED"
     case error = "ERROR"
   }
   
