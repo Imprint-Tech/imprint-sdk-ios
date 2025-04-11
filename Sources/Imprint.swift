@@ -40,7 +40,7 @@ public class ImprintConfiguration {
   /// - Note: The `state` parameter can have the following values:
   ///   - `offerAccepted`: Triggered when the applicant has been approved and accepted their credit offer — they are now a new cardholder!
   ///   - `rejected`: Triggered when the applicant has been rejected by Imprint.
-  ///   - `abandoned`: Triggered when the flow is abandoned before completing.
+  ///   - `inProgress`: Triggered when the flow is interrupted before completing.
   ///   - `error`: Triggered when an error occurs during embedded sign up application flow.
   public var onCompletion: ((CompletionState, CompletionData?) -> Void)?
 
