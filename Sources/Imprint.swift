@@ -93,6 +93,7 @@ public class ImprintConfiguration {
     case applicationReview = "APPLICATION_REVIEW"
     case creditFrozen = "CREDIT_FROZEN"
     case customerClosed = "CUSTOMER_CLOSED"
+    case imprintClosed = "IMPRINT_CLOSED"
     case error = "ERROR"
   }
   
