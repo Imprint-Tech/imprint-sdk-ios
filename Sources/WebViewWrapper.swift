@@ -77,7 +77,7 @@ struct WebViewWrapper: UIViewRepresentable {
       // Convert error_code string to ErrorCode enum if present
       if let errorCodeString = data[Constants.errorCode] as? String {
         let errorCode = ImprintConfiguration.ErrorCode.from(stringValue: errorCodeString)
-        processedData[Constants.errorCode] = errorCode.rawValue
+        processedData[Constants.errorCode] = errorCode
       }
       
       return processedData
