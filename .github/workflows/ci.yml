@@ -44,6 +44,27 @@ jobs:
           set +x
           xcodebuild test -project Imprint.xcodeproj -scheme Imprint -destination "platform=iOS Simulator,name=iPhone 14,OS=17.2" | grep -v "sensitive" | xcpretty
 
+      # Update Podfile to use local SDK
+      - name: Update Podfile to use local SDK
+        working-directory: ImprintDemo
+        run: |
+          set +x
+          # Create a temporary Podfile that references the local SDK
+          cat > Podfile.tmp << EOF
+          platform :ios, '15.0'
+
+          target 'ImprintDemo' do
+            # Comment the next line if you don't want to use dynamic frameworks
+            use_frameworks!
+
+            pod 'Imprint', :path => '../'
+            
+          end
+          EOF
+          
+          # Replace the original Podfile
+          mv Podfile.tmp Podfile
+
       # Test Demo App with CocoaPods Integration
       - name: Install Pods for Demo App
         working-directory: ImprintDemo
