@@ -67,20 +67,24 @@ jobs:
           xcodebuild clean build -workspace ImprintDemo.xcworkspace -scheme ImprintDemo -destination "platform=iOS Simulator,name=iPhone 14,OS=17.2" | grep -v "sensitive" | xcpretty
 
       # Dynamically Add Local SDK as SwiftPM Dependency
-      - name: Patch .pbxproj to use local SDK path
+      - name: Patch Swift Package to use local path
         working-directory: ImprintDemo/SPM/ImprintDemo.xcodeproj
         run: |
-          echo "Patching SwiftPM dependency to use local path..."
-          perl -0777 -i -pe 's{
-              (/\* XCRemoteSwiftPackageReference "imprint-sdk-ios" \*/\s*=\s*\{\s*
-              isa = XCRemoteSwiftPackageReference;\s*)
-              repositoryURL = "[^"]+";\s*
-              requirement = \{
-              .*?
-              \};
-          }{
-              $1path = "../../";
-          }sx' project.pbxproj
+          echo "Patching .pbxproj to replace remote SDK with local path"
+
+          # Remove repositoryURL line
+          sed -i '' '/XCRemoteSwiftPackageReference "imprint-sdk-ios"/,/};/s|repositoryURL = .*;||' project.pbxproj
+
+          # Remove requirement block (3-line structure)
+          sed -i '' '/XCRemoteSwiftPackageReference "imprint-sdk-ios"/,/};/{
+            /requirement = {/,/};/d
+          }' project.pbxproj
+
+          # Add path = "../../"; just after isa line
+          sed -i '' '/XCRemoteSwiftPackageReference "imprint-sdk-ios"/,/};/{
+            /isa = XCRemoteSwiftPackageReference;/a\
+            \ \ \ \ path = "../../";
+          }' project.pbxproj
 
       - name: Print Patched SDK Block
         working-directory: ImprintDemo/SPM/ImprintDemo.xcodeproj
