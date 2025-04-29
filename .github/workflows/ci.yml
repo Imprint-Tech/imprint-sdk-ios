@@ -27,14 +27,12 @@ jobs:
       # Build SDK Source Files
       - name: Build SDK
         run: |
-          set +x
           xcodebuild clean build -project Imprint.xcodeproj -scheme Imprint -destination "platform=iOS Simulator,name=iPhone 14,OS=17.2" | grep -v "sensitive" | xcpretty
 
       # Run Unit Tests
       - name: Run Unit Tests
         run: |
-          set +x
-          xcodebuild test -project Imprint.xcodeproj -scheme Imprint -destination "platform=iOS Simulator,name=iPhone 14,OS=17.2" | grep -v "sensitive" | xcpretty
+          xcodebuild clean test -project Imprint.xcodeproj -scheme Imprint -destination "platform=iOS Simulator,name=iPhone 14,OS=17.2" | grep -v "sensitive" | xcpretty
 
       # Update Podfile to use local SDK
       - name: Update Podfile to use local SDK
@@ -61,13 +59,11 @@ jobs:
       - name: Install Pods for Demo App
         working-directory: ImprintDemo
         run: |
-          set +x
           pod install --no-repo-update
 
       - name: Build Demo App via CocoaPods
         working-directory: ImprintDemo
         run: |
-          set +x
           xcodebuild clean build -workspace ImprintDemo.xcworkspace -scheme ImprintDemo -destination "platform=iOS Simulator,name=iPhone 14,OS=17.2" | grep -v "sensitive" | xcpretty
 
       # Test Swift Package Manager Integration
