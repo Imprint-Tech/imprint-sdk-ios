@@ -68,7 +68,9 @@ jobs:
 
       # Test Swift Package Manager Integration
       - name: Validate Swift Package
-        run: swift build -Xswiftc "-sdk" -Xswiftc "$(xcrun --sdk iphonesimulator --show-sdk-path)" -Xswiftc "-target" -Xswiftc "x86_64-apple-ios17.2-simulator"
+        run: |
+          swift package --disable-sandbox --allow-writing-to-directory /tmp generate-xcodeproj || true
+          xcodebuild build -project Imprint.xcodeproj -scheme "Imprint-Package" -destination "platform=iOS Simulator,name=iPhone 14,OS=17.2" SKIP_INSTALL=YES | xcpretty
 
       # Clean up workspace
       - name: Clean up
