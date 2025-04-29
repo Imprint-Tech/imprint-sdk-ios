@@ -67,22 +67,12 @@ jobs:
           xcodebuild clean build -workspace ImprintDemo.xcworkspace -scheme ImprintDemo -destination "platform=iOS Simulator,name=iPhone 14,OS=17.2" | grep -v "sensitive" | xcpretty
 
       # Dynamically Add Local SDK as SwiftPM Dependency
-      - name: Add Local SDK to Demo App via SwiftPM
+      - name: Patch Demo App to use local SDK
         working-directory: ImprintDemo/SPM
         run: |
           set +x
-          echo "Adding local SDK via SwiftPM dynamically..."
-          xcodebuild -project ImprintDemo.xcodeproj \
-            -scheme ImprintDemo \
-            -add-package ../../
-
-      # Resolve SwiftPM Dependency (not strictly needed if add-package succeeds)
-      - name: Resolve SwiftPM Dependencies
-        working-directory: ImprintDemo/SPM
-        run: |
-          xcodebuild -project ImprintDemo.xcodeproj \
-            -scheme ImprintDemo \
-            -resolvePackageDependencies
+          echo "Updating project.pbxproj to point to local SDK..."
+          sed -i '' 's|https://github.com/Imprint-Tech/imprint-sdk-ios|../../|' ImprintDemo.xcodeproj/project.pbxproj
 
       # Build Demo App
       - name: Build Demo App via SwiftPM

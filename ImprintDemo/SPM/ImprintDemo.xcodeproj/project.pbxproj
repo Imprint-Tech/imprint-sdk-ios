@@ -15,6 +15,7 @@
 		1F4C4FAA2CDC93BD00BBF68E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F4C4FA82CDC93BD00BBF68E /* LaunchScreen.storyboard */; };
 		7FB95FE32DC156AD0098FB48 /* Imprint in Frameworks */ = {isa = PBXBuildFile; productRef = 7FB95FE22DC156AD0098FB48 /* Imprint */; };
 		7FB95FE62DC157FB0098FB48 /* Imprint in Frameworks */ = {isa = PBXBuildFile; productRef = 7FB95FE52DC157FB0098FB48 /* Imprint */; };
+		7FB95FE92DC178870098FB48 /* Imprint in Frameworks */ = {isa = PBXBuildFile; productRef = 7FB95FE82DC178870098FB48 /* Imprint */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7FB95FE92DC178870098FB48 /* Imprint in Frameworks */,
 				7FB95FE62DC157FB0098FB48 /* Imprint in Frameworks */,
 				7FB95FE32DC156AD0098FB48 /* Imprint in Frameworks */,
 			);
@@ -124,6 +126,7 @@
 			);
 			mainGroup = 1F4C4F912CDC93BC00BBF68E;
 			packageReferences = (
+				7FB95FE72DC178870098FB48 /* XCRemoteSwiftPackageReference "imprint-sdk-ios" */,
 			);
 			productRefGroup = 1F4C4F9B2CDC93BC00BBF68E /* Products */;
 			projectDirPath = "";
@@ -399,6 +402,14 @@
 				minimumVersion = 0.1.7;
 			};
 		};
+		7FB95FE72DC178870098FB48 /* XCRemoteSwiftPackageReference "imprint-sdk-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Imprint-Tech/imprint-sdk-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.7;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -409,6 +420,11 @@
 		};
 		7FB95FE52DC157FB0098FB48 /* Imprint */ = {
 			isa = XCSwiftPackageProductDependency;
+			productName = Imprint;
+		};
+		7FB95FE82DC178870098FB48 /* Imprint */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7FB95FE72DC178870098FB48 /* XCRemoteSwiftPackageReference "imprint-sdk-ios" */;
 			productName = Imprint;
 		};
 /* End XCSwiftPackageProductDependency section */
