@@ -92,10 +92,7 @@ jobs:
               targets: [
                   .executableTarget(
                       name: "SPMTest",
-                      dependencies: ["Imprint"]),
-                  .testTarget(
-                      name: "SPMTestTests",
-                      dependencies: ["SPMTest"]),
+                      dependencies: ["Imprint"])
               ]
           )
           EOF
