@@ -1,0 +1,84 @@
+name: Test Release Flow (No Publish)
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Release Type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+permissions:
+  contents: read  # No write needed for test
+
+jobs:
+  test-release:
+    runs-on: macos-latest  # ensure Xcode tools and sed syntax work
+    if: github.event_name == 'workflow_dispatch'
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config --local user.name "Test Bot"
+          git config --local user.email "test-bot@example.com"
+
+      - name: Calculate New Version
+        id: version
+        run: |
+          CURRENT_VERSION=$(grep -m 1 "s.version" Imprint.podspec | sed 's/.*= "\(.*\)".*/\1/')
+          echo "Current version: $CURRENT_VERSION"
+          IFS='.' read -r major minor patch <<< "$CURRENT_VERSION"
+
+          if [ "${{ github.event.inputs.release_type }}" == "major" ]; then
+            NEW_VERSION="$((major + 1)).0.0"
+          elif [ "${{ github.event.inputs.release_type }}" == "minor" ]; then
+            NEW_VERSION="$major.$((minor + 1)).0"
+          else
+            NEW_VERSION="$major.$minor.$((patch + 1))"
+          fi
+
+          echo "Simulated new version: $NEW_VERSION"
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+
+          # Update podspec (in-place)
+          sed -i '' "s/s.version *= *\"$CURRENT_VERSION\"/s.version = \"$NEW_VERSION\"/" Imprint.podspec
+
+      - name: Generate Changelog
+        id: changelog
+        run: |
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          if [ -z "$PREVIOUS_TAG" ]; then
+            CHANGELOG=$(git log --pretty=format:"- %s (%h)" --no-merges)
+          else
+            CHANGELOG=$(git log ${PREVIOUS_TAG}..HEAD --pretty=format:"- %s (%h)" --no-merges)
+          fi
+
+          FEATURES=$(echo "$CHANGELOG" | grep -i "feat\|feature\|add" || echo "")
+          FIXES=$(echo "$CHANGELOG" | grep -i "fix\|bug\|issue" || echo "")
+          IMPROVEMENTS=$(echo "$CHANGELOG" | grep -i "improve\|enhance\|refactor\|perf" || echo "")
+          OTHERS=$(echo "$CHANGELOG" | grep -v -i "feat\|feature\|add\|fix\|bug\|issue\|improve\|enhance\|refactor\|perf" || echo "")
+
+          {
+            echo "changelog<<CHANGELOG_EOF"
+            echo "## Simulated Changelog for v${{ steps.version.outputs.new_version }}"
+            echo ""
+            if [ ! -z "$FEATURES" ]; then echo "### Features"$'\n'"$FEATURES"$'\n'; fi
+            if [ ! -z "$FIXES" ]; then echo "### Fixes"$'\n'"$FIXES"$'\n'; fi
+            if [ ! -z "$IMPROVEMENTS" ]; then echo "### Improvements"$'\n'"$IMPROVEMENTS"$'\n'; fi
+            if [ ! -z "$OTHERS" ]; then echo "### Other"$'\n'"$OTHERS"$'\n'; fi
+            echo "CHANGELOG_EOF"
+          } >> $GITHUB_OUTPUT
+
+      - name: Show Simulated Changelog
+        run: |
+          echo "${{ steps.changelog.outputs.changelog }}"
