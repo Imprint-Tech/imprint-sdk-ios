@@ -1,0 +1,54 @@
+diff --git a/ImprintDemo/SPM/ImprintDemo.xcodeproj/project.pbxproj b/ImprintDemo/SPM/ImprintDemo.xcodeproj/project.pbxproj
+index aa39ebe..6da4b51 100644
+--- a/ImprintDemo/SPM/ImprintDemo.xcodeproj/project.pbxproj
++++ b/ImprintDemo/SPM/ImprintDemo.xcodeproj/project.pbxproj
+@@ -16,6 +16,7 @@
+ 		7FB95FE32DC156AD0098FB48 /* Imprint in Frameworks */ = {isa = PBXBuildFile; productRef = 7FB95FE22DC156AD0098FB48 /* Imprint */; };
+ 		7FB95FE62DC157FB0098FB48 /* Imprint in Frameworks */ = {isa = PBXBuildFile; productRef = 7FB95FE52DC157FB0098FB48 /* Imprint */; };
+ 		7FB95FE92DC178870098FB48 /* Imprint in Frameworks */ = {isa = PBXBuildFile; productRef = 7FB95FE82DC178870098FB48 /* Imprint */; };
++		7FB95FEC2DC17FC00098FB48 /* Imprint in Frameworks */ = {isa = PBXBuildFile; productRef = 7FB95FEB2DC17FC00098FB48 /* Imprint */; };
+ /* End PBXBuildFile section */
+ 
+ /* Begin PBXFileReference section */
+@@ -36,6 +37,7 @@
+ 			files = (
+ 				7FB95FE92DC178870098FB48 /* Imprint in Frameworks */,
+ 				7FB95FE62DC157FB0098FB48 /* Imprint in Frameworks */,
++				7FB95FEC2DC17FC00098FB48 /* Imprint in Frameworks */,
+ 				7FB95FE32DC156AD0098FB48 /* Imprint in Frameworks */,
+ 			);
+ 			runOnlyForDeploymentPostprocessing = 0;
+@@ -126,7 +128,7 @@
+ 			);
+ 			mainGroup = 1F4C4F912CDC93BC00BBF68E;
+ 			packageReferences = (
+-				7FB95FE72DC178870098FB48 /* XCRemoteSwiftPackageReference "imprint-sdk-ios" */,
++				7FB95FEA2DC17FC00098FB48 /* XCLocalSwiftPackageReference "../../../imprint-sdk-ios" */,
+ 			);
+ 			productRefGroup = 1F4C4F9B2CDC93BC00BBF68E /* Products */;
+ 			projectDirPath = "";
+@@ -393,6 +395,13 @@
+ 		};
+ /* End XCConfigurationList section */
+ 
++/* Begin XCLocalSwiftPackageReference section */
++		7FB95FEA2DC17FC00098FB48 /* XCLocalSwiftPackageReference "../../../imprint-sdk-ios" */ = {
++			isa = XCLocalSwiftPackageReference;
++			relativePath = "../../../imprint-sdk-ios";
++		};
++/* End XCLocalSwiftPackageReference section */
++
+ /* Begin XCRemoteSwiftPackageReference section */
+ 		7FB95FE12DC156AD0098FB48 /* XCRemoteSwiftPackageReference "imprint-sdk-ios" */ = {
+ 			isa = XCRemoteSwiftPackageReference;
+@@ -427,6 +436,10 @@
+ 			package = 7FB95FE72DC178870098FB48 /* XCRemoteSwiftPackageReference "imprint-sdk-ios" */;
+ 			productName = Imprint;
+ 		};
++		7FB95FEB2DC17FC00098FB48 /* Imprint */ = {
++			isa = XCSwiftPackageProductDependency;
++			productName = Imprint;
++		};
+ /* End XCSwiftPackageProductDependency section */
+ 	};
+ 	rootObject = 1F4C4F922CDC93BC00BBF68E /* Project object */;
