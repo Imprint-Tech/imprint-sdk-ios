@@ -67,48 +67,47 @@ jobs:
           xcodebuild clean build -workspace ImprintDemo.xcworkspace -scheme ImprintDemo -destination "platform=iOS Simulator,name=iPhone 14,OS=17.2" | grep -v "sensitive" | xcpretty
 
       # Test Swift Package Manager Integration
-      - name: Validate Swift Package Manager Integration
+      - name: Create Temporary SPM Demo App
         run: |
-          # Create a temporary SPM test project
-          mkdir -p /tmp/SPMTest
-          cd /tmp/SPMTest
+          mkdir ImprintSPMDemo
+          cd ImprintSPMDemo
           
-          # Update Package.swift to depend on local Imprint package
-          cat > Package.swift << EOF
-          // swift-tools-version:5.5
+          # Create Package.swift
+          cat > Package.swift <<EOF
+          // swift-tools-version:5.7
           import PackageDescription
-          
+
           let package = Package(
-              name: "SPMTest",
+              name: "ImprintSPMDemo",
               platforms: [
                   .iOS(.v15)
               ],
               dependencies: [
-                  .package(path: "${{ github.workspace }}")
+                  .package(path: "../") // Local path to your SDK
               ],
               targets: [
                   .executableTarget(
-                      name: "SPMTest",
-                      dependencies: ["Imprint"])
+                      name: "ImprintSPMDemo",
+                      dependencies: ["Imprint"]
+                  )
               ]
           )
           EOF
-          
-          # Create a simple Swift file that imports Imprint
-          mkdir -p Sources/SPMTest
-          cat > Sources/SPMTest/main.swift << EOF
-          import Foundation
+
+          mkdir Sources
+          mkdir Sources/ImprintSPMDemo
+
+          # Create a minimal main.swift
+          cat > Sources/ImprintSPMDemo/main.swift <<EOF
           import Imprint
-          
-          print("Successfully imported Imprint via SPM")
+
+          print("SPM Demo App Compiled Successfully!")
           EOF
-          
-          # Build the package to validate SPM integration
-          swift build -Xswiftc "-sdk" -Xswiftc "$(xcrun --sdk iphonesimulator --show-sdk-path)" -Xswiftc "-target" -Xswiftc "x86_64-apple-ios15.0-simulator"
-          
-          # Clean up
-          cd ${{ github.workspace }}
-          rm -rf /tmp/SPMTest
+
+      - name: Build Temporary SPM Demo App
+        working-directory: ImprintSPMDemo
+        run: |
+          swift build
           
       # Clean up workspace
       - name: Clean up
