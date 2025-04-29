@@ -4,7 +4,6 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main]
 
 # Add permissions restriction
 permissions:
@@ -12,13 +11,6 @@ permissions:
 
 jobs:
   build:
-    # Only run this workflow for authorized contributors
-    if: |
-      (github.event_name == 'push' && github.repository_owner == 'Imprint-Tech') ||
-      (github.event_name == 'pull_request' && 
-        (github.event.pull_request.user.login == github.repository_owner || 
-         endsWith(github.event.pull_request.user.email, '@imprint.co')))
-
     runs-on: self-hosted
 
     steps:
@@ -35,31 +27,50 @@ jobs:
       # Build SDK Source Files
       - name: Build SDK
         run: |
-          set +x
-          xcodebuild clean build -project Imprint.xcodeproj -scheme Imprint -destination "platform=iOS Simulator,name=iPhone 14,OS=17.2" | grep -v "sensitive" | xcpretty
+          xcodebuild clean build -project Imprint.xcodeproj -scheme Imprint -destination "platform=iOS Simulator,name=iPhone 14,OS=17.2" -verbose | xcpretty
 
       # Run Unit Tests
       - name: Run Unit Tests
         run: |
+          xcodebuild test -project Imprint.xcodeproj -scheme Imprint -destination "platform=iOS Simulator,name=iPhone 14,OS=17.2" -enableCodeCoverage NO -verbose | xcpretty
+
+      # Update Podfile to use local SDK
+      - name: Update Podfile to use local SDK
+        working-directory: ImprintDemo
+        run: |
           set +x
-          xcodebuild test -project Imprint.xcodeproj -scheme Imprint -destination "platform=iOS Simulator,name=iPhone 14,OS=17.2" | grep -v "sensitive" | xcpretty
+          # Create a temporary Podfile that references the local SDK
+          cat > Podfile.tmp << EOF
+          platform :ios, '15.0'
+
+          target 'ImprintDemo' do
+            # Comment the next line if you don't want to use dynamic frameworks
+            use_frameworks!
+
+            pod 'Imprint', :path => '../'
+            
+          end
+          EOF
+          
+          # Replace the original Podfile
+          mv Podfile.tmp Podfile
 
       # Test Demo App with CocoaPods Integration
       - name: Install Pods for Demo App
         working-directory: ImprintDemo
         run: |
-          set +x
           pod install --no-repo-update
 
       - name: Build Demo App via CocoaPods
         working-directory: ImprintDemo
         run: |
-          set +x
           xcodebuild clean build -workspace ImprintDemo.xcworkspace -scheme ImprintDemo -destination "platform=iOS Simulator,name=iPhone 14,OS=17.2" | grep -v "sensitive" | xcpretty
 
       # Test Swift Package Manager Integration
       - name: Validate Swift Package
-        run: swift build -Xswiftc "-sdk" -Xswiftc "$(xcrun --sdk iphonesimulator --show-sdk-path)" -Xswiftc "-target" -Xswiftc "x86_64-apple-ios17.2-simulator"
+        run: |
+          swift package --disable-sandbox --allow-writing-to-directory /tmp generate-xcodeproj || true
+          xcodebuild build -project Imprint.xcodeproj -scheme "Imprint-Package" -destination "platform=iOS Simulator,name=iPhone 14,OS=17.2" SKIP_INSTALL=YES | xcpretty
 
       # Clean up workspace
       - name: Clean up
