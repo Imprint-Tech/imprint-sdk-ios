@@ -73,9 +73,6 @@ jobs:
           mkdir -p /tmp/SPMTest
           cd /tmp/SPMTest
           
-          # Initialize a new Swift package
-          swift package init --type executable
-          
           # Update Package.swift to depend on local Imprint package
           cat > Package.swift << EOF
           // swift-tools-version:5.5
