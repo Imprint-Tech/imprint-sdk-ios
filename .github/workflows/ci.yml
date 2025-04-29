@@ -36,7 +36,7 @@ jobs:
 
       # Update Podfile to use local SDK
       - name: Update Podfile to use local SDK
-        working-directory: ImprintDemo
+        working-directory: ImprintDemo/Cocoapods
         run: |
           set +x
           # Create a temporary Podfile that references the local SDK
@@ -47,7 +47,7 @@ jobs:
             # Comment the next line if you don't want to use dynamic frameworks
             use_frameworks!
 
-            pod 'Imprint', :path => '../'
+            pod 'Imprint', :path => '../../'
             
           end
           EOF
@@ -57,7 +57,7 @@ jobs:
 
       # Test Demo App with CocoaPods Integration
       - name: Install Pods for Demo App
-        working-directory: ImprintDemo
+        working-directory: ImprintDemo/Cocoapods
         run: |
           pod install --no-repo-update
 
@@ -66,12 +66,22 @@ jobs:
         run: |
           xcodebuild clean build -workspace ImprintDemo.xcworkspace -scheme ImprintDemo -destination "platform=iOS Simulator,name=iPhone 14,OS=17.2" | grep -v "sensitive" | xcpretty
 
-      # Test Swift Package Manager Integration
-      - name: Validate Swift Package
+      # Dynamically Add Local SDK as SwiftPM Dependency
+      - name: Apply local SDK patch to Xcode project
+        working-directory: ImprintDemo/SPM
         run: |
-          swift package --disable-sandbox --allow-writing-to-directory /tmp generate-xcodeproj || true
-          xcodebuild build -project Imprint.xcodeproj -scheme "Imprint-Package" -destination "platform=iOS Simulator,name=iPhone 14,OS=17.2" SKIP_INSTALL=YES | xcpretty
+          echo "Applying local SwiftPM path patch to project.pbxproj"
+          git apply ../../ci/imprint_spm_local.patch
 
+      # Build Demo App
+      - name: Build Demo App via SwiftPM
+        working-directory: ImprintDemo/SPM
+        run: |
+          xcodebuild clean build \
+            -project ImprintDemo.xcodeproj \
+            -scheme ImprintDemo \
+            -destination "platform=iOS Simulator,name=iPhone 14,OS=17.2" | xcpretty
+          
       # Clean up workspace
       - name: Clean up
         if: always()
