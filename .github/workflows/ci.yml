@@ -109,7 +109,8 @@ jobs:
       - name: Build Temporary SPM Demo App
         working-directory: ImprintSPMDemo
         run: |
-          swift build
+          swift package generate-xcodeproj
+          xcodebuild clean build -project ImprintSPMDemo.xcodeproj -scheme ImprintSPMDemo -destination "platform=iOS Simulator,name=iPhone 14,OS=17.2" | xcpretty
           
       # Clean up workspace
       - name: Clean up
