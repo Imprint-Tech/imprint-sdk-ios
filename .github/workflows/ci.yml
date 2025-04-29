@@ -83,12 +83,14 @@ jobs:
                   .iOS(.v15)
               ],
               dependencies: [
-                  .package(path: "../") // Local path to your SDK
+                  .package(path: "../")
               ],
               targets: [
                   .executableTarget(
                       name: "ImprintSPMDemo",
-                      dependencies: ["Imprint"]
+                      dependencies: [
+                          .product(name: "Imprint", package: "Imprint")
+                      ]
                   )
               ]
           )
