@@ -89,7 +89,7 @@ jobs:
                   .executableTarget(
                       name: "ImprintSPMDemo",
                       dependencies: [
-                          .product(name: "Imprint", package: "Imprint")
+                          .product(name: "Imprint", package: "imprint-sdk-ios")
                       ]
                   )
               ]
