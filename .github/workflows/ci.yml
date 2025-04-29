@@ -36,7 +36,7 @@ jobs:
 
       # Update Podfile to use local SDK
       - name: Update Podfile to use local SDK
-        working-directory: ImprintDemo
+        working-directory: ImprintDemo/Cocoapods
         run: |
           set +x
           # Create a temporary Podfile that references the local SDK
@@ -57,7 +57,7 @@ jobs:
 
       # Test Demo App with CocoaPods Integration
       - name: Install Pods for Demo App
-        working-directory: ImprintDemo
+        working-directory: ImprintDemo/Cocoapods
         run: |
           pod install --no-repo-update
 
@@ -66,51 +66,32 @@ jobs:
         run: |
           xcodebuild clean build -workspace ImprintDemo.xcworkspace -scheme ImprintDemo -destination "platform=iOS Simulator,name=iPhone 14,OS=17.2" | grep -v "sensitive" | xcpretty
 
-      # Test Swift Package Manager Integration
-      - name: Create Temporary SPM Demo App
+      # Dynamically Add Local SDK as SwiftPM Dependency
+      - name: Add Local SDK to Demo App via SwiftPM
+        working-directory: ImprintDemo/SPM
         run: |
-          mkdir ImprintSPMDemo
-          cd ImprintSPMDemo
-          
-          # Create Package.swift
-          cat > Package.swift <<EOF
-          // swift-tools-version:5.7
-          import PackageDescription
+          set +x
+          echo "Adding local SDK via SwiftPM dynamically..."
+          xcodebuild -project ImprintDemo.xcodeproj \
+            -scheme ImprintDemo \
+            -add-package ../../
 
-          let package = Package(
-              name: "ImprintSPMDemo",
-              platforms: [
-                  .iOS(.v15)
-              ],
-              dependencies: [
-                  .package(path: "../")
-              ],
-              targets: [
-                  .executableTarget(
-                      name: "ImprintSPMDemo",
-                      dependencies: [
-                          .product(name: "Imprint", package: "imprint-sdk-ios")
-                      ]
-                  )
-              ]
-          )
-          EOF
-
-          mkdir Sources
-          mkdir Sources/ImprintSPMDemo
-
-          # Create a minimal main.swift
-          cat > Sources/ImprintSPMDemo/main.swift <<EOF
-          import Imprint
-
-          print("SPM Demo App Compiled Successfully!")
-          EOF
-
-      - name: Build Temporary SPM Demo App
-        working-directory: ImprintSPMDemo
+      # Resolve SwiftPM Dependency (not strictly needed if add-package succeeds)
+      - name: Resolve SwiftPM Dependencies
+        working-directory: ImprintDemo/SPM
         run: |
-          swift package generate-xcodeproj
-          xcodebuild clean build -project ImprintSPMDemo.xcodeproj -scheme ImprintSPMDemo -destination "platform=iOS Simulator,name=iPhone 14,OS=17.2" | xcpretty
+          xcodebuild -project ImprintDemo.xcodeproj \
+            -scheme ImprintDemo \
+            -resolvePackageDependencies
+
+      # Build Demo App
+      - name: Build Demo App via SwiftPM
+        working-directory: ImprintDemo/SPM
+        run: |
+          xcodebuild clean build \
+            -project ImprintDemo.xcodeproj \
+            -scheme ImprintDemo \
+            -destination "platform=iOS Simulator,name=iPhone 14,OS=17.2" | xcpretty
           
       # Clean up workspace
       - name: Clean up
