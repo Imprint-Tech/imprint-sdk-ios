@@ -32,7 +32,7 @@ jobs:
       # Run Unit Tests
       - name: Run Unit Tests
         run: |
-          xcodebuild test -project Imprint.xcodeproj -scheme Imprint -destination "platform=iOS Simulator,name=iPhone 14,OS=17.2" -verbose | xcpretty
+          xcodebuild test -project Imprint.xcodeproj -scheme Imprint -destination "platform=iOS Simulator,name=iPhone 14,OS=17.2" -enableCodeCoverage NO -verbose | xcpretty
 
       # Update Podfile to use local SDK
       - name: Update Podfile to use local SDK
