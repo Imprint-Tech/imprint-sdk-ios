@@ -38,7 +38,13 @@ jobs:
           CURRENT_VERSION=$(grep -m 1 "s.version" Imprint.podspec | sed -E 's/.*= *"([0-9]+\.[0-9]+\.[0-9]+)".*/\1/')
           echo "Current version: $CURRENT_VERSION"
           
-          IFS='.' read major minor patch <<< "$CURRENT_VERSION"
+          # Split the version and ensure they're treated as integers
+          IFS='.' read -r major minor patch <<< "$CURRENT_VERSION"
+          
+          # Convert to integers to prevent issues with leading zeros or non-numeric characters
+          major=$(echo "$major" | sed 's/[^0-9]//g')
+          minor=$(echo "$minor" | sed 's/[^0-9]//g')
+          patch=$(echo "$patch" | sed 's/[^0-9]//g')
 
           case "${{ github.event.inputs.release_type }}" in
             major)
