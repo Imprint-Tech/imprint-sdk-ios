@@ -35,22 +35,31 @@ jobs:
       - name: Calculate New Version
         id: version
         run: |
-          CURRENT_VERSION=$(grep -m 1 "s.version" Imprint.podspec | sed 's/.*= "\(.*\)".*/\1/')
+          CURRENT_VERSION=$(grep -m 1 "s.version" Imprint.podspec | sed -E 's/.*= *"([0-9]+\.[0-9]+\.[0-9]+)".*/\1/')
           echo "Current version: $CURRENT_VERSION"
-          IFS='.' read -r major minor patch <<< "$CURRENT_VERSION"
+          
+          IFS='.' read major minor patch <<< "$CURRENT_VERSION"
 
-          if [ "${{ github.event.inputs.release_type }}" == "major" ]; then
-            NEW_VERSION="$((major + 1)).0.0"
-          elif [ "${{ github.event.inputs.release_type }}" == "minor" ]; then
-            NEW_VERSION="$major.$((minor + 1)).0"
-          else
-            NEW_VERSION="$major.$minor.$((patch + 1))"
-          fi
+          case "${{ github.event.inputs.release_type }}" in
+            major)
+              NEW_VERSION="$((major + 1)).0.0"
+              ;;
+            minor)
+              NEW_VERSION="$major.$((minor + 1)).0"
+              ;;
+            patch)
+              NEW_VERSION="$major.$minor.$((patch + 1))"
+              ;;
+            *)
+              echo "Unknown release type"
+              exit 1
+              ;;
+          esac
 
           echo "Simulated new version: $NEW_VERSION"
           echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
 
-          # Update podspec (in-place)
+          # Update podspec
           sed -i '' "s/s.version *= *\"$CURRENT_VERSION\"/s.version = \"$NEW_VERSION\"/" Imprint.podspec
 
       - name: Generate Changelog
