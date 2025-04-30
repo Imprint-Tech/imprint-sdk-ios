@@ -18,20 +18,29 @@ permissions:
 
 jobs:
   test-release:
-    runs-on: macos-latest  # ensure Xcode tools and sed syntax work
-    if: github.event_name == 'workflow_dispatch'
-
+    runs-on: self-hosted
+    # Only run this workflow when triggered by authorized users
+    if: |
+      github.ref == 'refs/heads/main' && 
+      (github.actor == github.repository_owner || 
+       contains(github.actor, 'imprint-tech') || 
+       contains(github.actor, 'ImprintTech'))
+    
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+          fetch-depth: 0  # Need full history for changelog
+          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: false  # Don't persist credentials after this step
 
+      # Configure Git identity for the bot
       - name: Configure Git
         run: |
-          git config --local user.name "Test Bot"
-          git config --local user.email "test-bot@example.com"
+          git config --local user.name "GitHub Actions Bot"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
 
+      # Update version in podspec and Package.swift
       - name: Calculate New Version
         id: version
         run: |
@@ -82,32 +91,68 @@ jobs:
             sed -i '' "s/s.version *= *\"$CURRENT_VERSION\"/s.version = \"$NEW_VERSION\"/" Imprint.podspec
           fi
 
+      # Generate changelog - sanitize output
       - name: Generate Changelog
         id: changelog
         run: |
+          set +x  # Don't echo commands
+          # Find the previous tag
           PREVIOUS_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          
           if [ -z "$PREVIOUS_TAG" ]; then
-            CHANGELOG=$(git log --pretty=format:"- %s (%h)" --no-merges)
+            # If no previous tag exists, use all commits
+            echo "No previous tag found, including all commits in changelog"
+            CHANGELOG=$(git log --pretty=format:"- %s (%h)" --no-merges | grep -v -i "secret\|password\|token\|key\|credential")
           else
-            CHANGELOG=$(git log ${PREVIOUS_TAG}..HEAD --pretty=format:"- %s (%h)" --no-merges)
+            # Get commits since the last tag
+            echo "Generating changelog since tag: $PREVIOUS_TAG"
+            CHANGELOG=$(git log ${PREVIOUS_TAG}..HEAD --pretty=format:"- %s (%h)" --no-merges | grep -v -i "secret\|password\|token\|key\|credential")
           fi
-
-          FEATURES=$(echo "$CHANGELOG" | grep -i "feat\|feature\|add" || echo "")
-          FIXES=$(echo "$CHANGELOG" | grep -i "fix\|bug\|issue" || echo "")
-          IMPROVEMENTS=$(echo "$CHANGELOG" | grep -i "improve\|enhance\|refactor\|perf" || echo "")
-          OTHERS=$(echo "$CHANGELOG" | grep -v -i "feat\|feature\|add\|fix\|bug\|issue\|improve\|enhance\|refactor\|perf" || echo "")
-
+          
+          # Categorize commits - sanitize output 
+          FEATURES=$(echo "$CHANGELOG" | grep -i "feat\|feature" | grep -v -i "secret\|password\|token\|key\|credential" || echo "")
+          FIXES=$(echo "$CHANGELOG" | grep -i "fix\|bug" | grep -v -i "secret\|password\|token\|key\|credential" || echo "")
+          IMPROVEMENTS=$(echo "$CHANGELOG" | grep -i "improve\|enhance\|refactor\|perf" | grep -v -i "secret\|password\|token\|key\|credential" || echo "")
+          OTHERS=$(echo "$CHANGELOG" | grep -v -i "feat\|feature\|add\|fix\|bug\|issue\|improve\|enhance\|refactor\|perf\|secret\|password\|token\|key\|credential" || echo "")
+          
+          # Create formatted changelog
+          # Use GitHub Actions' multiline output syntax directly
           {
             echo "changelog<<CHANGELOG_EOF"
-            echo "## Simulated Changelog for v${{ steps.version.outputs.new_version }}"
+            echo "## What's Changed in v${{ steps.version.outputs.new_version }}"
             echo ""
-            if [ ! -z "$FEATURES" ]; then echo "### Features"$'\n'"$FEATURES"$'\n'; fi
-            if [ ! -z "$FIXES" ]; then echo "### Fixes"$'\n'"$FIXES"$'\n'; fi
-            if [ ! -z "$IMPROVEMENTS" ]; then echo "### Improvements"$'\n'"$IMPROVEMENTS"$'\n'; fi
-            if [ ! -z "$OTHERS" ]; then echo "### Other"$'\n'"$OTHERS"$'\n'; fi
+            
+            if [ ! -z "$FEATURES" ]; then
+              echo "### New Features"
+              echo "$FEATURES"
+              echo ""
+            fi
+            
+            if [ ! -z "$FIXES" ]; then
+              echo "### Bug Fixes"
+              echo "$FIXES"
+              echo ""
+            fi
+            
+            if [ ! -z "$IMPROVEMENTS" ]; then
+              echo "### Improvements"
+              echo "$IMPROVEMENTS"
+              echo ""
+            fi
+            
+            if [ ! -z "$OTHERS" ]; then
+              echo "### Other Changes"
+              echo "$OTHERS"
+              echo ""
+            fi
+            
             echo "CHANGELOG_EOF"
           } >> $GITHUB_OUTPUT
 
       - name: Show Simulated Changelog
         run: |
           echo "${{ steps.changelog.outputs.changelog }}"
+
+      - name: Show Cocoapods Authentication status
+        run: |
+          pod trunk me
