@@ -20,13 +20,6 @@ permissions:
 jobs:
   release:
     runs-on: self-hosted
-    # Only run this workflow when triggered by authorized users
-    if: |
-      github.ref == 'refs/heads/main' && 
-      (github.actor == github.repository_owner || 
-       contains(github.actor, 'imprint-tech') || 
-       contains(github.actor, 'ImprintTech'))
-    
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
