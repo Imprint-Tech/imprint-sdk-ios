@@ -66,11 +66,39 @@ class ViewController: UIViewController {
   // Helper
   private func jsonString(_ dictionary: [String: Any]?) -> String {
     guard let dictionary else { return "nil" }
-    if let data = try? JSONSerialization.data(withJSONObject: dictionary, options: .prettyPrinted),
+
+    func sanitize(_ value: Any) -> Any? {
+      switch value {
+      case is NSNull:
+        return nil
+      case let dict as [String: Any]:
+        return sanitizeDictionary(dict)
+      case let array as [Any]:
+        return array.compactMap(sanitize)
+      case is String, is Int, is Double, is Bool:
+        return value
+      default:
+        return String(describing: value) // fallback for enums, etc.
+      }
+    }
+
+    func sanitizeDictionary(_ dict: [String: Any]) -> [String: Any] {
+      var sanitized: [String: Any] = [:]
+      for (key, value) in dict {
+        if let safeValue = sanitize(value) {
+          sanitized[key] = safeValue
+        }
+      }
+      return sanitized
+    }
+
+    let sanitized = sanitizeDictionary(dictionary)
+
+    if let data = try? JSONSerialization.data(withJSONObject: sanitized, options: .prettyPrinted),
        let jsonString = String(data: data, encoding: .utf8) {
       return jsonString
     } else {
-      return (String(describing: dictionary))
+      return String(describing: dictionary)
     }
   }
 }

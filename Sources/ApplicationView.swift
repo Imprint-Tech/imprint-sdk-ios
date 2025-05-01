@@ -42,11 +42,6 @@ struct ApplicationView: View {
       WebViewWrapper(viewModel: viewModel)
     }
     .background(Color.white.ignoresSafeArea())
-    .onReceive(viewModel.$completionState) { newState in
-      if newState == .offerAccepted {
-        dismissView()
-      }
-    }
   }
   
   private func dismissView() {
