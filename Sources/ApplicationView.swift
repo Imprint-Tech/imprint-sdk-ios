@@ -14,7 +14,7 @@ struct ApplicationView: View {
   var body: some View {
     VStack(spacing: 0) {
       Spacer()
-      HStack {
+      ZStack {
         if let logoUrl = viewModel.logoUrl {
           AsyncImage(url: logoUrl) { image in
             image
@@ -23,27 +23,31 @@ struct ApplicationView: View {
           } placeholder: {
             EmptyView()
           }
-          .padding(16)
+          .frame(height: 24)
+          .padding(.horizontal, 16)
+          .frame(maxWidth: .infinity, alignment: .center)
         }
-        Spacer()
         
-        Button(action: {
-          dismissView()
-        }) {
-          Image(systemName: "xmark")
-            .frame(width: 48, height: 48)
-            .foregroundColor(Color(red: 0.137, green: 0.137, blue: 0.137))
-            .font(.system(size: 16, weight: .semibold))
+        HStack {
+          Spacer()
+          Button(action: {
+            dismissView()
+          }) {
+            Image(systemName: "xmark")
+              .frame(width: 48, height: 48)
+              .foregroundColor(Color(red: 0.137, green: 0.137, blue: 0.137))
+              .font(.system(size: 16, weight: .semibold))
+          }
+          .padding(.trailing, 4)
         }
-        .padding(.trailing, 4)
       }
       .frame(height: 56)
       
       WebViewWrapper(viewModel: viewModel)
     }
     .background(Color.white.ignoresSafeArea())
-    .onReceive(viewModel.$completionState) { newState in
-      if newState == .offerAccepted {
+    .onReceive(viewModel.$processState) { newState in
+      if newState == .imprintClosed || newState == .customerClosed {
         dismissView()
       }
     }
@@ -58,5 +62,5 @@ struct ApplicationView: View {
 }
 
 #Preview {
-  ApplicationView(viewModel: .init(configuration: .init(clientSecret: "", partnerReference: "")))
+  ApplicationView(viewModel: .init(configuration: .init(clientSecret: "")))
 }

@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="kno-ym-lN3">
-                                <rect key="frame" x="16" y="75" width="361" height="688.66666666666663"/>
+                                <rect key="frame" x="16" y="75" width="361" height="586.33333333333337"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="client secret:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3KX-gT-b6x" userLabel="client secret:">
                                         <rect key="frame" x="0.0" y="0.0" width="361" height="20.333333333333332"/>
@@ -36,30 +36,14 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                     </textView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="partner reference:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YOs-gA-ZqS" userLabel="partner reference:">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="environment:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mZO-7W-HlP">
                                         <rect key="frame" x="0.0" y="152.33333333333334" width="361" height="20.333333333333343"/>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="aMV-EA-6XN" userLabel="partnerRef Input">
-                                        <rect key="frame" x="0.0" y="188.66666666666669" width="361" height="50"/>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="WEk-ix-dcq"/>
-                                        </constraints>
-                                        <color key="textColor" systemColor="secondaryLabelColor"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
-                                    </textView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="environment:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mZO-7W-HlP">
-                                        <rect key="frame" x="0.0" y="254.66666666666671" width="361" height="20.333333333333343"/>
-                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="n8r-r7-GoG">
-                                        <rect key="frame" x="0.0" y="291" width="361" height="32"/>
+                                        <rect key="frame" x="0.0" y="188.66666666666669" width="361" height="32"/>
                                         <segments>
                                             <segment title="Staging"/>
                                             <segment title="Sandbox"/>
@@ -67,14 +51,14 @@
                                         </segments>
                                     </segmentedControl>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xb1-yy-qez">
-                                        <rect key="frame" x="0.0" y="338" width="361" height="8"/>
+                                        <rect key="frame" x="0.0" y="235.66666666666669" width="361" height="8"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="8" id="ZNr-IC-t9d"/>
                                         </constraints>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nsq-X4-ppZ">
-                                        <rect key="frame" x="0.0" y="362" width="361" height="34.333333333333314"/>
+                                        <rect key="frame" x="0.0" y="259.66666666666669" width="361" height="34.333333333333314"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="filled" title="Start application"/>
                                         <connections>
@@ -82,20 +66,20 @@
                                         </connections>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sfC-82-i16">
-                                        <rect key="frame" x="0.0" y="412.33333333333331" width="361" height="24"/>
+                                        <rect key="frame" x="0.0" y="310" width="361" height="24"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="24" id="x8w-OT-P2X"/>
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="completion state:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SSe-gn-sVe">
-                                        <rect key="frame" x="0.0" y="452.33333333333337" width="361" height="20.333333333333314"/>
+                                        <rect key="frame" x="0.0" y="350" width="361" height="20.333333333333314"/>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="None" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="GXc-Ej-Zm6">
-                                        <rect key="frame" x="0.0" y="488.66666666666663" width="361" height="200"/>
+                                        <rect key="frame" x="0.0" y="386.33333333333331" width="361" height="199.99999999999994"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="200" id="kkE-13-QfK"/>
@@ -120,7 +104,6 @@
                         <outlet property="clientSecretInput" destination="SgA-GL-f8k" id="fmj-Qm-ofO"/>
                         <outlet property="completionState" destination="GXc-Ej-Zm6" id="Xqa-Pg-XFr"/>
                         <outlet property="environmentSelector" destination="n8r-r7-GoG" id="Ygd-Pg-hpA"/>
-                        <outlet property="partnerRefInput" destination="aMV-EA-6XN" id="JPh-3q-8Qh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
