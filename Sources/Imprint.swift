@@ -26,10 +26,7 @@ public class ImprintConfiguration {
   /// - Note: This clientSecret is generated through the Post Auth endpoint.
   ///   Please refer to the API documentation (https://docs.imprint.co/api-reference/customer-sessions/create-a-new-customer-session) for details on obtaining a clientSecret.
   let clientSecret: String
-  
-  /// The partnerReference will allow the web-app to know which partner is initializing the application.
-  let partnerReference: String
-  
+    
   /// The environment for the application process, with a default value of `.production`.
   let environment: Environment
   
@@ -47,11 +44,9 @@ public class ImprintConfiguration {
   /// Initializes a new configuration with the specified clientSecret, partnerReference and environment.
   /// - Parameters:
   ///   - clientSecret: The clientSecret to initiate the application session.
-  ///   - partnerReference: The unique reference identifier for the partner.
   ///   - environment: The environment to be used, defaulting to `.production`.
-  public init(clientSecret: String, partnerReference: String, environment: Environment = .production) {
+  public init(clientSecret: String, environment: Environment = .production) {
     self.clientSecret = clientSecret
-    self.partnerReference = partnerReference
     self.environment = environment
   }
   
@@ -100,7 +95,6 @@ public class ImprintConfiguration {
   public enum ErrorCode: String, Codable {
     // Authentication errors
     case invalidClientSecret = "INVALID_CLIENT_SECRET"
-    case invalidPartnerReference = "INVALID_PARTNER_REFERENCE"
     
     // Network errors
     case networkConnectionFailed = "NETWORK_CONNECTION_FAILED"

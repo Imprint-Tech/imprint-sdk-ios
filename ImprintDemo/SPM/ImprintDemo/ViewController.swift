@@ -11,7 +11,6 @@ import Imprint
 class ViewController: UIViewController {
 
   @IBOutlet weak var clientSecretInput: UITextView!
-  @IBOutlet weak var partnerRefInput: UITextView!
   @IBOutlet weak var environmentSelector: UISegmentedControl!
   @IBOutlet weak var completionState: UITextView!
   
@@ -26,10 +25,9 @@ class ViewController: UIViewController {
 
   @IBAction func startTapped(_ sender: Any) {
     let clientSecret = clientSecretInput.text ?? ""
-    let partnerReference = partnerRefInput.text ?? ""
     let environment = ImprintConfiguration.Environment(rawValue: environmentSelector.selectedSegmentIndex) ?? .staging
     
-    let configuration = ImprintConfiguration(clientSecret: clientSecret, partnerReference: partnerReference, environment: environment)
+    let configuration = ImprintConfiguration(clientSecret: clientSecret, environment: environment)
     
     configuration.onCompletion = { state, data in
       switch state {
@@ -53,10 +51,6 @@ class ViewController: UIViewController {
     clientSecretInput.layer.borderWidth = 1
     clientSecretInput.layer.borderColor = UIColor.secondaryLabel.cgColor
     clientSecretInput.layer.cornerRadius = 6
-    
-    partnerRefInput.layer.borderWidth = 1
-    partnerRefInput.layer.borderColor = UIColor.secondaryLabel.cgColor
-    partnerRefInput.layer.cornerRadius = 6
     
     completionState.layer.borderWidth = 1
     completionState.layer.borderColor = UIColor.secondaryLabel.cgColor

@@ -29,7 +29,7 @@ class ApplicationViewModel: ObservableObject {
     
     let deviceId = UIDevice.current.identifierForVendor?.uuidString ?? ""
     
-    var url = "\(host)/start?client_secret=\(configuration.clientSecret)&device-id=\(deviceId)&partner_reference=\(configuration.partnerReference)"
+    var url = "\(host)/start?client_secret=\(configuration.clientSecret)&device-id=\(deviceId)"
     
     self.webUrl = URL(string: url)!
     self.configuration = configuration
