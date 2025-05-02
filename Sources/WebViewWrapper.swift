@@ -63,7 +63,7 @@ struct WebViewWrapper: UIViewRepresentable {
             viewModel.updateCompletionState(.rejected, data: eventData)
           case .error:
             viewModel.updateCompletionState(.error, data: processErrorData(eventData))
-          case .imprintClosed: // no action needed, still presist previous internal/external state
+          case .imprintClosed, .customerClosed: // no action needed, still presist previous internal/external state
             break
           default:
             viewModel.updateCompletionState(.inProgress, data: eventData)
