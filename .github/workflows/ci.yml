@@ -49,7 +49,7 @@ jobs:
             -project Imprint.xcodeproj \
             -scheme Imprint \
             -destination "id=$SIMULATOR_UDID" \
-            -verbose | xcpretty
+            -verbose
 
       - name: Run Unit Tests
         run: |
@@ -57,7 +57,7 @@ jobs:
             -project Imprint.xcodeproj \
             -scheme Imprint \
             -destination "id=$SIMULATOR_UDID" \
-            -enableCodeCoverage NO -verbose | xcpretty
+            -enableCodeCoverage NO -verbose
 
       - name: Update Podfile to use local SDK
         working-directory: ImprintDemo/Cocoapods
@@ -84,7 +84,7 @@ jobs:
             -workspace ImprintDemo.xcworkspace \
             -scheme ImprintDemo \
             -destination "id=$SIMULATOR_UDID" \
-            | grep -v "sensitive" | xcpretty
+            | grep -v "sensitive"
 
       - name: Apply local SDK patch to Xcode project
         working-directory: ImprintDemo/SPM
@@ -98,7 +98,7 @@ jobs:
           xcodebuild clean build \
             -project ImprintDemo.xcodeproj \
             -scheme ImprintDemo \
-            -destination "id=$SIMULATOR_UDID" | xcpretty
+            -destination "id=$SIMULATOR_UDID"
 
       - name: Clean up
         if: always()
