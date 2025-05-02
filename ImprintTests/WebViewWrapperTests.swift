@@ -16,7 +16,7 @@ class WebViewWrapperTests: XCTestCase {
   
   override func setUp() {
     super.setUp()
-    viewModel = ApplicationViewModel(configuration: ImprintConfiguration(clientSecret: "testSecret", partnerReference: "testRef"))
+    viewModel = ApplicationViewModel(configuration: ImprintConfiguration(clientSecret: "testSecret"))
     coordinator = WebViewWrapper.Coordinator(viewModel: viewModel)
   }
   
