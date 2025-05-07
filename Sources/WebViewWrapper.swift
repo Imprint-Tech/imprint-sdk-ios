@@ -87,18 +87,16 @@ struct WebViewWrapper: UIViewRepresentable {
     // Helper method to only expose neccessary fields for partners
     private func processCompletionData(_ data: ImprintConfiguration.CompletionData) -> ImprintConfiguration.CompletionData {
       var processedData: ImprintConfiguration.CompletionData = [:]
-      
-      let allowedKeys: Set<String> = [
-        "customer_id",
-        "partner_customer_id",
-        "payment_method_id",
-        "error_code"
+
+      let disallowedKeys: Set<String> = [
+        "source",
+        "event_name"
       ]
-      
-      for key in allowedKeys {
-        processedData[key] = data[key]
+
+      for (key, value) in data where !disallowedKeys.contains(key) {
+        processedData[key] = value
       }
-      
+
       return processedData
     }
   }
