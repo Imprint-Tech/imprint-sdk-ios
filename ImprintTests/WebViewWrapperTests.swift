@@ -42,7 +42,38 @@ class WebViewWrapperTests: XCTestCase {
     
     // Assert
     XCTAssertEqual(viewModel.completionState, .offerAccepted)
-    XCTAssertEqual(viewModel.processState, .offerAccepted)
+    XCTAssertEqual(viewModel.completionData?["consumerId"] as? String, "consumer-123")
+    XCTAssertEqual(viewModel.completionData?["applicationId"] as? String, "app-456")
+    XCTAssertEqual(viewModel.completionData?["externalReferenceId"] as? String, "partner-ref-789")
+    XCTAssertEqual(viewModel.completionData?["accountId"] as? String, "account-321")
+  }
+  
+  func testSDKv02HappyPath() {
+    // Arrange
+    let messageBody: [String: Any] = [
+      "event_name": "OFFER_ACCEPTED",
+      "consumerId": "consumer-123",
+      "applicationId": "app-456",
+      "externalReferenceId": "partner-ref-789",
+      "accountId": "account-321"
+    ]
+    let message = MockWKScriptMessage(name: WebViewWrapper.Constants.callbackHandlerName, body: messageBody)
+    
+    let messageBody2: [String: Any] = [
+      "event_name": "CLOSED",
+      "consumerId": "",
+      "applicationId": "",
+      "externalReferenceId": "",
+      "accountId": ""
+    ]
+    let message2 = MockWKScriptMessage(name: WebViewWrapper.Constants.callbackHandlerName, body: messageBody2)
+    
+    // Act
+    coordinator.userContentController(WKUserContentController(), didReceive: message)
+    coordinator.userContentController(WKUserContentController(), didReceive: message2)
+    
+    // Assert
+    XCTAssertEqual(viewModel.completionState, .offerAccepted)
     XCTAssertEqual(viewModel.completionData?["consumerId"] as? String, "consumer-123")
     XCTAssertEqual(viewModel.completionData?["applicationId"] as? String, "app-456")
     XCTAssertEqual(viewModel.completionData?["externalReferenceId"] as? String, "partner-ref-789")
@@ -62,7 +93,6 @@ class WebViewWrapperTests: XCTestCase {
     
     // Assert
     XCTAssertEqual(viewModel.completionState, .rejected)
-    XCTAssertEqual(viewModel.processState, .rejected)
     XCTAssertEqual(viewModel.completionData?["error_code"] as? String, "invalidToken")
   }
   
@@ -80,7 +110,6 @@ class WebViewWrapperTests: XCTestCase {
     
     // Assert
     XCTAssertEqual(viewModel.completionState, .error)
-    XCTAssertEqual(viewModel.processState, .error) // New assertion for process state
     XCTAssertEqual(viewModel.completionData?["error_code"] as? ImprintConfiguration.ErrorCode, .invalidClientSecret)
   }
   
@@ -101,7 +130,6 @@ class WebViewWrapperTests: XCTestCase {
       
       // Assert
       XCTAssertEqual(viewModel.completionState, .inProgress, "State \(state) should map to inProgress")
-      XCTAssertEqual(viewModel.processState?.rawValue, state) // Check internal process state
     }
   }
   
@@ -157,7 +185,6 @@ class WebViewWrapperTests: XCTestCase {
     
     // Assert
     XCTAssertEqual(viewModel.completionState, .inProgress)
-    XCTAssertNil(viewModel.processState)
   }
   
   func testLogoUrlMessage() {
