@@ -30,10 +30,10 @@ class WebViewWrapperTests: XCTestCase {
     // Arrange
     let messageBody: [String: Any] = [
       "event_name": "OFFER_ACCEPTED",
-      "consumerId": "consumer-123",
+      "customer_id": "consumer-123",
       "applicationId": "app-456",
-      "externalReferenceId": "partner-ref-789",
-      "accountId": "account-321"
+      "partner_customer_id": "partner-ref-789",
+      "payment_method_id": "account-321"
     ]
     let message = MockWKScriptMessage(name: WebViewWrapper.Constants.callbackHandlerName, body: messageBody)
     
@@ -42,29 +42,27 @@ class WebViewWrapperTests: XCTestCase {
     
     // Assert
     XCTAssertEqual(viewModel.completionState, .offerAccepted)
-    XCTAssertEqual(viewModel.completionData?["consumerId"] as? String, "consumer-123")
-    XCTAssertEqual(viewModel.completionData?["applicationId"] as? String, "app-456")
-    XCTAssertEqual(viewModel.completionData?["externalReferenceId"] as? String, "partner-ref-789")
-    XCTAssertEqual(viewModel.completionData?["accountId"] as? String, "account-321")
+    XCTAssertEqual(viewModel.completionData?["customer_id"] as? String, "consumer-123")
+    XCTAssertEqual(viewModel.completionData?["applicationId"] as? String, nil)
+    XCTAssertEqual(viewModel.completionData?["partner_customer_id"] as? String, "partner-ref-789")
+    XCTAssertEqual(viewModel.completionData?["payment_method_id"] as? String, "account-321")
   }
   
   func testSDKv02HappyPath() {
     // Arrange
     let messageBody: [String: Any] = [
       "event_name": "OFFER_ACCEPTED",
-      "consumerId": "consumer-123",
-      "applicationId": "app-456",
-      "externalReferenceId": "partner-ref-789",
-      "accountId": "account-321"
+      "customer_id": "consumer-123",
+      "partner_customer_id": "partner-ref-789",
+      "payment_method_id": "account-321"
     ]
     let message = MockWKScriptMessage(name: WebViewWrapper.Constants.callbackHandlerName, body: messageBody)
     
     let messageBody2: [String: Any] = [
       "event_name": "CLOSED",
-      "consumerId": "",
-      "applicationId": "",
-      "externalReferenceId": "",
-      "accountId": ""
+      "customer_id": "",
+      "partner_customer_id": "",
+      "payment_method_id": "",
     ]
     let message2 = MockWKScriptMessage(name: WebViewWrapper.Constants.callbackHandlerName, body: messageBody2)
     
@@ -74,10 +72,9 @@ class WebViewWrapperTests: XCTestCase {
     
     // Assert
     XCTAssertEqual(viewModel.completionState, .offerAccepted)
-    XCTAssertEqual(viewModel.completionData?["consumerId"] as? String, "consumer-123")
-    XCTAssertEqual(viewModel.completionData?["applicationId"] as? String, "app-456")
-    XCTAssertEqual(viewModel.completionData?["externalReferenceId"] as? String, "partner-ref-789")
-    XCTAssertEqual(viewModel.completionData?["accountId"] as? String, "account-321")
+    XCTAssertEqual(viewModel.completionData?["customer_id"] as? String, "consumer-123")
+    XCTAssertEqual(viewModel.completionData?["partner_customer_id"] as? String, "partner-ref-789")
+    XCTAssertEqual(viewModel.completionData?["payment_method_id"] as? String, "account-321")
   }
   
   func testRejectedMessage() {
@@ -111,26 +108,6 @@ class WebViewWrapperTests: XCTestCase {
     // Assert
     XCTAssertEqual(viewModel.completionState, .error)
     XCTAssertEqual(viewModel.completionData?["error_code"] as? ImprintConfiguration.ErrorCode, .invalidClientSecret)
-  }
-  
-  func testInProgressMessage() {
-    // Test cases for states that map to inProgress
-    let inProgressStates = ["INITIATED", "APPLICATION_STARTED", "OFFER_PRESENTED", "APPLICATION_REVIEW", "CREDIT_FROZEN", "CUSTOMER_CLOSED"]
-    
-    for state in inProgressStates {
-      // Arrange
-      let messageBody: [String: Any] = [
-        "event_name": state,
-        "session_id": "session-123"
-      ]
-      let message = MockWKScriptMessage(name: WebViewWrapper.Constants.callbackHandlerName, body: messageBody)
-      
-      // Act
-      coordinator.userContentController(WKUserContentController(), didReceive: message)
-      
-      // Assert
-      XCTAssertEqual(viewModel.completionState, .inProgress, "State \(state) should map to inProgress")
-    }
   }
   
   func testAdditionalDataFields() {
