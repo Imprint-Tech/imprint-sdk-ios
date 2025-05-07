@@ -46,8 +46,8 @@ struct ApplicationView: View {
       WebViewWrapper(viewModel: viewModel)
     }
     .background(Color.white.ignoresSafeArea())
-    .onReceive(viewModel.$processState) { newState in
-      if newState == .imprintClosed || newState == .customerClosed {
+    .onReceive(viewModel.$completionState) { newState in
+      if newState == .closed {
         dismissView()
       }
     }

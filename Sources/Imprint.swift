@@ -41,7 +41,7 @@ public class ImprintConfiguration {
   ///   - `error`: Triggered when an error occurs during embedded sign up application flow.
   public var onCompletion: ((CompletionState, CompletionData?) -> Void)?
 
-  /// Initializes a new configuration with the specified clientSecret, partnerReference and environment.
+  /// Initializes a new configuration with the specified clientSecret and environment.
   /// - Parameters:
   ///   - clientSecret: The clientSecret to initiate the application session.
   ///   - environment: The environment to be used, defaulting to `.production`.
@@ -60,14 +60,10 @@ public class ImprintConfiguration {
   /// Data dictionary passed to the completion handler, containing flexible key-value pairs.
   /// Common keys may include:
   /// - Note: Other keys may be provided; contact your Imprint team for details.
-  ///   event_name: string | null;              // Name of the event (from above list)
-  ///   timestamp: string | null;               // ISO timestamp when event occurred
-  ///   session_id: string | null;              // Unique identifier for this application session
   ///   customer_id: string | null;             // Imprint identifier for customer
   ///   partner_customer_id: string | null;     // Partner identifier for customer
   ///   payment_method_id: string | null;       // Identifier for Payment Method
   ///   error_code: ErrorCode | null;           // Standardized error code
-  ///   error_message: string | null;           // Human-readable error description
 
   public typealias CompletionData = [String: Any?]
   
@@ -77,19 +73,7 @@ public class ImprintConfiguration {
     case rejected
     case inProgress   // (New in v0.2) state to handle all intermediate states including abandonment
     case error
-  }
-  
-  public enum ProcessState: String, Codable {
-    case initiated = "INITIATED"
-    case applicationStarted = "APPLICATION_STARTED"
-    case offerPresented = "OFFER_PRESENTED"
-    case offerAccepted = "OFFER_ACCEPTED"
-    case rejected = "REJECTED"
-    case applicationReview = "APPLICATION_REVIEW"
-    case creditFrozen = "CREDIT_FROZEN"
-    case customerClosed = "CUSTOMER_CLOSED"
-    case imprintClosed = "IMPRINT_CLOSED"
-    case error = "ERROR"
+    case closed       // (New in v0.2) state to handle auto dismissal after reaching terminate state
   }
   
   public enum ErrorCode: String, Codable {

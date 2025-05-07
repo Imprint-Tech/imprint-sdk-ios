@@ -53,20 +53,19 @@ struct WebViewWrapper: UIViewRepresentable {
           viewModel.updateLogoUrl(logoUrl)
           return
         } else if let eventData = body as? ImprintConfiguration.CompletionData,
-                  let event = eventData[Constants.eventName] as? String,
-                  let state = ImprintConfiguration.ProcessState(rawValue: event){
-          viewModel.processState = state
-          switch state {
-          case .offerAccepted:
-            viewModel.updateCompletionState(.offerAccepted, data: eventData)
-          case .rejected:
-            viewModel.updateCompletionState(.rejected, data: eventData)
-          case .error:
-            viewModel.updateCompletionState(.error, data: processErrorData(eventData))
-          case .imprintClosed, .customerClosed: // no action needed, still presist previous internal/external state
+                  let event = eventData[Constants.eventName] as? String{
+          let processedData = processCompletionData(eventData)
+          switch event {
+          case "OFFER_ACCEPTED":
+            viewModel.updateCompletionState(.offerAccepted, data: processedData)
+          case "REJECTED":
+            viewModel.updateCompletionState(.rejected, data: processedData)
+          case "ERROR":
+            viewModel.updateCompletionState(.error, data: processErrorData(processedData))
+          case "CLOSED": // no action needed, still presist previous external terminal state
             break
           default:
-            viewModel.updateCompletionState(.inProgress, data: eventData)
+            viewModel.updateCompletionState(.inProgress, data: processedData)
           }
         }
       }
@@ -82,6 +81,22 @@ struct WebViewWrapper: UIViewRepresentable {
         processedData[Constants.errorCode] = errorCode
       }
       
+      return processedData
+    }
+    
+    // Helper method to only expose neccessary fields for partners
+    private func processCompletionData(_ data: ImprintConfiguration.CompletionData) -> ImprintConfiguration.CompletionData {
+      var processedData: ImprintConfiguration.CompletionData = [:]
+
+      let disallowedKeys: Set<String> = [
+        "source",
+        "event_name"
+      ]
+
+      for (key, value) in data where !disallowedKeys.contains(key) {
+        processedData[key] = value
+      }
+
       return processedData
     }
   }

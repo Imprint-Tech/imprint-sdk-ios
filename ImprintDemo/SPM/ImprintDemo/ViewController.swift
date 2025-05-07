@@ -39,6 +39,8 @@ class ViewController: UIViewController {
         self.completionState.text = "Application Interrupted - In Progress"
       case .error:
         self.completionState.text = "Error occured\n\(self.jsonString(data))"
+      case .closed:
+        break
       @unknown default:
         break
       }
