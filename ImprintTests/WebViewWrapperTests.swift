@@ -43,7 +43,7 @@ class WebViewWrapperTests: XCTestCase {
     // Assert
     XCTAssertEqual(viewModel.completionState, .offerAccepted)
     XCTAssertEqual(viewModel.completionData?["customer_id"] as? String, "consumer-123")
-    XCTAssertEqual(viewModel.completionData?["applicationId"] as? String, nil)
+    XCTAssertEqual(viewModel.completionData?["applicationId"] as? String, "app-456")
     XCTAssertEqual(viewModel.completionData?["partner_customer_id"] as? String, "partner-ref-789")
     XCTAssertEqual(viewModel.completionData?["payment_method_id"] as? String, "account-321")
   }
