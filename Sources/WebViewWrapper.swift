@@ -53,16 +53,18 @@ struct WebViewWrapper: UIViewRepresentable {
           viewModel.updateLogoUrl(logoUrl)
           return
         } else if let eventData = body as? ImprintConfiguration.CompletionData,
-                  let event = eventData[Constants.eventName] as? String{
+                  let event = eventData[Constants.eventName] as? String,
+                  let state = ImprintConfiguration.ProcessState(rawValue: event){
           let processedData = processCompletionData(eventData)
-          switch event {
-          case "OFFER_ACCEPTED":
+          viewModel.processState = state
+          switch state {
+          case .offerAccepted:
             viewModel.updateCompletionState(.offerAccepted, data: processedData)
-          case "REJECTED":
+          case .rejected:
             viewModel.updateCompletionState(.rejected, data: processedData)
-          case "ERROR":
+          case .error:
             viewModel.updateCompletionState(.error, data: processErrorData(processedData))
-          case "CLOSED": // no action needed, still presist previous external terminal state
+          case .closed: // no action needed, still presist previous external terminal state
             break
           default:
             viewModel.updateCompletionState(.inProgress, data: processedData)
