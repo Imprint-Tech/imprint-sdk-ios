@@ -73,7 +73,14 @@ public class ImprintConfiguration {
     case rejected
     case inProgress   // (New in v0.2) state to handle all intermediate states including abandonment
     case error
-    case closed       // (New in v0.2) state to handle auto dismissal after reaching terminate state
+  }
+  
+  public enum ProcessState: String, Codable {
+    case offerAccepted = "OFFER_ACCEPTED"
+    case rejected = "REJECTED"
+    case inProgress = "IN_PROGRESS"
+    case closed = "CLOSED"
+    case error = "ERROR" // (New in v0.2) state to handle auto dismissal after reaching terminate state
   }
   
   public enum ErrorCode: String, Codable {

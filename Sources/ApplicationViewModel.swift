@@ -13,6 +13,7 @@ class ApplicationViewModel: ObservableObject {
   
   @Published var logoUrl: URL?
   @Published var completionState: ImprintConfiguration.CompletionState = .inProgress
+  @Published var processState: ImprintConfiguration.ProcessState?
   var completionData: ImprintConfiguration.CompletionData?
   
   init(configuration: ImprintConfiguration) {
