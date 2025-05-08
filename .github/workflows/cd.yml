@@ -2,21 +2,10 @@ name: CD
 
 on:
   workflow_dispatch:
-    inputs:
-      release_type:
-        description: 'Release Type'
-        required: true
-        default: 'patch'
-        type: choice
-        options:
-          - patch
-          - minor
-          - major
 
-# Restrict permissions
 permissions:
-  contents: write  # Needed for creating releases
-  
+  contents: write  # Required for pushing tags and creating GitHub releases
+
 jobs:
   release:
     runs-on: self-hosted
@@ -24,156 +13,102 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Need full history for changelog
+          fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      # Configure Git identity for the bot
       - name: Configure Git
         run: |
           git config --local user.name "GitHub Actions Bot"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
 
-      # Update version in podspec and Package.swift
-      - name: Calculate New Version
+      # Read current version from podspec
+      - name: Read Current Version
         id: version
         run: |
-          # Extract version with a more flexible regex that handles both single and double quotes
-          # and accepts whitespace
           CURRENT_VERSION=$(grep -m 1 "s.version" Imprint.podspec | sed -E "s/.*= *[\'\"](([0-9]+\.){2}[0-9]+)[\'\"].*/\1/")
-          echo "Current version: $CURRENT_VERSION"
-          
-          # Make sure we have a valid version to work with
-          if [[ ! "$CURRENT_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo "Error: Invalid version format detected: $CURRENT_VERSION"
-            # Show the actual content from the podspec to debug
-            echo "Content from podspec: $(grep -m 1 "s.version" Imprint.podspec)"
-            echo "Using default version 0.1.0"
-            CURRENT_VERSION="0.1.0"
-          fi
-          
-          # Split the version string
-          IFS='.' read -r major minor patch <<< "$CURRENT_VERSION"
-          
-          echo "Components: major=$major, minor=$minor, patch=$patch"
+          echo "Using version from podspec: $CURRENT_VERSION"
+          echo "new_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
 
-          case "${{ github.event.inputs.release_type }}" in
-            major)
-              NEW_VERSION="$((major + 1)).0.0"
-              ;;
-            minor)
-              NEW_VERSION="$major.$((minor + 1)).0"
-              ;;
-            patch)
-              NEW_VERSION="$major.$minor.$((patch + 1))"
-              ;;
-            *)
-              echo "Unknown release type"
-              exit 1
-              ;;
-          esac
-
-          echo "Simulated new version: $NEW_VERSION"
-          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
-
-          # Update podspec - detect whether single or double quotes are used
-          if grep -q "s.version.*'" Imprint.podspec; then
-            echo "Using single quotes for version in podspec"
-            sed -i '' "s/s.version *= *'$CURRENT_VERSION'/s.version = '$NEW_VERSION'/" Imprint.podspec
-          else
-            echo "Using double quotes for version in podspec"
-            sed -i '' "s/s.version *= *\"$CURRENT_VERSION\"/s.version = \"$NEW_VERSION\"/" Imprint.podspec
-          fi
-
-      # Generate changelog - sanitize output
+      # Generate changelog from commits since last tag
       - name: Generate Changelog
         id: changelog
         run: |
-          set +x  # Don't echo commands
-          # Find the previous tag
+          set +x
           PREVIOUS_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
           
           if [ -z "$PREVIOUS_TAG" ]; then
-            # If no previous tag exists, use all commits
-            echo "No previous tag found, including all commits in changelog"
-            CHANGELOG=$(git log --pretty=format:"- %s (%h)" --no-merges | grep -v -i "secret\|password\|token\|key\|credential")
+            echo "No previous tag found; using full history"
+            CHANGELOG=$(git log --pretty=format:"- %s (%h)" --no-merges)
           else
-            # Get commits since the last tag
-            echo "Generating changelog since tag: $PREVIOUS_TAG"
-            CHANGELOG=$(git log ${PREVIOUS_TAG}..HEAD --pretty=format:"- %s (%h)" --no-merges | grep -v -i "secret\|password\|token\|key\|credential")
+            echo "Generating changelog since $PREVIOUS_TAG"
+            CHANGELOG=$(git log ${PREVIOUS_TAG}..HEAD --pretty=format:"- %s (%h)" --no-merges)
           fi
-          
-          # Categorize commits - sanitize output 
-          FEATURES=$(echo "$CHANGELOG" | grep -i "feat\|feature" | grep -v -i "secret\|password\|token\|key\|credential" || echo "")
-          FIXES=$(echo "$CHANGELOG" | grep -i "fix\|bug" | grep -v -i "secret\|password\|token\|key\|credential" || echo "")
-          IMPROVEMENTS=$(echo "$CHANGELOG" | grep -i "improve\|enhance\|refactor\|perf" | grep -v -i "secret\|password\|token\|key\|credential" || echo "")
-          OTHERS=$(echo "$CHANGELOG" | grep -v -i "feat\|feature\|add\|fix\|bug\|issue\|improve\|enhance\|refactor\|perf\|secret\|password\|token\|key\|credential" || echo "")
-          
-          # Create formatted changelog
-          # Use GitHub Actions' multiline output syntax directly
+
+          FEATURES=$(echo "$CHANGELOG" | grep -i "feat\|feature" || echo "")
+          FIXES=$(echo "$CHANGELOG" | grep -i "fix\|bug" || echo "")
+          IMPROVEMENTS=$(echo "$CHANGELOG" | grep -i "improve\|enhance\|refactor\|perf" || echo "")
+          OTHERS=$(echo "$CHANGELOG" | grep -v -i "feat\|feature\|add\|fix\|bug\|issue\|improve\|enhance\|refactor\|perf" || echo "")
+
           {
             echo "changelog<<CHANGELOG_EOF"
             echo "## What's Changed in v${{ steps.version.outputs.new_version }}"
             echo ""
-            
-            if [ ! -z "$FEATURES" ]; then
+
+            if [ -n "$FEATURES" ]; then
               echo "### New Features"
               echo "$FEATURES"
               echo ""
             fi
-            
-            if [ ! -z "$FIXES" ]; then
+
+            if [ -n "$FIXES" ]; then
               echo "### Bug Fixes"
               echo "$FIXES"
               echo ""
             fi
-            
-            if [ ! -z "$IMPROVEMENTS" ]; then
+
+            if [ -n "$IMPROVEMENTS" ]; then
               echo "### Improvements"
               echo "$IMPROVEMENTS"
               echo ""
             fi
-            
-            if [ ! -z "$OTHERS" ]; then
+
+            if [ -n "$OTHERS" ]; then
               echo "### Other Changes"
               echo "$OTHERS"
               echo ""
             fi
-            
+
             echo "CHANGELOG_EOF"
           } >> $GITHUB_OUTPUT
 
-      # Create a tag and push with GITHUB_TOKEN
-      - name: Create Tag
+      # Create and push git tag
+      - name: Create Git Tag
         run: |
-          set +x  # Don't echo commands
+          set +x
           NEW_VERSION=${{ steps.version.outputs.new_version }}
-          git add Imprint.podspec Package.swift
-          git commit -m "Release $NEW_VERSION"
           git tag $NEW_VERSION
-          git push && git push --tags
+          git push origin $NEW_VERSION
 
-      # Publish to CocoaPods - use dedicated secret
+      # Publish to CocoaPods
       - name: Publish to CocoaPods
         run: |
-          set +x  # Don't echo commands
-          pod trunk push Imprint.podspec --allow-warnings --silent  # Reduce log verbosity
+          set +x
+          pod trunk push Imprint.podspec --allow-warnings --silent
 
-      # Create GitHub Release with Changelog
+      # Create GitHub Release
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.version.outputs.new_version }}
           name: Release ${{ steps.version.outputs.new_version }}
           body: ${{ steps.changelog.outputs.changelog }}
-          draft: false
-          prerelease: false
-          token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Clean up workspace after release
+      # Clean up
       - name: Clean up
         if: always()
         run: |
-          set +x  # Don't echo commands
           rm -rf ~/Library/Developer/Xcode/DerivedData/Imprint-*
           rm -rf ~/Library/Caches/org.carthage.CarthageKit
           rm -rf ~/Library/Caches/CocoaPods
