@@ -67,28 +67,29 @@ Add Imprint iOS SDK to your project using CocoaPods(minimum support cocoapods ve
     ```
 
 2. Configuration
-Create an instance of `ImprintConfiguration` with your `client_secret`, `partner_reference` and `environment`, then assign additional optional fields as needed.
+Create an instance of `ImprintConfiguration` with your `client_secret` and `environment`, then assign additional optional fields as needed.
 
     ```swift
-    let configuration = ImprintConfiguration(clientSecret: "client_secret", partnerReference: "partner_reference", environment: .sandbox)
+    let configuration = ImprintConfiguration(clientSecret: "client_secret", environment: .sandbox)
     ```
 
 3. Define the Completion Handler
 Define the completion handler onCompletion to manage the terminal states when the application flow ends.
 
     ```swift
-    configuration.onCompletion = { state, metadata in
+    configuration.onCompletion = { state, data in
       switch state {
       case .offerAccepted:
-        print("Offer accepted, metadata: \(String(describing: metadata))")
+        self.completionState.text = "Offer accepted\n\(self.jsonString(data))"
       case .rejected:
-        print("Application rejected, metadata: \(String(describing: metadata))")
-      case .abandoned:
-        print("Flow abandoned, metadata: \(String(describing: metadata))")
+        self.completionState.text = "Application rejected\n\(self.jsonString(data))"
+      case .inProgress:
+        self.completionState.text = "Application Interrupted - In Progress"
       case .error:
-        print("Error occurred, metadata: \(String(describing: metadata))")
+        self.completionState.text = "Error occured\n\(self.jsonString(data))"
+      @unknown default:
+        break
       }
-      // Perform any generic actions after the flow ends if needed
     }
     ```
 
