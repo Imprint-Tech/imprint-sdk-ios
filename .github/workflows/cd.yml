@@ -26,7 +26,6 @@ jobs:
         with:
           fetch-depth: 0  # Need full history for changelog
           token: ${{ secrets.GITHUB_TOKEN }}
-          persist-credentials: false  # Don't persist credentials after this step
 
       # Configure Git identity for the bot
       - name: Configure Git
