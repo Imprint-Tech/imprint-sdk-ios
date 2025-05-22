@@ -79,8 +79,8 @@ public class ImprintConfiguration {
     case offerAccepted = "OFFER_ACCEPTED"
     case rejected = "REJECTED"
     case inProgress = "IN_PROGRESS"
-    case closed = "CLOSED"
-    case error = "ERROR" // (New in v0.2) state to handle auto dismissal after reaching terminate state
+    case closed = "CLOSED" // (New in v0.2) state to handle auto dismissal after reaching terminate state
+    case error = "ERROR"
   }
   
   public enum ErrorCode: String, Codable {

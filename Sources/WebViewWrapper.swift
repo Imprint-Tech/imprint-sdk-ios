@@ -22,6 +22,9 @@ struct WebViewWrapper: UIViewRepresentable {
   func makeUIView(context: Context) -> WKWebView {
     let webView = WKWebView()
     webView.navigationDelegate = context.coordinator
+    // Enable webView open new window
+    webView.uiDelegate = context.coordinator
+    webView.configuration.preferences.javaScriptCanOpenWindowsAutomatically = true
     
     webView.configuration.userContentController.add(context.coordinator, name: Constants.callbackHandlerName)
     let request = URLRequest(url: viewModel.webUrl)
@@ -36,7 +39,7 @@ struct WebViewWrapper: UIViewRepresentable {
     Coordinator(viewModel: viewModel)
   }
   
-  class Coordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler {
+  class Coordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler, WKUIDelegate {
     var viewModel: ApplicationViewModel
     
     init(viewModel: ApplicationViewModel) {
@@ -100,6 +103,27 @@ struct WebViewWrapper: UIViewRepresentable {
       }
 
       return processedData
+    }
+    
+    // Delegate method for webView to open external links
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+      if navigationAction.navigationType == .linkActivated {
+        if let url = navigationAction.request.url,
+           UIApplication.shared.canOpenURL(url) {
+          UIApplication.shared.open(url)
+          decisionHandler(.cancel)
+          return
+        }
+      }
+      decisionHandler(.allow)
+    }
+    
+    // Delegate method for webView to open new window
+    func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+      if let url = navigationAction.request.url {
+        UIApplication.shared.open(url)
+      }
+      return nil
     }
   }
 }
