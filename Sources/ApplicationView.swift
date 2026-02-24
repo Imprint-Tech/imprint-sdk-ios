@@ -8,8 +8,17 @@
 import SwiftUI
 
 struct ApplicationView: View {
+  @Environment(\.colorScheme) var colorScheme
   @Environment(\.presentationMode) var presentationMode
   @ObservedObject var viewModel: ApplicationViewModel
+  
+  private var closeButtonColor: Color {
+    colorScheme == .dark ? Color(red: 0.98, green: 0.98, blue: 0.98) : Color(red: 0.2, green: 0.2, blue: 0.2)
+  }
+  
+  private var backgroundColor: Color {
+    colorScheme == .dark ? Color(red: 0.137, green: 0.137, blue: 0.137) : Color(red: 0.98, green: 0.98, blue: 0.98)
+  }
   
   var body: some View {
     VStack(spacing: 0) {
@@ -35,7 +44,7 @@ struct ApplicationView: View {
           }) {
             Image(systemName: "xmark")
               .frame(width: 48, height: 48)
-              .foregroundColor(Color(red: 0.137, green: 0.137, blue: 0.137))
+              .foregroundColor(closeButtonColor)
               .font(.system(size: 16, weight: .semibold))
           }
           .padding(.trailing, 4)
@@ -45,7 +54,7 @@ struct ApplicationView: View {
       
       WebViewWrapper(viewModel: viewModel)
     }
-    .background(Color.white.ignoresSafeArea())
+    .background(backgroundColor.ignoresSafeArea())
     .onReceive(viewModel.$processState) { newState in
       if newState == .closed {
         dismissView()
