@@ -26,9 +26,12 @@ public class ImprintConfiguration {
   /// - Note: This clientSecret is generated through the Post Auth endpoint.
   ///   Please refer to the API documentation (https://docs.imprint.co/api-reference/customer-sessions/create-a-new-customer-session) for details on obtaining a clientSecret.
   let clientSecret: String
-    
+
   /// The environment for the application process, with a default value of `.production`.
   let environment: Environment
+
+  /// An optional offer configuration UUID used to present a specific welcome offer.
+  let offerConfigUUID: String?
   
   /// A closure that handles the terminal state of the application process.
   /// - Parameters:
@@ -45,9 +48,10 @@ public class ImprintConfiguration {
   /// - Parameters:
   ///   - clientSecret: The clientSecret to initiate the application session.
   ///   - environment: The environment to be used, defaulting to `.production`.
-  public init(clientSecret: String, environment: Environment = .production) {
+  public init(clientSecret: String, environment: Environment = .production, offerConfigUUID: String? = nil) {
     self.clientSecret = clientSecret
     self.environment = environment
+    self.offerConfigUUID = offerConfigUUID
   }
   
   /// Available environments for the application process.
