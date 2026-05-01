@@ -90,11 +90,22 @@ jobs:
             echo "CHANGELOG_EOF"
           } >> $GITHUB_OUTPUT
 
+      - name: Update Podspec Version
+        run: |
+          sed -i '' "s/s.version.*=.*/s.version          = '${{ steps.version.outputs.new_version }}'/" Imprint.podspec
+          git add Imprint.podspec
+          git commit -m "Bump version to ${{ steps.version.outputs.new_version }}"
+          git push origin HEAD
+
       - name: Create Git Tag
         run: |
           NEW_VERSION=${{ steps.version.outputs.new_version }}
           git tag $NEW_VERSION
           git push origin $NEW_VERSION
+
+      - name: Publish to CocoaPods
+        run: |
+          pod trunk push Imprint.podspec --allow-warnings --silent
 
       # Create GitHub Release
       - name: Create GitHub Release
