@@ -15,7 +15,7 @@ class ApplicationViewModelTests: XCTestCase {
     let url = viewModel.webUrl.absoluteString
     XCTAssertTrue(url.hasPrefix("https://apply.imprint.co/start?"))
     XCTAssertTrue(url.contains("client_secret=test-secret"))
-    XCTAssertFalse(url.contains("offerConfigUUID"))
+    XCTAssertFalse(url.contains("offerConfigUUIDs"))
   }
 
   func testWebUrlWithOfferConfigUUID() {
@@ -28,7 +28,7 @@ class ApplicationViewModelTests: XCTestCase {
 
     let url = viewModel.webUrl.absoluteString
     XCTAssertTrue(url.contains("client_secret=test-secret"))
-    XCTAssertTrue(url.contains("offerConfigUUID=offer-uuid-123"))
+    XCTAssertTrue(url.contains("offerConfigUUIDs=offer-uuid-123"))
   }
 
   func testWebUrlStagingEnvironment() {
@@ -41,7 +41,7 @@ class ApplicationViewModelTests: XCTestCase {
 
     let url = viewModel.webUrl.absoluteString
     XCTAssertTrue(url.hasPrefix("https://apply.stg.imprintapi.co/start?"))
-    XCTAssertTrue(url.contains("offerConfigUUID=stg-offer-uuid"))
+    XCTAssertTrue(url.contains("offerConfigUUIDs=stg-offer-uuid"))
   }
 
   func testWebUrlSandboxEnvironment() {
@@ -54,7 +54,7 @@ class ApplicationViewModelTests: XCTestCase {
 
     let url = viewModel.webUrl.absoluteString
     XCTAssertTrue(url.hasPrefix("https://apply.sbx.imprint.co/start?"))
-    XCTAssertTrue(url.contains("offerConfigUUID=sbx-offer-uuid"))
+    XCTAssertTrue(url.contains("offerConfigUUIDs=sbx-offer-uuid"))
   }
 
   func testConfigurationDefaultsOfferConfigUUIDToNil() {

@@ -32,7 +32,7 @@ class ApplicationViewModel: ObservableObject {
     var url = "\(host)/start?client_secret=\(configuration.clientSecret)&device-id=\(deviceId)"
 
     if let offerConfigUUID = configuration.offerConfigUUID {
-      url += "&offerConfigUUID=\(offerConfigUUID)"
+      url += "&offerConfigUUIDs=\(offerConfigUUID)"
     }
 
     self.webUrl = URL(string: url)!
