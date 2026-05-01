@@ -20,10 +20,6 @@ playground.xcworkspace
 .swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
 Package.resolved
 
-# CocoaPods
-Pods/
-*.xcworkspace
-
 # Carthage
 Carthage/Build/
 Carthage/Checkouts/

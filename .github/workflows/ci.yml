@@ -59,33 +59,6 @@ jobs:
             -destination "id=$SIMULATOR_UDID" \
             -enableCodeCoverage NO -verbose
 
-      - name: Update Podfile to use local SDK
-        working-directory: ImprintDemo/Cocoapods
-        run: |
-          set +x
-          cat > Podfile.tmp << EOF
-          platform :ios, '15.0'
-
-          target 'ImprintDemo' do
-            use_frameworks!
-            pod 'Imprint', :path => '../../'
-          end
-          EOF
-          mv Podfile.tmp Podfile
-
-      - name: Install Pods for Demo App
-        working-directory: ImprintDemo/Cocoapods
-        run: pod install --no-repo-update
-
-      - name: Build Demo App via CocoaPods
-        working-directory: ImprintDemo
-        run: |
-          xcodebuild clean build \
-            -workspace ImprintDemo.xcworkspace \
-            -scheme ImprintDemo \
-            -destination "id=$SIMULATOR_UDID" \
-            | grep -v "sensitive"
-
       - name: Apply local SDK patch to Xcode project
         working-directory: ImprintDemo/SPM
         run: |
@@ -103,6 +76,4 @@ jobs:
       - name: Clean up
         if: always()
         run: |
-          set +x
           rm -rf ~/Library/Developer/Xcode/DerivedData/Imprint-*
-          rm -rf ~/Library/Caches/CocoaPods

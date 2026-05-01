@@ -6,8 +6,6 @@
 
 ## Installation
 
-### Option 1
-
 ### Swift Package Manager
 
 1. Add the following repository URL:
@@ -25,38 +23,6 @@ dependencies: [
     .package(url: "https://github.com/Imprint-Tech/imprint-sdk-ios", from: "0.1.6")
 ]
 ```
-
-### Option 2
-### Cocoapods
-Add Imprint iOS SDK to your project using CocoaPods(minimum support cocoapods version: 1.16.1):
-
-1. If you haven't already, install CocoaPods:
-
-   ```bash
-   sudo gem install cocoapods
-   ```
-
-2. Create a Podfile in your project directory if you don't have one:
-
-   ```bash
-   pod init
-   ```
-
-3. Add Imprint iOS SDK to your Podfile:
-
-    ```ruby
-   target 'YourApp' do
-      pod 'Imprint'   
-   end
-   ```
-
-4. Install the dependencies:
-
-    ```bash
-   pod install
-   ```
-
-5. Open the `.xcworkspace` file that CocoaPods created (not the `.xcodeproj`).
 
 
 ## Implementation

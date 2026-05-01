@@ -9,7 +9,7 @@ on:
         type: string
 
 permissions:
-  contents: write  # Required for pushing tags and creating GitHub releases
+  contents: write
 
 jobs:
   release:
@@ -42,13 +42,12 @@ jobs:
         run: |
           echo "new_version=$INPUT_VERSION" >> $GITHUB_OUTPUT
 
-      # Generate changelog from commits since last tag
       - name: Generate Changelog
         id: changelog
         run: |
           set +x
           PREVIOUS_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
-          
+
           if [ -z "$PREVIOUS_TAG" ]; then
             echo "No previous tag found; using full history"
             CHANGELOG=$(git log --pretty=format:"- %s (%h)" --no-merges)
@@ -94,24 +93,12 @@ jobs:
             echo "CHANGELOG_EOF"
           } >> $GITHUB_OUTPUT
 
-      - name: Update Podspec Version
-        run: |
-          sed -i '' "s/s.version.*=.*/s.version          = '${{ steps.version.outputs.new_version }}'/" Imprint.podspec
-          git add Imprint.podspec
-          git commit -m "Bump version to ${{ steps.version.outputs.new_version }}"
-          git push origin HEAD
-
       - name: Create Git Tag
         run: |
           NEW_VERSION=${{ steps.version.outputs.new_version }}
           git tag $NEW_VERSION
           git push origin $NEW_VERSION
 
-      - name: Publish to CocoaPods
-        run: |
-          pod trunk push Imprint.podspec --allow-warnings --silent
-
-      # Create GitHub Release
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
@@ -121,10 +108,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Clean up
       - name: Clean up
         if: always()
         run: |
           rm -rf ~/Library/Developer/Xcode/DerivedData/Imprint-*
-          rm -rf ~/Library/Caches/org.carthage.CarthageKit
-          rm -rf ~/Library/Caches/CocoaPods
