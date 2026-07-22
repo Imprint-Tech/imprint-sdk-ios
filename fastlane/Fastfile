@@ -1,0 +1,46 @@
+############################################################
+# 📦 SDK Configurations & Setup
+############################################################
+
+default_platform(:ios)
+setup_ci(force: true) if ENV['CI']
+
+PROJECT = "Imprint.xcodeproj"
+SCHEME = "Imprint"
+
+############################################################
+# 🚀 Lanes
+############################################################
+
+platform :ios do
+  desc "Build the SDK"
+  lane :build do |options|
+    derived_data = options[:derived_data_path] || ".build/DerivedData"
+    build_only(derived_data_path: derived_data)
+  end
+
+  desc "Run unit tests"
+  lane :test do
+    run_tests(
+      project: PROJECT,
+      scheme: SCHEME,
+      device: "iPhone 17",
+      clean: true,
+      code_coverage: true
+    )
+  end
+end
+
+############################################################
+# 🧩 Functions
+############################################################
+
+def build_only(derived_data_path: nil)
+  run_tests(
+    project: PROJECT,
+    scheme: SCHEME,
+    device: "iPhone 15",
+    build_for_testing: true,
+    derived_data_path: derived_data_path
+  )
+end
