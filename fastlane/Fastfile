@@ -7,6 +7,7 @@ setup_ci(force: true) if ENV['CI']
 
 PROJECT = "Imprint.xcodeproj"
 SCHEME = "Imprint"
+DEVICE = "iPhone 17"
 
 ############################################################
 # 🚀 Lanes
@@ -24,7 +25,7 @@ platform :ios do
     run_tests(
       project: PROJECT,
       scheme: SCHEME,
-      device: "iPhone 17",
+      device: DEVICE,
       clean: true,
       code_coverage: true
     )
@@ -39,7 +40,7 @@ def build_only(derived_data_path: nil)
   run_tests(
     project: PROJECT,
     scheme: SCHEME,
-    device: "iPhone 15",
+    device: DEVICE,
     build_for_testing: true,
     derived_data_path: derived_data_path
   )
