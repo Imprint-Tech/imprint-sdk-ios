@@ -1,0 +1,36 @@
+name: Fastlane
+
+on:
+  workflow_call:
+    inputs:
+      lane:
+        required: true
+        type: string
+
+jobs:
+  fastlane:
+    runs-on: self-hosted
+    env:
+      FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT: 10
+      FASTLANE_XCODEBUILD_SETTINGS_RETRIES: 6
+      GITHUB_RUN_NUMBER: ${{ github.run_number }}
+      GITHUB_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      CI_BRANCH: ${{ github.head_ref || github.ref_name }}
+      CI: true
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+          fetch-depth: 1
+
+      - name: Bundle Install
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Run Fastlane
+        run: |
+          bundle exec fastlane ${{ inputs.lane }}
