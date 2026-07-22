@@ -1,79 +1,13 @@
-name: CI
+name: Build & Test
 
 on:
   push:
-    branches: [main]
+    branches: [main, main-*, release, release-*]
   pull_request:
 
-permissions:
-  contents: read
-
 jobs:
-  build:
-    runs-on: self-hosted
-
-    steps:
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.9.1
-
-      - name: Checkout SDK Repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 1
-          persist-credentials: false
-
-      - name: Shutdown All Simulators
-        run: xcrun simctl shutdown all
-
-      - name: Create or Reuse Simulator
-        run: |
-          SIM_NAME="CI iPhone 14"
-          DEVICE_TYPE="com.apple.CoreSimulator.SimDeviceType.iPhone-14"
-          RUNTIME_ID=$(xcrun simctl list runtimes | grep "iOS 17.2" | grep -oE "com.apple.CoreSimulator.SimRuntime.iOS-17-2")
-          EXISTING=$(xcrun simctl list devices | grep "$SIM_NAME" | grep -oE '[A-F0-9\-]{36}' || true)
-          if [ -z "$EXISTING" ]; then
-            UDID=$(xcrun simctl create "$SIM_NAME" "$DEVICE_TYPE" "$RUNTIME_ID")
-          else
-            UDID=$EXISTING
-          fi
-          echo "SIMULATOR_UDID=$UDID" >> $GITHUB_ENV
-
-      - name: Boot Simulator
-        run: |
-          xcrun simctl boot "$SIMULATOR_UDID"
-          xcrun simctl bootstatus "$SIMULATOR_UDID" -b  # Wait until fully booted
-
-      - name: Build SDK
-        run: |
-          xcodebuild clean build \
-            -project Imprint.xcodeproj \
-            -scheme Imprint \
-            -destination "id=$SIMULATOR_UDID" \
-            -verbose
-
-      - name: Run Unit Tests
-        run: |
-          xcodebuild test \
-            -project Imprint.xcodeproj \
-            -scheme Imprint \
-            -destination "id=$SIMULATOR_UDID" \
-            -enableCodeCoverage NO -verbose
-
-      - name: Apply local SDK patch to Xcode project
-        working-directory: ImprintDemo/SPM
-        run: |
-          echo "Applying local SwiftPM path patch to project.pbxproj"
-          git apply ../../ci/imprint_spm_local.patch
-
-      - name: Build Demo App via SwiftPM
-        working-directory: ImprintDemo/SPM
-        run: |
-          xcodebuild clean build \
-            -project ImprintDemo.xcodeproj \
-            -scheme ImprintDemo \
-            -destination "id=$SIMULATOR_UDID"
-
-      - name: Clean up
-        if: always()
-        run: |
-          rm -rf ~/Library/Developer/Xcode/DerivedData/Imprint-*
+  build_and_test:
+    uses: ./.github/workflows/fastlane.yml
+    with:
+      lane: test
+    secrets: inherit
