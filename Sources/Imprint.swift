@@ -32,6 +32,9 @@ public class ImprintConfiguration {
 
   /// An optional offer configuration UUID used to present a specific welcome offer.
   let offerConfigUUID: String?
+
+  /// An optional application base URL used to load a preview deployment.
+  let applicationBaseURL: URL?
   
   /// A closure that handles the terminal state of the application process.
   /// - Parameters:
@@ -54,10 +57,18 @@ public class ImprintConfiguration {
   /// - Parameters:
   ///   - clientSecret: The clientSecret to initiate the application session.
   ///   - environment: The environment to be used, defaulting to `.production`.
-  public init(clientSecret: String, environment: Environment = .production, offerConfigUUID: String? = nil) {
+  ///   - offerConfigUUID: An optional offer configuration UUID.
+  ///   - applicationBaseURL: An optional application base URL that overrides the environment host.
+  public init(
+    clientSecret: String,
+    environment: Environment = .production,
+    offerConfigUUID: String? = nil,
+    applicationBaseURL: URL? = nil
+  ) {
     self.clientSecret = clientSecret
     self.environment = environment
     self.offerConfigUUID = offerConfigUUID
+    self.applicationBaseURL = applicationBaseURL
   }
   
   /// Available environments for the application process.

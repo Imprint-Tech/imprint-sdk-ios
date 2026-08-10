@@ -57,6 +57,18 @@ class ApplicationViewModelTests: XCTestCase {
     XCTAssertTrue(url.contains("offerConfigUUIDs=sbx-offer-uuid"))
   }
 
+  func testWebUrlWithApplicationBaseURL() {
+    let configuration = ImprintConfiguration(
+      clientSecret: "preview-secret",
+      applicationBaseURL: URL(string: "https://web-application-preview.example.com/")
+    )
+    let viewModel = ApplicationViewModel(configuration: configuration)
+
+    let url = viewModel.webUrl.absoluteString
+    XCTAssertTrue(url.hasPrefix("https://web-application-preview.example.com/start?"))
+    XCTAssertTrue(url.contains("client_secret=preview-secret"))
+  }
+
   func testConfigurationDefaultsOfferConfigUUIDToNil() {
     let configuration = ImprintConfiguration(clientSecret: "secret")
     XCTAssertNil(configuration.offerConfigUUID)

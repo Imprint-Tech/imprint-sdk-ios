@@ -19,14 +19,20 @@ class ApplicationViewModel: ObservableObject {
   
   init(configuration: ImprintConfiguration) {
     let nativeAppleWalletProvisioningHandler = configuration.onNativeAppleWalletProvisioning
-    var host = ""
-    switch configuration.environment {
-    case .staging:
-      host = "https://apply.stg.imprintapi.co"
-    case .sandbox:
-      host = "https://apply.sbx.imprint.co"
-    case .production:
-      host = "https://apply.imprint.co"
+    var host: String
+    if let applicationBaseURL = configuration.applicationBaseURL {
+      host = applicationBaseURL.absoluteString.trimmingCharacters(
+        in: CharacterSet(charactersIn: "/")
+      )
+    } else {
+      switch configuration.environment {
+      case .staging:
+        host = "https://apply.stg.imprintapi.co"
+      case .sandbox:
+        host = "https://apply.sbx.imprint.co"
+      case .production:
+        host = "https://apply.imprint.co"
+      }
     }
     
     let deviceId = UIDevice.current.identifierForVendor?.uuidString ?? ""
