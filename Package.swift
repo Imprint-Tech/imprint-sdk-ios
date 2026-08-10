@@ -12,7 +12,7 @@ let package = Package(
             targets: ["Imprint"]
         ),
         .library(
-            name: "ImprintSDKCore",
+            name: "ImprintApplicationSDK",
             targets: ["ImprintSDKCore"]
         )
     ],
