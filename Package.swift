@@ -10,11 +10,15 @@ let package = Package(
         .library(
             name: "Imprint",
             targets: ["Imprint"]
+        ),
+        .library(
+            name: "ImprintSDKCore",
+            targets: ["ImprintSDKCore"]
         )
     ],
     targets: [
         .target(
-            name: "Imprint",
+            name: "ImprintSDKCore",
             path: "Sources",
             exclude: [],
             sources: ["."],
@@ -23,6 +27,11 @@ let package = Package(
             cSettings: [],
             swiftSettings: [],
             linkerSettings: []
+        ),
+        .target(
+            name: "Imprint",
+            dependencies: ["ImprintSDKCore"],
+            path: "Compatibility"
         )
     ]
 )
