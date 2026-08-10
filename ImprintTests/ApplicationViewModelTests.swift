@@ -61,4 +61,19 @@ class ApplicationViewModelTests: XCTestCase {
     let configuration = ImprintConfiguration(clientSecret: "secret")
     XCTAssertNil(configuration.offerConfigUUID)
   }
+
+  func testWebUrlWithoutNativeAppleWalletProvisioningHandler() {
+    let configuration = ImprintConfiguration(clientSecret: "test-secret")
+    let viewModel = ApplicationViewModel(configuration: configuration)
+
+    XCTAssertFalse(viewModel.webUrl.absoluteString.contains("nativeAppleWalletProvisioning"))
+  }
+
+  func testWebUrlWithNativeAppleWalletProvisioningHandler() {
+    let configuration = ImprintConfiguration(clientSecret: "test-secret")
+    configuration.onNativeAppleWalletProvisioning = { _, _ in }
+    let viewModel = ApplicationViewModel(configuration: configuration)
+
+    XCTAssertTrue(viewModel.webUrl.absoluteString.contains("nativeAppleWalletProvisioning=true"))
+  }
 }

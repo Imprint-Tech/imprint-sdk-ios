@@ -44,6 +44,12 @@ public class ImprintConfiguration {
   ///   - `error`: Triggered when an error occurs during embedded sign up application flow.
   public var onCompletion: ((CompletionState, CompletionData?) -> Void)?
 
+  /// A closure that starts native Apple Wallet provisioning after a payment method is created.
+  /// - Parameters:
+  ///   - data: Includes `payment_method_id` and may include additional identifiers.
+  ///   - completion: Invoke exactly once when the native provisioning flow finishes so the application can continue.
+  public var onNativeAppleWalletProvisioning: NativeAppleWalletProvisioningHandler?
+
   /// Initializes a new configuration with the specified clientSecret and environment.
   /// - Parameters:
   ///   - clientSecret: The clientSecret to initiate the application session.
@@ -70,6 +76,11 @@ public class ImprintConfiguration {
   ///   error_code: ErrorCode | null;           // Standardized error code
 
   public typealias CompletionData = [String: Any?]
+
+  public typealias NativeAppleWalletProvisioningHandler = (
+    _ data: CompletionData,
+    _ completion: @escaping () -> Void
+  ) -> Void
   
   /// Terminal states for the application process.
   public enum CompletionState: Int {
@@ -81,6 +92,7 @@ public class ImprintConfiguration {
   
   public enum ProcessState: String, Codable {
     case offerAccepted = "OFFER_ACCEPTED"
+    case paymentMethodCreated = "PAYMENT_METHOD_CREATED"
     case rejected = "REJECTED"
     case inProgress = "IN_PROGRESS"
     case closed = "CLOSED" // (New in v0.2) state to handle auto dismissal after reaching terminate state

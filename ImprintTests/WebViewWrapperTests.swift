@@ -177,6 +177,71 @@ class WebViewWrapperTests: XCTestCase {
     // Assert
     XCTAssertEqual(viewModel.logoUrl?.absoluteString, "https://example.com/logo.png")
   }
+
+  func testPaymentMethodCreatedInvokesNativeProvisioningAndResumesWebApplicationOnce() {
+    var receivedData: ImprintConfiguration.CompletionData?
+    var provisioningCompletion: (() -> Void)?
+    let configuration = ImprintConfiguration(clientSecret: "testSecret")
+    configuration.onNativeAppleWalletProvisioning = { data, completion in
+      receivedData = data
+      provisioningCompletion = completion
+    }
+    viewModel = ApplicationViewModel(configuration: configuration)
+    coordinator = WebViewWrapper.Coordinator(viewModel: viewModel)
+
+    let webApplicationResumed = expectation(description: "Web application resumed")
+    webApplicationResumed.assertForOverFulfill = true
+    var evaluatedScripts: [String] = []
+    coordinator.evaluateJavaScript = { script in
+      evaluatedScripts.append(script)
+      webApplicationResumed.fulfill()
+    }
+    let messageBody: [String: Any] = [
+      "source": "imprint_web_app",
+      "event_name": "PAYMENT_METHOD_CREATED",
+      "customer_id": "consumer-123",
+      "payment_method_id": "payment-456"
+    ]
+    let message = MockWKScriptMessage(
+      name: WebViewWrapper.Constants.callbackHandlerName,
+      body: messageBody
+    )
+
+    coordinator.userContentController(WKUserContentController(), didReceive: message)
+
+    XCTAssertEqual(receivedData?["customer_id"] as? String, "consumer-123")
+    XCTAssertEqual(receivedData?["payment_method_id"] as? String, "payment-456")
+    XCTAssertNotNil(provisioningCompletion)
+    XCTAssertTrue(evaluatedScripts.isEmpty)
+
+    provisioningCompletion?()
+    provisioningCompletion?()
+    wait(for: [webApplicationResumed], timeout: 1)
+
+    XCTAssertEqual(
+      evaluatedScripts,
+      [WebViewWrapper.Constants.nativeAppleWalletProvisioningCompletedScript]
+    )
+  }
+
+  func testPaymentMethodCreatedIsIgnoredWithoutNativeProvisioningHandler() {
+    let messageBody: [String: Any] = [
+      "event_name": "PAYMENT_METHOD_CREATED",
+      "payment_method_id": "payment-456"
+    ]
+    let message = MockWKScriptMessage(
+      name: WebViewWrapper.Constants.callbackHandlerName,
+      body: messageBody
+    )
+    var evaluatedScript: String?
+    coordinator.evaluateJavaScript = { evaluatedScript = $0 }
+
+    coordinator.userContentController(WKUserContentController(), didReceive: message)
+
+    XCTAssertNil(evaluatedScript)
+    XCTAssertEqual(viewModel.completionState, .inProgress)
+    XCTAssertNil(viewModel.completionData)
+  }
 }
 
 class MockWKScriptMessage: WKScriptMessage {

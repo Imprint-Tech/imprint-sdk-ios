@@ -59,6 +59,21 @@ Define the completion handler onCompletion to manage the terminal states when th
     }
     ```
 
+To provision the new card with Apple Wallet natively, set `onNativeAppleWalletProvisioning`. The SDK pauses the embedded application after the payment method is created and resumes it when `resumeApplication` is invoked. Always invoke `resumeApplication` when the native flow finishes, including cancellation or failure.
+
+```swift
+configuration.onNativeAppleWalletProvisioning = { data, resumeApplication in
+  guard let paymentMethodID = data["payment_method_id"] as? String else {
+    resumeApplication()
+    return
+  }
+
+  startAppleWalletProvisioning(paymentMethodID: paymentMethodID) {
+    resumeApplication()
+  }
+}
+```
+
 4. Start the Application flow
 Once you’ve configured the ImprintConfiguration, initiate the application flow by calling ImprintApp.startApplication from your view controller.
     

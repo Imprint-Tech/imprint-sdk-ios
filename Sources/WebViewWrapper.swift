@@ -15,12 +15,15 @@ struct WebViewWrapper: UIViewRepresentable {
     static let eventName = "event_name"
     static let errorCode = "error_code"
     static let data = "data"
+    static let nativeAppleWalletProvisioningCompletedScript =
+      "window.dispatchEvent(new Event('imprintNativeAppleWalletProvisioningCompleted'));"
   }
   
   @ObservedObject var viewModel: ApplicationViewModel
   
   func makeUIView(context: Context) -> WKWebView {
     let webView = WKWebView()
+    context.coordinator.webView = webView
     webView.navigationDelegate = context.coordinator
     // Enable webView open new window
     webView.uiDelegate = context.coordinator
@@ -41,6 +44,8 @@ struct WebViewWrapper: UIViewRepresentable {
   
   class Coordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler, WKUIDelegate {
     var viewModel: ApplicationViewModel
+    weak var webView: WKWebView?
+    var evaluateJavaScript: ((String) -> Void)?
     
     init(viewModel: ApplicationViewModel) {
       self.viewModel = viewModel
@@ -55,10 +60,14 @@ struct WebViewWrapper: UIViewRepresentable {
           // load logo on navbar
           viewModel.updateLogoUrl(logoUrl)
           return
-        } else if let eventData = body as? ImprintConfiguration.CompletionData,
-                  let event = eventData[Constants.eventName] as? String,
-                  let state = ImprintConfiguration.ProcessState(rawValue: event){
+        } else if let event = body[Constants.eventName] as? String,
+                  let state = ImprintConfiguration.ProcessState(rawValue: event) {
+          let eventData: ImprintConfiguration.CompletionData = body
           let processedData = processCompletionData(eventData)
+          if state == .paymentMethodCreated {
+            handleNativeAppleWalletProvisioning(processedData)
+            return
+          }
           viewModel.processState = state
           switch state {
           case .offerAccepted:
@@ -71,6 +80,27 @@ struct WebViewWrapper: UIViewRepresentable {
             break
           default:
             viewModel.updateCompletionState(.inProgress, data: processedData)
+          }
+        }
+      }
+    }
+
+    private func handleNativeAppleWalletProvisioning(
+      _ data: ImprintConfiguration.CompletionData
+    ) {
+      guard viewModel.hasNativeAppleWalletProvisioningHandler else { return }
+
+      var hasCompleted = false
+      viewModel.requestNativeAppleWalletProvisioning(data: data) { [weak self] in
+        DispatchQueue.main.async {
+          guard !hasCompleted else { return }
+          hasCompleted = true
+
+          let script = Constants.nativeAppleWalletProvisioningCompletedScript
+          if let evaluateJavaScript = self?.evaluateJavaScript {
+            evaluateJavaScript(script)
+          } else {
+            self?.webView?.evaluateJavaScript(script)
           }
         }
       }

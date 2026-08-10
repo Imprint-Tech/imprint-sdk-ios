@@ -10,6 +10,7 @@ import SwiftUI
 class ApplicationViewModel: ObservableObject {
   let webUrl: URL
   private let configuration: ImprintConfiguration
+  private let nativeAppleWalletProvisioningHandler: ImprintConfiguration.NativeAppleWalletProvisioningHandler?
   
   @Published var logoUrl: URL?
   @Published var completionState: ImprintConfiguration.CompletionState = .inProgress
@@ -17,6 +18,7 @@ class ApplicationViewModel: ObservableObject {
   var completionData: ImprintConfiguration.CompletionData?
   
   init(configuration: ImprintConfiguration) {
+    let nativeAppleWalletProvisioningHandler = configuration.onNativeAppleWalletProvisioning
     var host = ""
     switch configuration.environment {
     case .staging:
@@ -35,8 +37,13 @@ class ApplicationViewModel: ObservableObject {
       url += "&offerConfigUUIDs=\(offerConfigUUID)"
     }
 
+    if nativeAppleWalletProvisioningHandler != nil {
+      url += "&nativeAppleWalletProvisioning=true"
+    }
+
     self.webUrl = URL(string: url)!
     self.configuration = configuration
+    self.nativeAppleWalletProvisioningHandler = nativeAppleWalletProvisioningHandler
   }
   
   func updateLogoUrl(_ url: URL) {
@@ -49,6 +56,17 @@ class ApplicationViewModel: ObservableObject {
   ) {
     self.completionState = state
     self.completionData = data
+  }
+
+  var hasNativeAppleWalletProvisioningHandler: Bool {
+    nativeAppleWalletProvisioningHandler != nil
+  }
+
+  func requestNativeAppleWalletProvisioning(
+    data: ImprintConfiguration.CompletionData,
+    completion: @escaping () -> Void
+  ) {
+    nativeAppleWalletProvisioningHandler?(data, completion)
   }
   
   func onDismiss() {
