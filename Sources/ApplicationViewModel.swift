@@ -39,6 +39,13 @@ class ApplicationViewModel: ObservableObject {
     
     var url = "\(host)/start?client_secret=\(configuration.clientSecret)&device-id=\(deviceId)"
 
+    // A preview URL cannot communicate its backend tier through its hostname.
+    // Preserve the configured environment so the preview can route API traffic
+    // to the matching backend.
+    if configuration.applicationBaseURL != nil {
+      url += "&environment=\(configuration.environment.queryValue)"
+    }
+
     if let offerConfigUUID = configuration.offerConfigUUID {
       url += "&offerConfigUUIDs=\(offerConfigUUID)"
     }
@@ -77,5 +84,18 @@ class ApplicationViewModel: ObservableObject {
   
   func onDismiss() {
     configuration.onCompletion?(completionState, completionData)
+  }
+}
+
+private extension ImprintConfiguration.Environment {
+  var queryValue: String {
+    switch self {
+    case .staging:
+      return "staging"
+    case .sandbox:
+      return "sandbox"
+    case .production:
+      return "production"
+    }
   }
 }

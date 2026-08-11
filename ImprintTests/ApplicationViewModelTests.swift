@@ -60,6 +60,7 @@ class ApplicationViewModelTests: XCTestCase {
   func testWebUrlWithApplicationBaseURL() {
     let configuration = ImprintConfiguration(
       clientSecret: "preview-secret",
+      environment: .sandbox,
       applicationBaseURL: URL(string: "https://web-application-preview.example.com/")
     )
     let viewModel = ApplicationViewModel(configuration: configuration)
@@ -67,6 +68,7 @@ class ApplicationViewModelTests: XCTestCase {
     let url = viewModel.webUrl.absoluteString
     XCTAssertTrue(url.hasPrefix("https://web-application-preview.example.com/start?"))
     XCTAssertTrue(url.contains("client_secret=preview-secret"))
+    XCTAssertTrue(url.contains("environment=sandbox"))
   }
 
   func testConfigurationDefaultsOfferConfigUUIDToNil() {
