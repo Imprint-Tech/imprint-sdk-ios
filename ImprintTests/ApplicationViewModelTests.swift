@@ -57,8 +57,37 @@ class ApplicationViewModelTests: XCTestCase {
     XCTAssertTrue(url.contains("offerConfigUUIDs=sbx-offer-uuid"))
   }
 
+  func testWebUrlWithApplicationBaseURL() {
+    let configuration = ImprintConfiguration(
+      clientSecret: "preview-secret",
+      environment: .sandbox,
+      applicationBaseURL: URL(string: "https://web-application-preview.example.com/")
+    )
+    let viewModel = ApplicationViewModel(configuration: configuration)
+
+    let url = viewModel.webUrl.absoluteString
+    XCTAssertTrue(url.hasPrefix("https://web-application-preview.example.com/start?"))
+    XCTAssertTrue(url.contains("client_secret=preview-secret"))
+    XCTAssertTrue(url.contains("environment=sandbox"))
+  }
+
   func testConfigurationDefaultsOfferConfigUUIDToNil() {
     let configuration = ImprintConfiguration(clientSecret: "secret")
     XCTAssertNil(configuration.offerConfigUUID)
+  }
+
+  func testWebUrlWithoutNativeAppleWalletProvisioningHandler() {
+    let configuration = ImprintConfiguration(clientSecret: "test-secret")
+    let viewModel = ApplicationViewModel(configuration: configuration)
+
+    XCTAssertFalse(viewModel.webUrl.absoluteString.contains("nativeAppleWalletProvisioning"))
+  }
+
+  func testWebUrlWithNativeAppleWalletProvisioningHandler() {
+    let configuration = ImprintConfiguration(clientSecret: "test-secret")
+    configuration.onNativeAppleWalletProvisioning = { _, _ in }
+    let viewModel = ApplicationViewModel(configuration: configuration)
+
+    XCTAssertTrue(viewModel.webUrl.absoluteString.contains("nativeAppleWalletProvisioning=true"))
   }
 }

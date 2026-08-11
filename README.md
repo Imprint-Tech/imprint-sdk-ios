@@ -59,6 +59,21 @@ Define the completion handler onCompletion to manage the terminal states when th
     }
     ```
 
+To provision the new card with Apple Wallet natively, set `onNativeAppleWalletProvisioning`. The SDK invokes the handler when the applicant taps the Add to Apple Wallet button. The callback data includes `payment_method_id` and `type` (`apple_wallet` or `google_wallet`). Report whether provisioning succeeded or was cancelled; the embedded application remains open after receiving the result.
+
+```swift
+configuration.onNativeAppleWalletProvisioning = { data, reportResult in
+  guard let paymentMethodID = data["payment_method_id"] as? String else {
+    reportResult(.cancelled)
+    return
+  }
+
+  startAppleWalletProvisioning(paymentMethodID: paymentMethodID) { succeeded in
+    reportResult(succeeded ? .succeeded : .cancelled)
+  }
+}
+```
+
 4. Start the Application flow
 Once you’ve configured the ImprintConfiguration, initiate the application flow by calling ImprintApp.startApplication from your view controller.
     
