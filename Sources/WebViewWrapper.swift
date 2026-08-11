@@ -18,7 +18,7 @@ struct WebViewWrapper: UIViewRepresentable {
     static func nativeAddToWalletCompletedScript(
       result: ImprintConfiguration.NativeAddToWalletResult
     ) -> String {
-      "window.dispatchEvent(new CustomEvent('imprintNativeAddToWalletCompleted', { detail: { result: '\(result.rawValue)' } }));"
+      "window.dispatchEvent(new CustomEvent('nativeAddToWalletCompleted', { detail: { result: '\(result.rawValue)' } }));"
     }
   }
   

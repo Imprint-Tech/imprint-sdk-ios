@@ -222,7 +222,7 @@ class WebViewWrapperTests: XCTestCase {
 
     XCTAssertEqual(
       evaluatedScripts,
-      [WebViewWrapper.Constants.nativeAddToWalletCompletedScript(result: .succeeded)]
+      ["window.dispatchEvent(new CustomEvent('nativeAddToWalletCompleted', { detail: { result: 'succeeded' } }));"]
     )
   }
 
@@ -239,7 +239,7 @@ class WebViewWrapperTests: XCTestCase {
     coordinator.evaluateJavaScript = { script in
       XCTAssertEqual(
         script,
-        WebViewWrapper.Constants.nativeAddToWalletCompletedScript(result: .cancelled)
+        "window.dispatchEvent(new CustomEvent('nativeAddToWalletCompleted', { detail: { result: 'cancelled' } }));"
       )
       resultReported.fulfill()
     }
