@@ -59,17 +59,17 @@ Define the completion handler onCompletion to manage the terminal states when th
     }
     ```
 
-To provision the new card with Apple Wallet natively, set `onNativeAppleWalletProvisioning`. The SDK pauses the embedded application after the payment method is created and resumes it when `resumeApplication` is invoked. Always invoke `resumeApplication` when the native flow finishes, including cancellation or failure.
+To provision the new card with Apple Wallet natively, set `onNativeAppleWalletProvisioning`. The SDK invokes the handler when the applicant taps the Add to Apple Wallet button. The callback data includes `payment_method_id` and `type` (`apple_wallet` or `google_wallet`). Report whether provisioning succeeded or was cancelled; the embedded application remains open after receiving the result.
 
 ```swift
-configuration.onNativeAppleWalletProvisioning = { data, resumeApplication in
+configuration.onNativeAppleWalletProvisioning = { data, reportResult in
   guard let paymentMethodID = data["payment_method_id"] as? String else {
-    resumeApplication()
+    reportResult(.cancelled)
     return
   }
 
-  startAppleWalletProvisioning(paymentMethodID: paymentMethodID) {
-    resumeApplication()
+  startAppleWalletProvisioning(paymentMethodID: paymentMethodID) { succeeded in
+    reportResult(succeeded ? .succeeded : .cancelled)
   }
 }
 ```

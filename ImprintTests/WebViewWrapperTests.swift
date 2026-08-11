@@ -178,9 +178,9 @@ class WebViewWrapperTests: XCTestCase {
     XCTAssertEqual(viewModel.logoUrl?.absoluteString, "https://example.com/logo.png")
   }
 
-  func testPaymentMethodCreatedInvokesNativeProvisioningAndResumesWebApplicationOnce() {
+  func testNativeAddToWalletButtonHitReportsSuccessToWebApplicationOnce() {
     var receivedData: ImprintConfiguration.CompletionData?
-    var provisioningCompletion: (() -> Void)?
+    var provisioningCompletion: ((ImprintConfiguration.NativeAddToWalletResult) -> Void)?
     let configuration = ImprintConfiguration(clientSecret: "testSecret")
     configuration.onNativeAppleWalletProvisioning = { data, completion in
       receivedData = data
@@ -189,18 +189,19 @@ class WebViewWrapperTests: XCTestCase {
     viewModel = ApplicationViewModel(configuration: configuration)
     coordinator = WebViewWrapper.Coordinator(viewModel: viewModel)
 
-    let webApplicationResumed = expectation(description: "Web application resumed")
-    webApplicationResumed.assertForOverFulfill = true
+    let resultReported = expectation(description: "Native wallet result reported")
+    resultReported.assertForOverFulfill = true
     var evaluatedScripts: [String] = []
     coordinator.evaluateJavaScript = { script in
       evaluatedScripts.append(script)
-      webApplicationResumed.fulfill()
+      resultReported.fulfill()
     }
     let messageBody: [String: Any] = [
       "source": "imprint_web_app",
-      "event_name": "PAYMENT_METHOD_CREATED",
+      "event_name": "NATIVE_ADD_TO_WALLET_BUTTON_HIT",
       "customer_id": "consumer-123",
-      "payment_method_id": "payment-456"
+      "payment_method_id": "payment-456",
+      "type": "apple_wallet"
     ]
     let message = MockWKScriptMessage(
       name: WebViewWrapper.Constants.callbackHandlerName,
@@ -211,23 +212,57 @@ class WebViewWrapperTests: XCTestCase {
 
     XCTAssertEqual(receivedData?["customer_id"] as? String, "consumer-123")
     XCTAssertEqual(receivedData?["payment_method_id"] as? String, "payment-456")
+    XCTAssertEqual(receivedData?["type"] as? String, "apple_wallet")
     XCTAssertNotNil(provisioningCompletion)
     XCTAssertTrue(evaluatedScripts.isEmpty)
 
-    provisioningCompletion?()
-    provisioningCompletion?()
-    wait(for: [webApplicationResumed], timeout: 1)
+    provisioningCompletion?(.succeeded)
+    provisioningCompletion?(.cancelled)
+    wait(for: [resultReported], timeout: 1)
 
     XCTAssertEqual(
       evaluatedScripts,
-      [WebViewWrapper.Constants.nativeAppleWalletProvisioningCompletedScript]
+      [WebViewWrapper.Constants.nativeAddToWalletCompletedScript(result: .succeeded)]
     )
   }
 
-  func testPaymentMethodCreatedIsIgnoredWithoutNativeProvisioningHandler() {
+  func testNativeAddToWalletButtonHitCanReportCancellation() {
+    var provisioningCompletion: ((ImprintConfiguration.NativeAddToWalletResult) -> Void)?
+    let configuration = ImprintConfiguration(clientSecret: "testSecret")
+    configuration.onNativeAppleWalletProvisioning = { _, completion in
+      provisioningCompletion = completion
+    }
+    viewModel = ApplicationViewModel(configuration: configuration)
+    coordinator = WebViewWrapper.Coordinator(viewModel: viewModel)
+
+    let resultReported = expectation(description: "Cancellation reported")
+    coordinator.evaluateJavaScript = { script in
+      XCTAssertEqual(
+        script,
+        WebViewWrapper.Constants.nativeAddToWalletCompletedScript(result: .cancelled)
+      )
+      resultReported.fulfill()
+    }
+    let message = MockWKScriptMessage(
+      name: WebViewWrapper.Constants.callbackHandlerName,
+      body: [
+        "event_name": "NATIVE_ADD_TO_WALLET_BUTTON_HIT",
+        "payment_method_id": "payment-456",
+        "type": "apple_wallet"
+      ]
+    )
+
+    coordinator.userContentController(WKUserContentController(), didReceive: message)
+    provisioningCompletion?(.cancelled)
+
+    wait(for: [resultReported], timeout: 1)
+  }
+
+  func testNativeAddToWalletButtonHitIsIgnoredWithoutHandler() {
     let messageBody: [String: Any] = [
-      "event_name": "PAYMENT_METHOD_CREATED",
-      "payment_method_id": "payment-456"
+      "event_name": "NATIVE_ADD_TO_WALLET_BUTTON_HIT",
+      "payment_method_id": "payment-456",
+      "type": "apple_wallet"
     ]
     let message = MockWKScriptMessage(
       name: WebViewWrapper.Constants.callbackHandlerName,

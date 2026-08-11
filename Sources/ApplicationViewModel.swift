@@ -77,7 +77,7 @@ class ApplicationViewModel: ObservableObject {
 
   func requestNativeAppleWalletProvisioning(
     data: ImprintConfiguration.CompletionData,
-    completion: @escaping () -> Void
+    completion: @escaping (ImprintConfiguration.NativeAddToWalletResult) -> Void
   ) {
     nativeAppleWalletProvisioningHandler?(data, completion)
   }

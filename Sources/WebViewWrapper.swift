@@ -15,8 +15,11 @@ struct WebViewWrapper: UIViewRepresentable {
     static let eventName = "event_name"
     static let errorCode = "error_code"
     static let data = "data"
-    static let nativeAppleWalletProvisioningCompletedScript =
-      "window.dispatchEvent(new Event('imprintNativeAppleWalletProvisioningCompleted'));"
+    static func nativeAddToWalletCompletedScript(
+      result: ImprintConfiguration.NativeAddToWalletResult
+    ) -> String {
+      "window.dispatchEvent(new CustomEvent('imprintNativeAddToWalletCompleted', { detail: { result: '\(result.rawValue)' } }));"
+    }
   }
   
   @ObservedObject var viewModel: ApplicationViewModel
@@ -64,8 +67,8 @@ struct WebViewWrapper: UIViewRepresentable {
                   let state = ImprintConfiguration.ProcessState(rawValue: event) {
           let eventData: ImprintConfiguration.CompletionData = body
           let processedData = processCompletionData(eventData)
-          if state == .paymentMethodCreated {
-            handleNativeAppleWalletProvisioning(processedData)
+          if state == .nativeAddToWalletButtonHit {
+            handleNativeAddToWallet(processedData)
             return
           }
           viewModel.processState = state
@@ -85,18 +88,18 @@ struct WebViewWrapper: UIViewRepresentable {
       }
     }
 
-    private func handleNativeAppleWalletProvisioning(
+    private func handleNativeAddToWallet(
       _ data: ImprintConfiguration.CompletionData
     ) {
       guard viewModel.hasNativeAppleWalletProvisioningHandler else { return }
 
       var hasCompleted = false
-      viewModel.requestNativeAppleWalletProvisioning(data: data) { [weak self] in
+      viewModel.requestNativeAppleWalletProvisioning(data: data) { [weak self] result in
         DispatchQueue.main.async {
           guard !hasCompleted else { return }
           hasCompleted = true
 
-          let script = Constants.nativeAppleWalletProvisioningCompletedScript
+          let script = Constants.nativeAddToWalletCompletedScript(result: result)
           if let evaluateJavaScript = self?.evaluateJavaScript {
             evaluateJavaScript(script)
           } else {
