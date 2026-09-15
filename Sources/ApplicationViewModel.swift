@@ -50,6 +50,13 @@ class ApplicationViewModel: ObservableObject {
     self.completionState = state
     self.completionData = data
   }
+
+  func notifyEvent(
+    _ eventName: String,
+    data: ImprintConfiguration.CompletionData?
+  ) {
+    configuration.onEvent?(eventName, data)
+  }
   
   func onDismiss() {
     configuration.onCompletion?(completionState, completionData)

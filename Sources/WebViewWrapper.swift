@@ -12,9 +12,13 @@ struct WebViewWrapper: UIViewRepresentable {
   enum Constants {
     static let callbackHandlerName = "imprintWebCallback"
     static let logoUrl = "logoUrl"
+    static let source = "source"
     static let eventName = "event_name"
+    static let tier = "tier"
     static let errorCode = "error_code"
     static let data = "data"
+    static let partnerSource = "imprint_web_app"
+    static let internalSource = "imprint_internal_event"
   }
   
   @ObservedObject var viewModel: ApplicationViewModel
@@ -57,22 +61,96 @@ struct WebViewWrapper: UIViewRepresentable {
           return
         } else if let eventData = body as? ImprintConfiguration.CompletionData,
                   let event = eventData[Constants.eventName] as? String,
-                  let state = ImprintConfiguration.ProcessState(rawValue: event){
-          let processedData = processCompletionData(eventData)
-          viewModel.processState = state
-          switch state {
-          case .offerAccepted:
-            viewModel.updateCompletionState(.offerAccepted, data: processedData)
-          case .rejected:
-            viewModel.updateCompletionState(.rejected, data: processedData)
-          case .error:
-            viewModel.updateCompletionState(.error, data: processErrorData(processedData))
-          case .closed: // no action needed, still presist previous external terminal state
-            break
+                  let source = eventData[Constants.source] as? String {
+          switch source {
+          case Constants.partnerSource:
+            handlePartnerEvent(event, eventData: eventData)
+          case Constants.internalSource:
+            handleInternalEvent(event)
           default:
-            viewModel.updateCompletionState(.inProgress, data: processedData)
+            break
           }
         }
+      }
+    }
+
+    private func handlePartnerEvent(
+      _ event: String,
+      eventData: ImprintConfiguration.CompletionData
+    ) {
+      let processedData = processCompletionData(eventData)
+      viewModel.notifyEvent(event, data: processedData)
+
+      guard eventData.keys.contains(Constants.tier) else {
+        handleLegacyPartnerEvent(event, data: processedData)
+        return
+      }
+
+      guard let tierValue = eventData[Constants.tier] as? String,
+            let tier = ImprintConfiguration.EventTier(rawValue: tierValue) else {
+        return
+      }
+
+      switch tier {
+      case .intermediate:
+        break
+      case .outcome:
+        guard let state = ImprintConfiguration.ProcessState(rawValue: event) else {
+          return
+        }
+        updateOutcome(state, data: processedData)
+      case .terminal:
+        guard event == ImprintConfiguration.ProcessState.closed.rawValue else {
+          return
+        }
+        viewModel.processState = .closed
+      }
+    }
+
+    private func handleLegacyPartnerEvent(
+      _ event: String,
+      data: ImprintConfiguration.CompletionData
+    ) {
+      guard let state = ImprintConfiguration.ProcessState(rawValue: event) else {
+        return
+      }
+
+      if state == .closed {
+        viewModel.processState = .closed
+        return
+      }
+
+      updateOutcome(state, data: data)
+    }
+
+    private func updateOutcome(
+      _ state: ImprintConfiguration.ProcessState,
+      data: ImprintConfiguration.CompletionData
+    ) {
+      switch state {
+      case .offerAccepted:
+        viewModel.processState = .offerAccepted
+        viewModel.updateCompletionState(.offerAccepted, data: data)
+      case .rejected:
+        viewModel.processState = .rejected
+        viewModel.updateCompletionState(.rejected, data: data)
+      case .inProgress:
+        viewModel.processState = .inProgress
+        viewModel.updateCompletionState(.inProgress, data: data)
+      case .error:
+        viewModel.processState = .error
+        viewModel.updateCompletionState(.error, data: processErrorData(data))
+      case .closed:
+        break
+      }
+    }
+
+    private func handleInternalEvent(_ event: String) {
+      // Internal messages are shell-only. CLOSED remains necessary to dismiss
+      // the native view after initialization errors, but internal events never
+      // reach the partner's onEvent callback or alter its completion outcome.
+      if event == ImprintConfiguration.ProcessState.closed.rawValue {
+        viewModel.processState = .closed
       }
     }
     

@@ -29,7 +29,9 @@ class WebViewWrapperTests: XCTestCase {
   func testOfferAcceptedMessage() {
     // Arrange
     let messageBody: [String: Any] = [
+      "source": "imprint_web_app",
       "event_name": "OFFER_ACCEPTED",
+      "tier": "outcome",
       "customer_id": "consumer-123",
       "applicationId": "app-456",
       "partner_customer_id": "partner-ref-789",
@@ -48,9 +50,10 @@ class WebViewWrapperTests: XCTestCase {
     XCTAssertEqual(viewModel.completionData?["payment_method_id"] as? String, "account-321")
   }
   
-  func testSDKv02HappyPath() {
+  func testPayloadWithoutTierPreservesLegacyOutcomeOnClosed() {
     // Arrange
     let messageBody: [String: Any] = [
+      "source": "imprint_web_app",
       "event_name": "OFFER_ACCEPTED",
       "customer_id": "consumer-123",
       "partner_customer_id": "partner-ref-789",
@@ -59,6 +62,7 @@ class WebViewWrapperTests: XCTestCase {
     let message = MockWKScriptMessage(name: WebViewWrapper.Constants.callbackHandlerName, body: messageBody)
     
     let messageBody2: [String: Any] = [
+      "source": "imprint_web_app",
       "event_name": "CLOSED",
       "customer_id": "",
       "partner_customer_id": "",
@@ -80,7 +84,9 @@ class WebViewWrapperTests: XCTestCase {
   func testRejectedMessage() {
     // Arrange
     let messageBody: [String: Any] = [
+      "source": "imprint_web_app",
       "event_name": "REJECTED",
+      "tier": "outcome",
       "error_code": "invalidToken"
     ]
     let message = MockWKScriptMessage(name: WebViewWrapper.Constants.callbackHandlerName, body: messageBody)
@@ -96,7 +102,9 @@ class WebViewWrapperTests: XCTestCase {
   func testErrorMessage() {
     // Arrange
     let messageBody: [String: Any] = [
+      "source": "imprint_web_app",
       "event_name": "ERROR",
+      "tier": "outcome",
       "error_code": "INVALID_CLIENT_SECRET",
       "error_message": "The client secret provided is invalid"
     ]
@@ -113,7 +121,9 @@ class WebViewWrapperTests: XCTestCase {
   func testAdditionalDataFields() {
     // Arrange
     let messageBody: [String: Any] = [
+      "source": "imprint_web_app",
       "event_name": "OFFER_ACCEPTED",
+      "tier": "outcome",
       "customer_id": "customer-xyz",
       "payment_method_id": "payment-abc",
       "partner_customer_id": "partner-987"
@@ -132,7 +142,9 @@ class WebViewWrapperTests: XCTestCase {
   func testNullableDataFields() {
     // Arrange
     let messageBody: [String: Any] = [
+      "source": "imprint_web_app",
       "event_name": "OFFER_ACCEPTED",
+      "tier": "outcome",
       "data": [
         "customer_id": nil,
         "payment_method_id": nil,
@@ -162,6 +174,159 @@ class WebViewWrapperTests: XCTestCase {
     
     // Assert
     XCTAssertEqual(viewModel.completionState, .inProgress)
+  }
+
+  func testIntermediateEventsAreObservableWithoutOverwritingAcceptedOutcome() {
+    // Arrange
+    let configuration = ImprintConfiguration(clientSecret: "testSecret")
+    var receivedEvents: [String] = []
+    var accountLinkStatus: String?
+    var paymentMethodID: String?
+    configuration.onEvent = { eventName, data in
+      receivedEvents.append(eventName)
+      if eventName == "ACCOUNT_LINK_RESULT" {
+        accountLinkStatus = data?["status"] as? String
+      }
+      if eventName == "PAYMENT_METHOD_CREATED" {
+        paymentMethodID = data?["payment_method_id"] as? String
+      }
+    }
+    viewModel = ApplicationViewModel(configuration: configuration)
+    coordinator = WebViewWrapper.Coordinator(viewModel: viewModel)
+
+    let accepted = MockWKScriptMessage(
+      name: WebViewWrapper.Constants.callbackHandlerName,
+      body: [
+        "source": "imprint_web_app",
+        "event_name": "OFFER_ACCEPTED",
+        "tier": "outcome"
+      ]
+    )
+    let accountLinkResult = MockWKScriptMessage(
+      name: WebViewWrapper.Constants.callbackHandlerName,
+      body: [
+        "source": "imprint_web_app",
+        "event_name": "ACCOUNT_LINK_RESULT",
+        "tier": "intermediate",
+        "status": "success"
+      ]
+    )
+    let paymentMethodCreated = MockWKScriptMessage(
+      name: WebViewWrapper.Constants.callbackHandlerName,
+      body: [
+        "source": "imprint_web_app",
+        "event_name": "PAYMENT_METHOD_CREATED",
+        "tier": "intermediate",
+        "payment_method_id": "payment-123"
+      ]
+    )
+
+    // Act
+    coordinator.userContentController(WKUserContentController(), didReceive: accepted)
+    coordinator.userContentController(WKUserContentController(), didReceive: accountLinkResult)
+    coordinator.userContentController(WKUserContentController(), didReceive: paymentMethodCreated)
+
+    // Assert
+    XCTAssertEqual(viewModel.completionState, .offerAccepted)
+    XCTAssertEqual(receivedEvents, [
+      "OFFER_ACCEPTED",
+      "ACCOUNT_LINK_RESULT",
+      "PAYMENT_METHOD_CREATED"
+    ])
+    XCTAssertEqual(accountLinkStatus, "success")
+    XCTAssertEqual(paymentMethodID, "payment-123")
+  }
+
+  func testUnknownEventAndTierAreObservableButNonTerminal() {
+    // Arrange
+    let configuration = ImprintConfiguration(clientSecret: "testSecret")
+    var receivedEvents: [String] = []
+    configuration.onEvent = { eventName, _ in
+      receivedEvents.append(eventName)
+    }
+    viewModel = ApplicationViewModel(configuration: configuration)
+    coordinator = WebViewWrapper.Coordinator(viewModel: viewModel)
+
+    let accepted = MockWKScriptMessage(
+      name: WebViewWrapper.Constants.callbackHandlerName,
+      body: [
+        "source": "imprint_web_app",
+        "event_name": "OFFER_ACCEPTED",
+        "tier": "outcome"
+      ]
+    )
+    let unknownEvent = MockWKScriptMessage(
+      name: WebViewWrapper.Constants.callbackHandlerName,
+      body: [
+        "source": "imprint_web_app",
+        "event_name": "FUTURE_EVENT",
+        "tier": "outcome"
+      ]
+    )
+    let unknownTier = MockWKScriptMessage(
+      name: WebViewWrapper.Constants.callbackHandlerName,
+      body: [
+        "source": "imprint_web_app",
+        "event_name": "CLOSED",
+        "tier": "future_tier"
+      ]
+    )
+    let malformedTier = MockWKScriptMessage(
+      name: WebViewWrapper.Constants.callbackHandlerName,
+      body: [
+        "source": "imprint_web_app",
+        "event_name": "CLOSED",
+        "tier": 3
+      ]
+    )
+
+    // Act
+    coordinator.userContentController(WKUserContentController(), didReceive: accepted)
+    coordinator.userContentController(WKUserContentController(), didReceive: unknownEvent)
+    coordinator.userContentController(WKUserContentController(), didReceive: unknownTier)
+    coordinator.userContentController(WKUserContentController(), didReceive: malformedTier)
+
+    // Assert
+    XCTAssertEqual(viewModel.completionState, .offerAccepted)
+    XCTAssertEqual(viewModel.processState, .offerAccepted)
+    XCTAssertEqual(receivedEvents, ["OFFER_ACCEPTED", "FUTURE_EVENT", "CLOSED", "CLOSED"])
+  }
+
+  func testInternalEventsStayPrivateWhileClosedStillDismissesShell() {
+    // Arrange
+    let configuration = ImprintConfiguration(clientSecret: "testSecret")
+    var receivedEvents: [String] = []
+    configuration.onEvent = { eventName, _ in
+      receivedEvents.append(eventName)
+    }
+    viewModel = ApplicationViewModel(configuration: configuration)
+    coordinator = WebViewWrapper.Coordinator(viewModel: viewModel)
+
+    let internalOutcome = MockWKScriptMessage(
+      name: WebViewWrapper.Constants.callbackHandlerName,
+      body: [
+        "source": "imprint_internal_event",
+        "event_name": "OFFER_ACCEPTED",
+        "tier": "outcome"
+      ]
+    )
+    let internalClosed = MockWKScriptMessage(
+      name: WebViewWrapper.Constants.callbackHandlerName,
+      body: [
+        "source": "imprint_internal_event",
+        "event_name": "CLOSED",
+        "tier": "terminal"
+      ]
+    )
+
+    // Act
+    coordinator.userContentController(WKUserContentController(), didReceive: internalOutcome)
+    coordinator.userContentController(WKUserContentController(), didReceive: internalClosed)
+
+    // Assert
+    XCTAssertTrue(receivedEvents.isEmpty)
+    XCTAssertEqual(viewModel.completionState, .inProgress)
+    XCTAssertEqual(viewModel.processState, .closed)
   }
   
   func testLogoUrlMessage() {

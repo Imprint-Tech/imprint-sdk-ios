@@ -70,6 +70,14 @@ public class ImprintConfiguration {
   ///   error_code: ErrorCode | null;           // Standardized error code
 
   public typealias CompletionData = [String: Any?]
+
+  /// A closure that observes every partner event without changing the final
+  /// application completion state.
+  /// - Parameters:
+  ///   - eventName: The event name supplied by the application flow.
+  ///   - data: A dictionary that may contain additional event data, including
+  ///     its lifecycle `tier`.
+  public var onEvent: ((String, CompletionData?) -> Void)?
   
   /// Terminal states for the application process.
   public enum CompletionState: Int {
@@ -85,6 +93,12 @@ public class ImprintConfiguration {
     case inProgress = "IN_PROGRESS"
     case closed = "CLOSED" // (New in v0.2) state to handle auto dismissal after reaching terminate state
     case error = "ERROR"
+  }
+
+  enum EventTier: String, Codable {
+    case intermediate
+    case outcome
+    case terminal
   }
   
   public enum ErrorCode: String, Codable {
