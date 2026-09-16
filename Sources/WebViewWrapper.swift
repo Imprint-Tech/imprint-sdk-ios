@@ -66,7 +66,7 @@ struct WebViewWrapper: UIViewRepresentable {
           case Constants.partnerSource:
             handlePartnerEvent(event, eventData: eventData)
           case Constants.internalSource:
-            handleInternalEvent(event)
+            handleInternalEvent(event, eventData: eventData)
           default:
             break
           }
@@ -80,9 +80,25 @@ struct WebViewWrapper: UIViewRepresentable {
     ) {
       let processedData = processCompletionData(eventData)
       viewModel.notifyEvent(event, data: processedData)
+      handleEventLifecycle(event, eventData: eventData, processedData: processedData)
+    }
+
+    private func handleInternalEvent(
+      _ event: String,
+      eventData: ImprintConfiguration.CompletionData
+    ) {
+      let processedData = processCompletionData(eventData)
+      handleEventLifecycle(event, eventData: eventData, processedData: processedData)
+    }
+
+    private func handleEventLifecycle(
+      _ event: String,
+      eventData: ImprintConfiguration.CompletionData,
+      processedData: ImprintConfiguration.CompletionData
+    ) {
 
       guard eventData.keys.contains(Constants.tier) else {
-        handleLegacyPartnerEvent(event, data: processedData)
+        handleLegacyEvent(event, data: processedData)
         return
       }
 
@@ -107,7 +123,7 @@ struct WebViewWrapper: UIViewRepresentable {
       }
     }
 
-    private func handleLegacyPartnerEvent(
+    private func handleLegacyEvent(
       _ event: String,
       data: ImprintConfiguration.CompletionData
     ) {
@@ -145,15 +161,6 @@ struct WebViewWrapper: UIViewRepresentable {
       }
     }
 
-    private func handleInternalEvent(_ event: String) {
-      // Internal messages are shell-only. CLOSED remains necessary to dismiss
-      // the native view after initialization errors, but internal events never
-      // reach the partner's onEvent callback or alter its completion outcome.
-      if event == ImprintConfiguration.ProcessState.closed.rawValue {
-        viewModel.processState = .closed
-      }
-    }
-    
     // Helper method to process error data
     private func processErrorData(_ data: ImprintConfiguration.CompletionData) -> ImprintConfiguration.CompletionData {
       var processedData = data

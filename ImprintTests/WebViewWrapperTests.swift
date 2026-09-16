@@ -292,7 +292,7 @@ class WebViewWrapperTests: XCTestCase {
     XCTAssertEqual(receivedEvents, ["OFFER_ACCEPTED", "FUTURE_EVENT", "CLOSED", "CLOSED"])
   }
 
-  func testInternalEventsStayPrivateWhileClosedStillDismissesShell() {
+  func testInternalEventsStayPrivateWhileUpdatingShellLifecycle() {
     // Arrange
     let configuration = ImprintConfiguration(clientSecret: "testSecret")
     var receivedEvents: [String] = []
@@ -325,7 +325,7 @@ class WebViewWrapperTests: XCTestCase {
 
     // Assert
     XCTAssertTrue(receivedEvents.isEmpty)
-    XCTAssertEqual(viewModel.completionState, .inProgress)
+    XCTAssertEqual(viewModel.completionState, .offerAccepted)
     XCTAssertEqual(viewModel.processState, .closed)
   }
   
