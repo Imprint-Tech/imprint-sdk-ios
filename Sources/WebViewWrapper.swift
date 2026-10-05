@@ -61,7 +61,6 @@ struct WebViewWrapper: UIViewRepresentable {
           return
         } else if let eventData = body as? ImprintConfiguration.CompletionData,
                   let event = eventData[Constants.eventName] as? String {
-          // Payloads without a source predate the visibility boundary and are partner events.
           let source = eventData[Constants.source] as? String ?? Constants.partnerSource
           switch source {
           case Constants.partnerSource:
@@ -140,7 +139,6 @@ struct WebViewWrapper: UIViewRepresentable {
       updateOutcome(state, data: data)
     }
 
-    // Partner and internal CLOSED both arrive; republishing would dismiss twice.
     private func markClosed() {
       guard viewModel.processState != .closed else { return }
       viewModel.processState = .closed

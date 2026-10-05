@@ -60,8 +60,7 @@ class ApplicationViewModel: ObservableObject {
   }
   
   func onDismiss() {
-    // The close button and each CLOSED message (partner and internal) can all
-    // dismiss the view; the partner must only see one completion.
+    // Close button and both partner and internal CLOSED messages can each dismiss.
     guard !hasCompleted else { return }
     hasCompleted = true
     configuration.onCompletion?(completionState, completionData)
