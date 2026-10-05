@@ -7,6 +7,7 @@
 
 import XCTest
 import WebKit
+import Combine
 @testable import Imprint
 
 class WebViewWrapperTests: XCTestCase {
@@ -329,6 +330,69 @@ class WebViewWrapperTests: XCTestCase {
     XCTAssertEqual(viewModel.processState, .closed)
   }
   
+  func testDuplicateClosedMessagesCompleteOnce() {
+    // Arrange
+    let configuration = ImprintConfiguration(clientSecret: "testSecret")
+    var completions: [ImprintConfiguration.CompletionState] = []
+    configuration.onCompletion = { state, _ in
+      completions.append(state)
+    }
+    viewModel = ApplicationViewModel(configuration: configuration)
+    coordinator = WebViewWrapper.Coordinator(viewModel: viewModel)
+    var closedPublishes = 0
+    let subscription = viewModel.$processState.sink { state in
+      if state == .closed { closedPublishes += 1 }
+    }
+
+    let accepted = MockWKScriptMessage(
+      name: WebViewWrapper.Constants.callbackHandlerName,
+      body: ["source": "imprint_web_app", "event_name": "OFFER_ACCEPTED", "tier": "outcome"]
+    )
+    let partnerClosed = MockWKScriptMessage(
+      name: WebViewWrapper.Constants.callbackHandlerName,
+      body: ["source": "imprint_web_app", "event_name": "CLOSED", "tier": "terminal"]
+    )
+    let internalClosed = MockWKScriptMessage(
+      name: WebViewWrapper.Constants.callbackHandlerName,
+      body: ["source": "imprint_internal_event", "event_name": "CLOSED", "tier": "terminal"]
+    )
+
+    // Act
+    coordinator.userContentController(WKUserContentController(), didReceive: accepted)
+    coordinator.userContentController(WKUserContentController(), didReceive: partnerClosed)
+    coordinator.userContentController(WKUserContentController(), didReceive: internalClosed)
+    viewModel.onDismiss()
+    viewModel.onDismiss()
+    subscription.cancel()
+
+    // Assert
+    XCTAssertEqual(closedPublishes, 1)
+    XCTAssertEqual(completions, [.offerAccepted])
+  }
+
+  func testPayloadWithoutSourceIsTreatedAsPartnerEvent() {
+    // Arrange
+    let configuration = ImprintConfiguration(clientSecret: "testSecret")
+    var receivedEvents: [String] = []
+    configuration.onEvent = { eventName, _ in
+      receivedEvents.append(eventName)
+    }
+    viewModel = ApplicationViewModel(configuration: configuration)
+    coordinator = WebViewWrapper.Coordinator(viewModel: viewModel)
+
+    let accepted = MockWKScriptMessage(
+      name: WebViewWrapper.Constants.callbackHandlerName,
+      body: ["event_name": "OFFER_ACCEPTED", "tier": "outcome"]
+    )
+
+    // Act
+    coordinator.userContentController(WKUserContentController(), didReceive: accepted)
+
+    // Assert
+    XCTAssertEqual(receivedEvents, ["OFFER_ACCEPTED"])
+    XCTAssertEqual(viewModel.completionState, .offerAccepted)
+  }
+
   func testLogoUrlMessage() {
     // Arrange
     let messageBody: [String: Any] = [

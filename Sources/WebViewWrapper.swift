@@ -60,8 +60,9 @@ struct WebViewWrapper: UIViewRepresentable {
           viewModel.updateLogoUrl(logoUrl)
           return
         } else if let eventData = body as? ImprintConfiguration.CompletionData,
-                  let event = eventData[Constants.eventName] as? String,
-                  let source = eventData[Constants.source] as? String {
+                  let event = eventData[Constants.eventName] as? String {
+          // Payloads without a source predate the visibility boundary and are partner events.
+          let source = eventData[Constants.source] as? String ?? Constants.partnerSource
           switch source {
           case Constants.partnerSource:
             handlePartnerEvent(event, eventData: eventData)
@@ -119,7 +120,7 @@ struct WebViewWrapper: UIViewRepresentable {
         guard event == ImprintConfiguration.ProcessState.closed.rawValue else {
           return
         }
-        viewModel.processState = .closed
+        markClosed()
       }
     }
 
@@ -132,11 +133,17 @@ struct WebViewWrapper: UIViewRepresentable {
       }
 
       if state == .closed {
-        viewModel.processState = .closed
+        markClosed()
         return
       }
 
       updateOutcome(state, data: data)
+    }
+
+    // Partner and internal CLOSED both arrive; republishing would dismiss twice.
+    private func markClosed() {
+      guard viewModel.processState != .closed else { return }
+      viewModel.processState = .closed
     }
 
     private func updateOutcome(

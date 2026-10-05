@@ -15,6 +15,7 @@ class ApplicationViewModel: ObservableObject {
   @Published var completionState: ImprintConfiguration.CompletionState = .inProgress
   @Published var processState: ImprintConfiguration.ProcessState?
   var completionData: ImprintConfiguration.CompletionData?
+  private var hasCompleted = false
   
   init(configuration: ImprintConfiguration) {
     var host = ""
@@ -59,6 +60,10 @@ class ApplicationViewModel: ObservableObject {
   }
   
   func onDismiss() {
+    // The close button and each CLOSED message (partner and internal) can all
+    // dismiss the view; the partner must only see one completion.
+    guard !hasCompleted else { return }
+    hasCompleted = true
     configuration.onCompletion?(completionState, completionData)
   }
 }
