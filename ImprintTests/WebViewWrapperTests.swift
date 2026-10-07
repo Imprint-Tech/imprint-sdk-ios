@@ -393,6 +393,55 @@ class WebViewWrapperTests: XCTestCase {
     XCTAssertEqual(viewModel.completionState, .offerAccepted)
   }
 
+  @MainActor
+  func testTieredEventsCrossWebKitBridge() async throws {
+    let configuration = ImprintConfiguration(clientSecret: "testSecret")
+    var receivedEvents: [String] = []
+    var completions: [ImprintConfiguration.CompletionState] = []
+    let eventsDelivered = expectation(description: "Partner events delivered")
+    eventsDelivered.expectedFulfillmentCount = 3
+    configuration.onEvent = { name, _ in
+      receivedEvents.append(name)
+      eventsDelivered.fulfill()
+    }
+    configuration.onCompletion = { state, _ in completions.append(state) }
+    viewModel = ApplicationViewModel(configuration: configuration)
+    coordinator = WebViewWrapper.Coordinator(viewModel: viewModel)
+
+    let webConfiguration = WKWebViewConfiguration()
+    webConfiguration.userContentController.add(coordinator, name: WebViewWrapper.Constants.callbackHandlerName)
+    let webView = WKWebView(frame: CGRect(x: 0, y: 0, width: 320, height: 480), configuration: webConfiguration)
+    let window = UIWindow(frame: webView.frame)
+    window.rootViewController = UIViewController()
+    window.makeKeyAndVisible()
+    window.rootViewController?.view.addSubview(webView)
+
+    let pageLoaded = expectation(description: "WebKit page loaded")
+    let observer = WebViewNavigationObserver { pageLoaded.fulfill() }
+    webView.navigationDelegate = observer
+    webView.loadHTMLString("<html><body>Event bridge test</body></html>", baseURL: nil)
+    await fulfillment(of: [pageLoaded], timeout: 10)
+
+    _ = try await webView.evaluateJavaScript("""
+      const send = (name, source, tier) => window.webkit.messageHandlers.imprintWebCallback.postMessage(
+        {event_name: name, source: source, tier: tier});
+      send('OFFER_ACCEPTED', 'imprint_web_app', 'outcome');
+      send('ACCOUNT_LINK_RESULT', 'imprint_web_app', 'intermediate');
+      send('CLOSED', 'imprint_web_app', 'terminal');
+      send('CLOSED', 'imprint_internal_event', 'terminal');
+      true;
+      """)
+    await fulfillment(of: [eventsDelivered], timeout: 10)
+    viewModel.onDismiss()
+    viewModel.onDismiss()
+
+    XCTAssertEqual(receivedEvents, ["OFFER_ACCEPTED", "ACCOUNT_LINK_RESULT", "CLOSED"])
+    XCTAssertEqual(viewModel.processState, .closed)
+    XCTAssertEqual(completions, [.offerAccepted])
+    webConfiguration.userContentController.removeScriptMessageHandler(forName: WebViewWrapper.Constants.callbackHandlerName)
+    window.isHidden = true
+  }
+
   func testLogoUrlMessage() {
     // Arrange
     let messageBody: [String: Any] = [
@@ -419,4 +468,16 @@ class MockWKScriptMessage: WKScriptMessage {
   
   override var name: String { return mockName }
   override var body: Any { return mockBody }
+}
+
+private class WebViewNavigationObserver: NSObject, WKNavigationDelegate {
+  let onFinish: () -> Void
+
+  init(onFinish: @escaping () -> Void) {
+    self.onFinish = onFinish
+  }
+
+  func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+    onFinish()
+  }
 }
