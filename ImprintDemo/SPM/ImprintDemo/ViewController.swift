@@ -17,10 +17,16 @@ class ViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     setupLayout()
-    environmentSelector.selectedSegmentIndex = 1
+    environmentSelector.selectedSegmentIndex = 0
     
     // Prefill your token if needed
     clientSecretInput.text = ""
+#if DEBUG
+    if let testSecret = ProcessInfo.processInfo.environment["IMPRINT_TEST_CLIENT_SECRET"] {
+      clientSecretInput.text = testSecret
+      DispatchQueue.main.async { self.startTapped(self) }
+    }
+#endif
   }
 
   @IBAction func startTapped(_ sender: Any) {
@@ -28,23 +34,34 @@ class ViewController: UIViewController {
     let environment = ImprintConfiguration.Environment(rawValue: environmentSelector.selectedSegmentIndex) ?? .staging
     
     let configuration = ImprintConfiguration(clientSecret: clientSecret, environment: environment)
+    completionState.text = ""
+    configuration.onEvent = { [weak self] eventName, data in
+      let tier = data?["tier"] as? String ?? "legacy"
+      self?.appendResult("event: \(eventName) [\(tier)]")
+    }
     
-    configuration.onCompletion = { state, data in
+    configuration.onCompletion = { [weak self] state, data in
+      guard let self else { return }
       switch state {
       case .offerAccepted:
-        self.completionState.text = "Offer accepted\n\(self.jsonString(data))"
+        self.appendResult("completion: Offer accepted\n\(self.jsonString(data))")
       case .rejected:
-        self.completionState.text = "Application rejected\n\(self.jsonString(data))"
+        self.appendResult("completion: Application rejected\n\(self.jsonString(data))")
       case .inProgress:
-        self.completionState.text = "Application Interrupted - In Progress"
+        self.appendResult("completion: Application Interrupted - In Progress")
       case .error:
-        self.completionState.text = "Error occured\n\(self.jsonString(data))"
+        self.appendResult("completion: Error occurred\n\(self.jsonString(data))")
       @unknown default:
         break
       }
     }
     
     ImprintApp.startApplication(from: self, configuration: configuration)
+  }
+
+  private func appendResult(_ result: String) {
+    let current = completionState.text ?? ""
+    completionState.text = current.isEmpty ? result : "\(current)\n\(result)"
   }
   
   private func setupLayout(){
@@ -58,7 +75,7 @@ class ViewController: UIViewController {
   }
   
   // Helper
-  private func jsonString(_ dictionary: [String: Any]?) -> String {
+  private func jsonString(_ dictionary: ImprintConfiguration.CompletionData?) -> String {
     guard let dictionary else { return "nil" }
 
     func sanitize(_ value: Any) -> Any? {
@@ -86,7 +103,7 @@ class ViewController: UIViewController {
       return sanitized
     }
 
-    let sanitized = sanitizeDictionary(dictionary)
+    let sanitized = sanitizeDictionary(dictionary.compactMapValues { $0 })
 
     if let data = try? JSONSerialization.data(withJSONObject: sanitized, options: .prettyPrinted),
        let jsonString = String(data: data, encoding: .utf8) {
@@ -96,4 +113,3 @@ class ViewController: UIViewController {
     }
   }
 }
-
