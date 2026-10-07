@@ -39,7 +39,16 @@ Create an instance of `ImprintConfiguration` with your `client_secret` and `envi
     let configuration = ImprintConfiguration(clientSecret: "client_secret", environment: .sandbox)
     ```
 
-3. Define the Completion Handler
+3. Observe Application Events (Optional)
+Use `onEvent` when you need the full event stream, including intermediate events such as `ACCOUNT_LINK_RESULT` and `PAYMENT_METHOD_CREATED`. Intermediate events do not change the final completion state.
+
+    ```swift
+    configuration.onEvent = { eventName, data in
+      print("Received \(eventName): \(self.jsonString(data))")
+    }
+    ```
+
+4. Define the Completion Handler
 Define the completion handler onCompletion to manage the terminal states when the application flow ends.
 
     ```swift
@@ -59,7 +68,7 @@ Define the completion handler onCompletion to manage the terminal states when th
     }
     ```
 
-4. Start the Application flow
+5. Start the Application flow
 Once you’ve configured the ImprintConfiguration, initiate the application flow by calling ImprintApp.startApplication from your view controller.
     
     ```swift

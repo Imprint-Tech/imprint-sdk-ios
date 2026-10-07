@@ -12,9 +12,13 @@ struct WebViewWrapper: UIViewRepresentable {
   enum Constants {
     static let callbackHandlerName = "imprintWebCallback"
     static let logoUrl = "logoUrl"
+    static let source = "source"
     static let eventName = "event_name"
+    static let tier = "tier"
     static let errorCode = "error_code"
     static let data = "data"
+    static let partnerSource = "imprint_web_app"
+    static let internalSource = "imprint_internal_event"
   }
   
   @ObservedObject var viewModel: ApplicationViewModel
@@ -56,26 +60,112 @@ struct WebViewWrapper: UIViewRepresentable {
           viewModel.updateLogoUrl(logoUrl)
           return
         } else if let eventData = body as? ImprintConfiguration.CompletionData,
-                  let event = eventData[Constants.eventName] as? String,
-                  let state = ImprintConfiguration.ProcessState(rawValue: event){
-          let processedData = processCompletionData(eventData)
-          viewModel.processState = state
-          switch state {
-          case .offerAccepted:
-            viewModel.updateCompletionState(.offerAccepted, data: processedData)
-          case .rejected:
-            viewModel.updateCompletionState(.rejected, data: processedData)
-          case .error:
-            viewModel.updateCompletionState(.error, data: processErrorData(processedData))
-          case .closed: // no action needed, still presist previous external terminal state
-            break
+                  let event = eventData[Constants.eventName] as? String {
+          let source = eventData[Constants.source] as? String ?? Constants.partnerSource
+          switch source {
+          case Constants.partnerSource:
+            handlePartnerEvent(event, eventData: eventData)
+          case Constants.internalSource:
+            handleInternalEvent(event, eventData: eventData)
           default:
-            viewModel.updateCompletionState(.inProgress, data: processedData)
+            break
           }
         }
       }
     }
-    
+
+    private func handlePartnerEvent(
+      _ event: String,
+      eventData: ImprintConfiguration.CompletionData
+    ) {
+      let processedData = processCompletionData(eventData)
+      viewModel.notifyEvent(event, data: processedData)
+      handleEventLifecycle(event, eventData: eventData, processedData: processedData)
+    }
+
+    private func handleInternalEvent(
+      _ event: String,
+      eventData: ImprintConfiguration.CompletionData
+    ) {
+      let processedData = processCompletionData(eventData)
+      handleEventLifecycle(event, eventData: eventData, processedData: processedData)
+    }
+
+    private func handleEventLifecycle(
+      _ event: String,
+      eventData: ImprintConfiguration.CompletionData,
+      processedData: ImprintConfiguration.CompletionData
+    ) {
+
+      guard eventData.keys.contains(Constants.tier) else {
+        handleLegacyEvent(event, data: processedData)
+        return
+      }
+
+      guard let tierValue = eventData[Constants.tier] as? String,
+            let tier = ImprintConfiguration.EventTier(rawValue: tierValue) else {
+        return
+      }
+
+      switch tier {
+      case .intermediate:
+        break
+      case .outcome:
+        guard let state = ImprintConfiguration.ProcessState(rawValue: event) else {
+          return
+        }
+        updateOutcome(state, data: processedData)
+      case .terminal:
+        guard event == ImprintConfiguration.ProcessState.closed.rawValue else {
+          return
+        }
+        markClosed()
+      }
+    }
+
+    private func handleLegacyEvent(
+      _ event: String,
+      data: ImprintConfiguration.CompletionData
+    ) {
+      guard let state = ImprintConfiguration.ProcessState(rawValue: event) else {
+        return
+      }
+
+      if state == .closed {
+        markClosed()
+        return
+      }
+
+      updateOutcome(state, data: data)
+    }
+
+    private func markClosed() {
+      guard viewModel.processState != .closed else { return }
+      viewModel.processState = .closed
+    }
+
+    private func updateOutcome(
+      _ state: ImprintConfiguration.ProcessState,
+      data: ImprintConfiguration.CompletionData
+    ) {
+      switch state {
+      case .offerAccepted:
+        viewModel.processState = .offerAccepted
+        viewModel.updateCompletionState(.offerAccepted, data: data)
+      case .rejected:
+        viewModel.processState = .rejected
+        viewModel.updateCompletionState(.rejected, data: data)
+      case .inProgress:
+        viewModel.processState = .inProgress
+        viewModel.updateCompletionState(.inProgress, data: data)
+      case .error:
+        viewModel.processState = .error
+        viewModel.updateCompletionState(.error, data: processErrorData(data))
+      case .closed:
+        break
+      }
+    }
+
     // Helper method to process error data
     private func processErrorData(_ data: ImprintConfiguration.CompletionData) -> ImprintConfiguration.CompletionData {
       var processedData = data
