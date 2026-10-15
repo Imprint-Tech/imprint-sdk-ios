@@ -32,8 +32,8 @@ struct ApplicationView: View {
           } placeholder: {
             EmptyView()
           }
-          .frame(height: 24)
-          .padding(.horizontal, 16)
+          .frame(height: 40)
+          .padding(.horizontal, 56)
           .frame(maxWidth: .infinity, alignment: .center)
         }
         
