@@ -32,6 +32,10 @@ public class ImprintConfiguration {
 
   /// An optional offer configuration UUID used to present a specific welcome offer.
   let offerConfigUUID: String?
+
+  /// Optional offer configuration UUIDs used to present specific welcome offers.
+  /// - Note: When this contains at least one non-blank value, it takes precedence over `offerConfigUUID`.
+  let offerConfigUUIDs: [String]?
   
   /// A closure that handles the terminal state of the application process.
   /// - Parameters:
@@ -48,10 +52,29 @@ public class ImprintConfiguration {
   /// - Parameters:
   ///   - clientSecret: The clientSecret to initiate the application session.
   ///   - environment: The environment to be used, defaulting to `.production`.
-  public init(clientSecret: String, environment: Environment = .production, offerConfigUUID: String? = nil) {
+  ///   - offerConfigUUID: An optional offer configuration UUID.
+  ///   - offerConfigUUIDs: Optional offer configuration UUIDs. A non-empty list takes precedence over `offerConfigUUID`.
+  public init(
+    clientSecret: String,
+    environment: Environment = .production,
+    offerConfigUUID: String? = nil,
+    offerConfigUUIDs: [String]? = nil
+  ) {
     self.clientSecret = clientSecret
     self.environment = environment
     self.offerConfigUUID = offerConfigUUID
+    self.offerConfigUUIDs = offerConfigUUIDs
+  }
+
+  var resolvedOfferConfigUUIDs: String? {
+    let list = (offerConfigUUIDs ?? []).filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+    if !list.isEmpty {
+      return list.joined(separator: ",")
+    }
+    guard let single = offerConfigUUID, !single.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+      return nil
+    }
+    return single
   }
   
   /// Available environments for the application process.

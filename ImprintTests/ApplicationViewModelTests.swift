@@ -61,4 +61,58 @@ class ApplicationViewModelTests: XCTestCase {
     let configuration = ImprintConfiguration(clientSecret: "secret")
     XCTAssertNil(configuration.offerConfigUUID)
   }
+
+  func testWebUrlJoinsOfferConfigUUIDsWithCommas() {
+    let configuration = ImprintConfiguration(
+      clientSecret: "test-secret",
+      offerConfigUUIDs: ["uuid-1", "uuid-2", "uuid-3"]
+    )
+    let url = ApplicationViewModel(configuration: configuration).webUrl.absoluteString
+    XCTAssertTrue(url.hasSuffix("&offerConfigUUIDs=uuid-1,uuid-2,uuid-3"))
+  }
+
+  func testOfferConfigUUIDsTakesPrecedenceOverOfferConfigUUID() {
+    let configuration = ImprintConfiguration(
+      clientSecret: "test-secret",
+      offerConfigUUID: "single-uuid",
+      offerConfigUUIDs: ["uuid-1", "uuid-2"]
+    )
+    let url = ApplicationViewModel(configuration: configuration).webUrl.absoluteString
+    XCTAssertTrue(url.hasSuffix("&offerConfigUUIDs=uuid-1,uuid-2"))
+    XCTAssertFalse(url.contains("single-uuid"))
+  }
+
+  func testEmptyOfferConfigUUIDsFallsBackToOfferConfigUUID() {
+    let configuration = ImprintConfiguration(
+      clientSecret: "test-secret",
+      offerConfigUUID: "single-uuid",
+      offerConfigUUIDs: []
+    )
+    let url = ApplicationViewModel(configuration: configuration).webUrl.absoluteString
+    XCTAssertTrue(url.hasSuffix("&offerConfigUUIDs=single-uuid"))
+  }
+
+  func testBlankOfferConfigUUIDsEntriesAreDropped() {
+    let configuration = ImprintConfiguration(
+      clientSecret: "test-secret",
+      offerConfigUUIDs: ["", "uuid-1", "  "]
+    )
+    let url = ApplicationViewModel(configuration: configuration).webUrl.absoluteString
+    XCTAssertTrue(url.hasSuffix("&offerConfigUUIDs=uuid-1"))
+  }
+
+  func testWebUrlOmitsOfferConfigUUIDsWhenEveryValueIsBlank() {
+    let configuration = ImprintConfiguration(
+      clientSecret: "test-secret",
+      offerConfigUUID: "",
+      offerConfigUUIDs: [""]
+    )
+    let url = ApplicationViewModel(configuration: configuration).webUrl.absoluteString
+    XCTAssertFalse(url.contains("offerConfigUUIDs"))
+  }
+
+  func testConfigurationDefaultsOfferConfigUUIDsToNil() {
+    let configuration = ImprintConfiguration(clientSecret: "secret")
+    XCTAssertNil(configuration.offerConfigUUIDs)
+  }
 }
