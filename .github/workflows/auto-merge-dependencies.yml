@@ -1,8 +1,7 @@
 name: Auto-merge dependency PRs
 
-# Thin caller. All gate logic -- the two routes, the label/actor/scope gates and
-# the reasoning behind each -- lives in the shared workflow this calls, which allows
-# for dependabot patches, and patches by security agents that dependabot cannot reach.
+# Thin caller. All gate logic -- the two routes, the label/actor/scope gates, the
+# tier policy and the review tickets -- lives in the shared workflow this calls.
 
 on:
   pull_request:
@@ -18,12 +17,16 @@ jobs:
     uses: Imprint-Tech/SecurityEngineering/.github/workflows/auto-merge-dependencies.yml@main
     with:
       # Exact repo-relative paths a labelled PR may touch, matched whole-line --
-      # never as patterns. List every manifest in the tree; one added later
-      # needs adding here, or a patch touching it is refused.
+      # never as patterns. A manifest added later needs adding here, or a patch
+      # touching it is refused.
       manifest_allowlist: |
         Gemfile
         Gemfile.lock
         Package.swift
+      # main requires an approving review, so an eligible patch would otherwise
+      # wait on a human click. Set this false if that requirement is removed, so
+      # the audit trail does not read as though review happened.
+      supply_approval: true
     secrets:
       SECURITY_TEAM_READER_APP_ID: ${{ secrets.SECURITY_TEAM_READER_APP_ID }}
       SECURITY_TEAM_READER_PRIVATE_KEY: ${{ secrets.SECURITY_TEAM_READER_PRIVATE_KEY }}
