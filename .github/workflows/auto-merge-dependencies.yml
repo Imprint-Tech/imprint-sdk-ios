@@ -1,0 +1,22 @@
+name: Auto-merge dependency PRs
+
+on:
+  pull_request:
+    types: [opened, labeled, unlabeled, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  automerge:
+    uses: Imprint-Tech/SecurityEngineering/.github/workflows/auto-merge-dependencies.yml@d91e7174ec9c52117dcebf9b61f10a2cfca9492e
+    with:
+      manifest_allowlist: |
+        Gemfile
+        Gemfile.lock
+      supply_approval: true
+    secrets:
+      SECURITY_TEAM_READER_APP_ID: ${{ secrets.SECURITY_TEAM_READER_APP_ID }}
+      SECURITY_TEAM_READER_PRIVATE_KEY: ${{ secrets.SECURITY_TEAM_READER_PRIVATE_KEY }}
+      SECURITY_LINEAR_API_KEY: ${{ secrets.SECURITY_LINEAR_API_KEY }}
