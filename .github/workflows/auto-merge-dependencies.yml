@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   automerge:
-    uses: Imprint-Tech/SecurityEngineering/.github/workflows/auto-merge-dependencies.yml@b06fc20a2b5a5f9c423cd2325f80b429f3ffe336
+    uses: Imprint-Tech/SecurityEngineering/.github/workflows/auto-merge-dependencies.yml@d91e7174ec9c52117dcebf9b61f10a2cfca9492e
     with:
       manifest_allowlist: |
         Gemfile
